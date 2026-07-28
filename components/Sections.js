@@ -138,6 +138,7 @@ export function CategoryGrid({ items, basePath }) {
     <div className="category-grid">
       {items.map(item => (
         <Link className="product-card" href={`${basePath}${item.slug}/`} key={item.slug}>
+          {item.icon && <img className="category-card-icon" src={item.icon} alt="" loading="lazy" />}
           <h3>{item.name}</h3>
           <p>{item.tagline}</p>
         </Link>

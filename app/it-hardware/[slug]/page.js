@@ -19,9 +19,12 @@ export default function ITDetailPage({ params }) {
   return (
     <>
       <section className="page-hero">
-        <div className="container">
-          <h1>{item.name}</h1>
-          <p>{item.tagline}</p>
+        <div className="container detail-hero-inner">
+          {item.icon && <img className="detail-hero-icon" src={item.icon} alt="" />}
+          <div>
+            <h1>{item.name}</h1>
+            <p>{item.tagline}</p>
+          </div>
         </div>
       </section>
       <section className="container content-section detail-section">
