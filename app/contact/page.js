@@ -1,8 +1,8 @@
-import { BRAND } from "../../data/content";
+import { BRAND, LOCATIONS } from "../../data/content";
 import { WhatsAppCta } from "../../components/Sections";
 import EnquiryForm from "../../components/EnquiryForm";
 
-export const metadata = { title: "Contact Us | Vel Systems", description: "Contact Vel Systems by phone, WhatsApp, or email." };
+export const metadata = { title: "Contact Us | Vel Systems", description: "Contact Vel Systems by phone, WhatsApp, or email. Three locations in Chengalpattu." };
 
 export default function ContactPage() {
   return (
@@ -10,10 +10,17 @@ export default function ContactPage() {
       <section className="page-hero"><div className="container"><h1>Contact Us</h1></div></section>
       <section className="container content-section contact-section">
         <div className="contact-info">
-          <p><strong>Address:</strong> {BRAND.address}</p>
-          <p><strong>Phone:</strong> {BRAND.phone}</p>
-          <p><strong>Email:</strong> {BRAND.email}</p>
           <WhatsAppCta label="Chat on WhatsApp" message="Hi Vel Systems, I have a question." />
+          <div className="locations-list">
+            {LOCATIONS.map(loc => (
+              <div className="location-card" key={loc.name}>
+                <h3>{loc.name}</h3>
+                <p>{loc.address}</p>
+                <p><strong>Phone:</strong> {loc.phone}</p>
+                <p><strong>Email:</strong> {loc.email}</p>
+              </div>
+            ))}
+          </div>
         </div>
         <EnquiryForm />
       </section>

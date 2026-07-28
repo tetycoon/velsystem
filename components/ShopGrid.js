@@ -25,6 +25,12 @@ export default function ShopGrid() {
       <div className="shop-grid">
         {SHOP_PRODUCTS.map(p => (
           <div className="product-tile" key={p.slug}>
+            {p.image && (
+              <div className="tile-image">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={p.image} alt={p.name} loading="lazy" />
+              </div>
+            )}
             <span className="tile-category">{p.category}</span>
             <h3>{p.name}</h3>
             <p className="price">&#8377;{p.price.toLocaleString("en-IN")}</p>

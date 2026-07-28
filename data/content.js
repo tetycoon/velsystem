@@ -6,7 +6,7 @@ const BRAND = {
   phone: "(+91) 98651 99933",
   whatsappNumber: "919865199933",
   email: "sales@velsystems.in",
-  address: "7A, Varadhanar Street, Vedachalam Nagar, Chengalpattu – 603001",
+  address: "No.7, Varadhanar Street, Vedhachala Nagar, Chengalpattu, Tamil Nadu 603001",
   instagram: "https://www.instagram.com/velsystems.in/",
   facebook: "https://www.facebook.com/VELSYSTEMSCPT",
   youtube: "https://www.youtube.com/@VelSystems",
@@ -14,6 +14,28 @@ const BRAND = {
   navy: "#1F3A5F",
   orange: "#D4622A"
 };
+
+// Pulled from the old site's contact page. Three real locations, not one.
+const LOCATIONS = [
+  {
+    name: "Vel Systems (Corporate Office)",
+    address: "No.7, Varadhanar Street, Vedhachala Nagar, Chengalpattu, Tamil Nadu 603001",
+    email: "sales@velsystems.in",
+    phone: "(+91) 98651 99933"
+  },
+  {
+    name: "Dell Showroom",
+    address: "No. 25, Devadoss St, Vedachalam Nagar, Chengalpattu, Gokulapuram, Tamil Nadu 603002",
+    email: "dellstorechengalpattu@gmail.com",
+    phone: "(+91) 98651 90109"
+  },
+  {
+    name: "Acer Store",
+    address: "No.7, Varadhanar Street, Vedhachala Nagar, Chengalpattu, Tamil Nadu 603001",
+    email: "acerstorechengalpattu@gmail.com",
+    phone: "(+91) 98945 09664"
+  }
+];
 
 function waLink(message) {
   return `https://wa.me/${BRAND.whatsappNumber}?text=${encodeURIComponent(message)}`;
@@ -77,19 +99,33 @@ const AMC_PLANS = [
   { name: "On-Call Services", body: "Experienced service engineers respond to requests within working hours when you don't need a full annual contract." }
 ];
 
+// Real products, pulled directly from the old site's shop, with real current prices.
+// No longer placeholder/sample data.
 const SHOP_PRODUCTS = [
-  { slug: "sample-laptop-i5", name: "Business Laptop (i5, 8GB, 512GB SSD)", price: 42990, category: "IT Hardware", placeholder: true },
-  { slug: "sample-laptop-i3", name: "Essential Laptop (i3, 8GB, 256GB SSD)", price: 29990, category: "IT Hardware", placeholder: true },
-  { slug: "sample-desktop-tower", name: "Office Desktop Tower (i5, 8GB, 1TB HDD)", price: 27990, category: "IT Hardware", placeholder: true },
-  { slug: "sample-laser-printer", name: "Mono Laser Printer with Duplex", price: 13990, category: "IT Hardware", placeholder: true },
-  { slug: "sample-ups-1kva", name: "Online UPS – 1 KVA", price: 8990, category: "IT Hardware", placeholder: true },
-  { slug: "sample-cctv-4ch-kit", name: "4-Channel CCTV Kit (2MP, Night Vision)", price: 15990, category: "Security", placeholder: true },
-  { slug: "sample-biometric-device", name: "Biometric Attendance Device", price: 6990, category: "Security", placeholder: true },
-  { slug: "sample-door-access", name: "Single-Door Access Control Kit", price: 9990, category: "Security", placeholder: true },
-  { slug: "sample-fire-alarm-panel", name: "Fire Alarm Control Panel (4-Zone)", price: 11990, category: "Security", placeholder: true },
-  { slug: "sample-video-door-phone", name: "Video Door Phone (7-inch)", price: 7990, category: "Security", placeholder: true },
-  { slug: "sample-wifi-access-point", name: "Business WiFi Access Point", price: 5990, category: "IT Hardware", placeholder: true },
-  { slug: "sample-cash-counter", name: "Cash Counting Machine with Fake Note Detection", price: 18990, category: "Security", placeholder: true }
+  { slug: "honeywell-gl650-barcode-scanner", name: "IMPACT by Honeywell GL650 2D Hands-Free Barcode Scanner", price: 7552, category: "IT Hardware", image: "/images/products/honeywell-gl650-barcode-scanner.jpg" },
+  { slug: "cp-plus-wifi-router", name: "CP PLUS CP-GR-DE412 WiFi Router", price: 2150, category: "IT Hardware", image: "/images/products/cp-plus-wifi-router.jpg" },
+  { slug: "tplink-archer-c24-router", name: "TP-Link Archer C24 AC750 Mbps Dual-Band WiFi Router", price: 2400, category: "IT Hardware", image: "/images/products/tplink-archer-c24-router.jpg" },
+  { slug: "honeywell-ihs520bt-barcode-scanner", name: "IMPACT by Honeywell IHS520BT 2D Barcode Scanner", price: 6500, category: "IT Hardware", image: "/images/products/honeywell-ihs520bt-barcode-scanner.jpg" },
+  { slug: "epson-003-ink-set", name: "Epson 003 Ink 65ml Tri-Colour Bottle Set (Pack of 4)", price: 2200, category: "IT Hardware", image: "/images/products/epson-003-ink-set.jpg" },
+  { slug: "hp-dhs5100-speaker", name: "HP Multimedia Speaker DHS-5100", price: 1950, category: "Accessories", image: "/images/products/hp-dhs5100-speaker.jpg" },
+  { slug: "hp-h150-earbuds", name: "HP H150 Wireless Earbuds", price: 1596, category: "Accessories", image: "/images/products/hp-h150-earbuds.jpg" },
+  { slug: "lenovo-bluetooth-headphone", name: "Lenovo In-Ear Metal Finish Bluetooth Headphone (Black)", price: 1700, category: "Accessories", image: "/images/products/lenovo-bluetooth-headphone.jpg" },
+  { slug: "consistent-h81-motherboard", name: "Consistent Desktop H81 Motherboard", price: 2500, category: "IT Hardware", image: "/images/products/consistent-h81-motherboard.jpg" },
+  { slug: "consistent-cmb-h61-motherboard", name: "Consistent DDR3 Motherboard CMB-H61", price: 1700, category: "IT Hardware", image: "/images/products/consistent-cmb-h61-motherboard.jpg" },
+  { slug: "motherboard-1155-ddr3", name: "Motherboard 1155-pin DDR3", price: 1690, category: "IT Hardware", image: "/images/products/motherboard-1155-ddr3.jpg" },
+  { slug: "consistent-cmb-g41-motherboard", name: "Consistent Motherboard CMB-G41 DDR3", price: 1850, category: "IT Hardware", image: "/images/products/consistent-cmb-g41-motherboard.jpg" }
+];
+
+// Real post titles from the old site's blog. Full post bodies not yet migrated,
+// these seed the page instead of launching it empty.
+const BLOG_POSTS = [
+  { slug: "video-door-phone-not-a-luxury", title: "Secure Your Home with a Smart Touch: Why a Video Door Phone Is No Longer a Luxury" },
+  { slug: "top-5-solar-myths", title: "Top 5 Myths About Solar Power, And the Truth Behind Them" },
+  { slug: "choosing-the-right-printer", title: "Choosing the Right Printer Made Simple, A Local Guide from Vel Systems, Chengalpattu" },
+  { slug: "best-solar-system-tamil-nadu", title: "How to Choose the Best Solar System for Your Home in Tamil Nadu" },
+  { slug: "power-up-your-tech-life", title: "Power Up Your Tech Life, at Vel Systems" },
+  { slug: "top-5-reasons-cctv-2025", title: "Top 5 Reasons to Install CCTV at Home in 2025" },
+  { slug: "why-switch-to-solar-now", title: "Top 5 Reasons Why Now's the Perfect Time to Switch to Solar Power for Your Home" }
 ];
 
 // Not fabricating client quotes. This stays empty/placeholder until real testimonials are collected.
@@ -106,7 +142,7 @@ const FAQ_KB = [
 const FAQ_FALLBACK = "Thanks for your question. For an exact answer, please message our team directly on WhatsApp, we reply fast and can quote accurately once we know your requirement.";
 
 module.exports = {
-  BRAND, waLink, NAV, UTILITY_NAV,
-  SECURITY_ITEMS, IT_ITEMS, AMC_PLANS, SHOP_PRODUCTS, TESTIMONIALS,
+  BRAND, LOCATIONS, waLink, NAV, UTILITY_NAV,
+  SECURITY_ITEMS, IT_ITEMS, AMC_PLANS, SHOP_PRODUCTS, BLOG_POSTS, TESTIMONIALS,
   FAQ_KB, FAQ_FALLBACK
 };
