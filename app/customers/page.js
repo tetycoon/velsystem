@@ -1,4 +1,4 @@
-import { TESTIMONIALS } from "../../data/content";
+import { TESTIMONIALS, CLIENT_LOGOS } from "../../data/content";
 import { TestimonialsSection } from "../../components/Sections";
 
 export const metadata = {
@@ -16,8 +16,19 @@ export default function CustomersPage() {
         </div>
       </section>
       <section className="container content-section">
+        <h2>Some of the Businesses We Work With</h2>
+        <div className="client-logo-grid">
+          {CLIENT_LOGOS.map(c => (
+            <div className="client-logo-tile" key={c.name}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={c.image} alt={c.name} loading="lazy" />
+              <span>{c.name}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+      <section className="container content-section">
         <TestimonialsSection list={TESTIMONIALS} />
-        <p className="placeholder-note">Client logos and case snapshots to be added once supplied.</p>
       </section>
     </>
   );

@@ -26,6 +26,16 @@ export default function SecurityDetailPage({ params }) {
       </section>
       <section className="container content-section detail-section">
         <p>{item.body}</p>
+        {item.subItems && item.subItems.length > 0 && (
+          <div className="sub-items-grid">
+            {item.subItems.map(sub => (
+              <div className="sub-item-card" key={sub.name}>
+                <h3>{sub.name}</h3>
+                <p>{sub.desc}</p>
+              </div>
+            ))}
+          </div>
+        )}
         <WhatsAppCta label={`Enquire About ${item.name}`} message={`Hi Vel Systems, I would like to enquire about ${item.name}.`} />
         <h3>Related</h3>
         <CategoryGrid items={related} basePath="/security-systems/" />

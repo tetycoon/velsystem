@@ -74,36 +74,144 @@ const UTILITY_NAV = [
 ];
 
 const SECURITY_ITEMS = [
-  { slug: "cctv-camera", name: "CCTV Camera", tagline: "Professional protection made simple.", body: "Round-the-clock surveillance for homes, shops, offices, and institutions. We handle site survey, camera placement, cabling, and setup so coverage actually matches how your space is used, not a generic layout." },
-  { slug: "door-access-control", name: "Door Access Control", tagline: "Manage and monitor who enters your space.", body: "Card, PIN, and biometric access control for single doors up to full multi-entry buildings. Useful for offices, schools, and warehouses that need a record of who came in and when." },
-  { slug: "biometric-system", name: "Biometric System", tagline: "Track employee in and out time accurately.", body: "Fingerprint and face-recognition attendance systems that remove buddy-punching and manual registers, with reports your HR team can actually use." },
-  { slug: "intercom", name: "Intercom", tagline: "Clear, real-time communication across your building.", body: "Wired and IP intercom systems connecting reception, security desks, and departments, suited to offices, apartments, and gated communities." },
-  { slug: "boom-barrier", name: "Boom Barrier", tagline: "Automated vehicle access control.", body: "Motorized boom barriers that raise and lower to control vehicle entry at gates, parking lots, and factory access points, with remote and card-based control options." },
-  { slug: "metal-detector-signal-jammer", name: "Metal Detector & Signal Jammer", tagline: "Screening and signal control for secure premises.", body: "Walk-through and handheld metal detectors for events and institutions, plus signal jammers where controlled communication zones are required." },
+  { slug: "cctv-camera", name: "CCTV Camera", tagline: "Professional protection made simple.", body: "Round-the-clock surveillance for homes, shops, offices, and institutions. We handle site survey, camera placement, cabling, and setup so coverage actually matches how your space is used, not a generic layout.", subItems: [
+      { name: 'Dome Cameras', desc: "Housed in sleek, dome-shaped enclosures, ideal for indoor settings. Easily adjustable and able to cover a wide area, with a design that makes it hard to tell which direction they're pointed." },
+      { name: 'Bullet Cameras', desc: 'Built for outdoor durability, delivering sharp, high-definition surveillance with clear, detailed footage and dependable performance.' },
+      { name: 'PTZ Cameras', desc: 'Pan, tilt, and zoom cameras offering full remote control, able to move in different directions and zoom in on specific areas for flexible, precise surveillance.' },
+      { name: 'IP Cameras', desc: 'High-definition surveillance with easy integration and remote access, advanced monitoring, real-time alerts, and hassle-free installation.' },
+      { name: 'Thermal Cameras', desc: 'Detect movement through heat, making them ideal for low-light or pitch-dark environments, especially outdoors.' },
+      { name: 'Wireless Cameras', desc: 'Connect seamlessly to a network and can be accessed remotely through a smartphone or computer, offering flexible monitoring.' },
+      { name: 'DVR/NVR Systems', desc: 'Record and store footage from multiple cameras, often with motion detection and remote access for added convenience.' }
+    ] },
+  { slug: "door-access-control", name: "Door Access Control", tagline: "Manage and monitor who enters your space.", body: "Card, PIN, and biometric access control for single doors up to full multi-entry buildings. Useful for offices, schools, and warehouses that need a record of who came in and when.", subItems: [
+      { name: 'eSSL', desc: 'Secure and efficient entry management using biometric, RFID, or keypad technologies, with customizable monitoring and access features.' },
+      { name: 'Hikvision', desc: 'Advanced technologies including biometric, RFID, and face recognition for secure entry management, with integration into broader security systems.' },
+      { name: 'Honeywell', desc: 'Secure, scalable solutions using card readers, biometrics, and keypads, with integrated management for access control and surveillance.' }
+    ] },
+  { slug: "biometric-system", name: "Biometric System", tagline: "Track employee in and out time accurately.", body: "Fingerprint and face-recognition attendance systems that remove buddy-punching and manual registers, with reports your HR team can actually use.", subItems: [
+      { name: 'eSSL', desc: 'Captures and processes physical traits into digital data for secure verification or identification, with strong security and performance monitoring.' },
+      { name: 'Hikvision', desc: 'Captures and processes biometric data for secure verification and identification, with a user interface and integration capabilities.' },
+      { name: 'Matrix', desc: 'Captures and processes biometric data for secure verification, stores it in a secure database, with strong security and system integration.' }
+    ] },
+  { slug: "intercom", name: "Intercom", tagline: "Clear, real-time communication across your building.", body: "Wired and IP intercom systems connecting reception, security desks, and departments, suited to offices, apartments, and gated communities.", subItems: [
+      { name: 'Crystal NEXA', desc: 'High-quality audio, seamless integration, and user-friendly controls, designed to enhance security and convenience.' },
+      { name: 'Matrix', desc: 'High-quality audio and a sleek, modern design for clear and secure communication, with advanced technology and integration.' },
+      { name: 'Panasonic', desc: 'High-quality audio and an intuitive interface for reliable communication, with a sleek design and user-friendly features.' }
+    ] },
+  { slug: "boom-barrier", name: "Boom Barrier", tagline: "Automated vehicle access control.", body: "Motorized boom barriers that raise and lower to control vehicle entry at gates, parking lots, and factory access points, with remote and card-based control options.", subItems: [
+      { name: 'BG-BDC-RL-100', desc: 'A noise-less boom barrier with a non-spring mechanism for smooth, quiet operation. Durable design with low maintenance.' },
+      { name: 'BG-108', desc: 'Reliable access control for wide entrances, with an 8-meter arm for high-traffic areas and smooth, adjustable operation.' },
+      { name: 'Hikvision DS-TMG4BO-RA (4M)', desc: 'A 4-megapixel surveillance camera offering crisp, detailed images and dependable performance across lighting conditions, commonly bundled with barrier installations.' }
+    ] },
+  { slug: "metal-detector-signal-jammer", name: "Metal Detector & Signal Jammer", tagline: "Screening and signal control for secure premises.", body: "Walk-through and handheld metal detectors for events and institutions, plus signal jammers where controlled communication zones are required.", subItems: [
+      { name: 'eSSL D1010S', desc: 'A precise metal detector with adjustable sensitivity, ergonomic design, and LED indicators for reliable security screening.' },
+      { name: 'Hikvision ISD-SMG1118L', desc: 'A high-performance handheld metal detector with adjustable sensitivity, ergonomic design, and LED indicators.' },
+      { name: 'eSSL D100S', desc: 'A high-sensitivity metal detector with adjustable settings, ergonomic handle, and LED indicators for accurate, comfortable use.' }
+    ] },
   { slug: "signal-booster", name: "Signal Booster", tagline: "Stronger mobile signal across your premises.", body: "Indoor signal boosters that fix dead zones in basements, large offices, and multi-floor buildings." },
-  { slug: "video-door-phone", name: "Video Door Phone", tagline: "See and speak to visitors before opening the door.", body: "Two-way video intercom units for homes and offices, with options for multi-unit apartment buildings." },
-  { slug: "cash-counting-machine", name: "Cash Counting Machine", tagline: "Accurate, fast banknote counting and sorting.", body: "Counting and fake-note detection machines built for retail counters, ideal for shops and businesses handling daily cash volumes." },
-  { slug: "fire-alarms", name: "Fire Alarms", tagline: "Early detection, timely evacuation.", body: "Smoke and heat detection systems designed and installed to relevant safety codes, covering offices, factories, and institutions." },
-  { slug: "safety-lockers", name: "Safety Lockers", tagline: "Secure storage for valuables and documents.", body: "Fire and tamper-resistant lockers sized for homes, offices, and bank-adjacent use cases." },
-  { slug: "gps-vehicle-tracker", name: "GPS Vehicle Tracker", tagline: "Real-time location tracking for fleets and vehicles.", body: "Live GPS tracking for personal vehicles and business fleets, with route history and geofencing for logistics use cases." },
-  { slug: "burglar-alarm-system", name: "Burglar Alarm System", tagline: "Detect unauthorized entry the moment it happens.", body: "Motion and entry sensors linked to a central alarm, sized for homes, shops, and warehouses." }
+  { slug: "video-door-phone", name: "Video Door Phone", tagline: "See and speak to visitors before opening the door.", body: "Two-way video intercom units for homes and offices, with options for multi-unit apartment buildings.", subItems: [
+      { name: 'Hikvision', desc: 'High-resolution cameras, two-way communication, and remote access, with motion detection and night vision.' },
+      { name: 'Honeywell', desc: 'High-definition video and clear audio for secure communication with visitors, with a user-friendly interface and remote access.' }
+    ] },
+  { slug: "cash-counting-machine", name: "Cash Counting Machine", tagline: "Accurate, fast banknote counting and sorting.", body: "Counting and fake-note detection machines built for retail counters, ideal for shops and businesses handling daily cash volumes.", subItems: [
+      { name: 'TVS', desc: 'Accurate counting, sorting, and verification of cash for high-volume transactions, with fast and reliable performance ideal for banks, retail, and offices.' }
+    ] },
+  { slug: "fire-alarms", name: "Fire Alarms", tagline: "Early detection, timely evacuation.", body: "Smoke and heat detection systems designed and installed to relevant safety codes, covering offices, factories, and institutions.", subItems: [
+      { name: 'Ravel', desc: 'Intelligent sensors, easy-to-use control panels, and seamless integration with existing safety systems for comprehensive fire protection.' },
+      { name: 'Honeywell', desc: 'Advanced, reliable fire detection and protection with cutting-edge technology, user-friendly interfaces, and seamless integration.' }
+    ] },
+  { slug: "safety-lockers", name: "Safety Lockers", tagline: "Secure storage for valuables and documents.", body: "Fire and tamper-resistant lockers sized for homes, offices, and bank-adjacent use cases.", subItems: [
+      { name: 'Godrej NX Pro 25L', desc: 'A 25-litre home safe with a digital keypad and motorized locking bolts, built with solid steel construction.' },
+      { name: 'Godrej 31 Defender Prime CL-C', desc: 'A high-security, 31-litre safe with advanced locking mechanisms and a fire-resistant design.' }
+    ] },
+  { slug: "gps-vehicle-tracker", name: "GPS Vehicle Tracker", tagline: "Real-time location tracking for fleets and vehicles.", body: "Live GPS tracking for personal vehicles and business fleets, with route history and geofencing for logistics use cases.", subItems: [
+      { name: 'AIS GPS Vehicle Tracker', desc: 'Real-time location tracking, geo-fencing, and vehicle diagnostics with mobile and web access, suited to personal, fleet, and commercial use.' },
+      { name: 'ATS GPS Tracker', desc: 'Fleet GPS tracking with real-time location insights, driver behaviour monitoring, route optimisation, geofencing, and comprehensive reporting.' }
+    ] },
+  { slug: "burglar-alarm-system", name: "Burglar Alarm System", tagline: "Detect unauthorized entry the moment it happens.", body: "Motion and entry sensors linked to a central alarm, sized for homes, shops, and warehouses.", subItems: [
+      { name: 'Honeywell', desc: 'Motion detection and real-time alerts for comprehensive protection of homes and businesses.' },
+      { name: 'Godrej', desc: 'A control panel, entry sensors, an audible alarm, keypad or remote control, real-time alert connectivity, and battery backup.' }
+    ] }
 ];
 
 const IT_ITEMS = [
-  { slug: "desktop", name: "Desktop", tagline: "Reliable computer sales and service.", body: "New and refurbished desktop systems for office and home use, with on-site service backing every sale." },
-  { slug: "laptop", name: "Laptop", tagline: "Fast, reliable laptop sales and service.", body: "A range of laptops across budgets, from everyday office use to performance machines, with warranty support handled locally." },
-  { slug: "printer", name: "Printer", tagline: "Economical control over your printing budget.", body: "Printer sales, consumables, and service contracts that keep per-page costs predictable instead of surprising you at reorder time." },
-  { slug: "tablet", name: "Tablet", tagline: "Compact, portable devices for work on the move.", body: "Tablets for field staff, reception counters, and point-of-sale use, matched to the job rather than sold as one-size-fits-all." },
+  { slug: "desktop", name: "Desktop", tagline: "Reliable computer sales and service.", body: "New and refurbished desktop systems for office and home use, with on-site service backing every sale.", subItems: [
+      { name: 'Tower Desktops', desc: 'Traditional desktop computers in a tower case, easy to upgrade with room for multiple hard drives and components.' },
+      { name: 'Workstation', desc: 'Specialized desktops for professionals running demanding applications like video editing or 3D modelling.' },
+      { name: 'All-in-One Desktops', desc: 'Combine the monitor and CPU into one compact unit, easier to set up but less upgradeable than tower desktops.' },
+      { name: 'Gaming Desktops', desc: 'High-performance desktops with powerful graphics cards and components built for demanding games.' },
+      { name: 'Consumer Desktop', desc: 'Powerful performance in a sleek, user-friendly design for everyday productivity and entertainment.' }
+    ] },
+  { slug: "laptop", name: "Laptop", tagline: "Fast, reliable laptop sales and service.", body: "A range of laptops across budgets, from everyday office use to performance machines, with warranty support handled locally.", subItems: [
+      { name: 'Business Laptops', desc: 'Built for durability, security, and productivity in business use.' },
+      { name: 'Gaming Laptops', desc: 'Powerful CPUs, graphics cards, and large memory/storage for gaming.' },
+      { name: '2-in-1 Laptops', desc: 'Lightweight, slim, and portable with long battery life.' },
+      { name: 'Chromebooks', desc: "Run Google's Chrome OS, designed for web-based tasks with minimal storage." },
+      { name: 'Ultrabooks', desc: 'Lightweight, slim, and portable with long battery life.' },
+      { name: 'MacBooks', desc: 'Designed and manufactured by Apple, running macOS.' }
+    ] },
+  { slug: "printer", name: "Printer", tagline: "Economical control over your printing budget.", body: "Printer sales, consumables, and service contracts that keep per-page costs predictable instead of surprising you at reorder time.", subItems: [
+      { name: 'Inkjet Printers', desc: 'High-quality, fast printing with wireless connectivity, automatic duplexing, and a compact, energy-efficient design.' },
+      { name: 'Laser Printers', desc: 'Use toner cartridges and a laser for high-quality prints at fast speeds.' },
+      { name: 'Thermal Printers', desc: 'Use heat to transfer images onto special paper, ideal for receipts and small documents.' },
+      { name: 'Dot Matrix Printers', desc: 'A print head strikes an ink ribbon to produce text and images, commonly used for invoices and multi-part documents.' },
+      { name: 'Barcode Printer', desc: 'High-speed label and barcode printing for retail and inventory management.' },
+      { name: 'Ink Tank Printers', desc: 'Refillable ink tank systems built for high-quality, cost-effective printing across a variety of paper sizes.' }
+    ] },
+  { slug: "tablet", name: "Tablet", tagline: "Compact, portable devices for work on the move.", body: "Tablets for field staff, reception counters, and point-of-sale use, matched to the job rather than sold as one-size-fits-all.", subItems: [
+      { name: 'Lenovo', desc: 'A range of models from budget-friendly to high-performance, with versatile displays, detachable keyboards, and Android or Windows integration.' },
+      { name: 'Acer', desc: 'Acer tablets balancing everyday productivity and entertainment use, with build quality backed by local service support.' }
+    ] },
   { slug: "software", name: "Software", tagline: "Protecting your data and your working environment.", body: "Genuine OS, productivity, and antivirus software licensing, with setup support so it's actually configured correctly on day one." },
-  { slug: "mobile-accessories", name: "Mobile Accessories", tagline: "Accessories that extend what your devices can do.", body: "Chargers, cases, and peripherals sourced for reliability, not just shelf price." },
+  { slug: "mobile-accessories", name: "Mobile Accessories", tagline: "Accessories that extend what your devices can do.", body: "Chargers, cases, and peripherals sourced for reliability, not just shelf price.", subItems: [
+      { name: 'Powerbank', desc: 'High-capacity, fast, reliable charging for multiple devices on the go, sleek and portable.' },
+      { name: 'Pendrive', desc: 'High-performance pen drives with extensive storage and rapid transfer rates for everyday use or backups.' },
+      { name: 'USB Cables', desc: 'Fast, reliable, durable cables for charging and syncing devices.' },
+      { name: 'Headphone', desc: 'Premium sound with crisp highs and deep bass, plush comfort, and noise isolation.' },
+      { name: 'Data Cable', desc: 'Portronics data cables for reliable, high-speed charging and syncing across smartphones, tablets, and other gadgets.' }
+    ] },
   { slug: "server-workstation", name: "Server & Workstation", tagline: "Power and reliability for demanding workloads.", body: "Server and workstation builds sized to actual load, from a small office file server to multi-user business applications." },
-  { slug: "network-hardware-solution", name: "Networking", tagline: "Industrial-grade network solutions.", body: "Switches, routers, structured cabling, and network design for offices and industrial sites that need uptime, not guesswork." },
-  { slug: "online-offline-ups", name: "Online & Offline UPS", tagline: "Keep operations running through power cuts.", body: "UPS systems sized to your load, protecting servers, workstations, and critical equipment from outages and voltage spikes." },
-  { slug: "firewall-security-system", name: "Firewall", tagline: "Professional protection made simple for your network.", body: "Firewall appliances and configuration for businesses that need real network security, not just a default router setting." },
-  { slug: "it-peripherals", name: "IT Peripherals", tagline: "Peripherals that expand what your setup can do.", body: "Keyboards, mice, docking stations, monitors, and other peripherals for office and home office setups." },
+  { slug: "network-hardware-solution", name: "Networking", tagline: "Industrial-grade network solutions.", body: "Switches, routers, structured cabling, and network design for offices and industrial sites that need uptime, not guesswork.", subItems: [
+      { name: 'Routers', desc: 'Connect multiple networks together and direct traffic between them, allowing multiple devices to share one internet connection.' },
+      { name: 'Switches', desc: 'Connect multiple devices within a network for faster, more efficient communication than hubs.' },
+      { name: 'Hubs', desc: 'Connect multiple devices within a network, less efficient than switches, generally used in smaller networks.' },
+      { name: 'Network Interface Cards (NICs)', desc: 'Hardware components that give devices a physical interface to connect to a network.' },
+      { name: 'Cables', desc: 'Ethernet cables providing the physical connection for data transfer between devices.' },
+      { name: 'Modems', desc: 'Connect a network to the internet, transferring data through a broadband connection.' }
+    ] },
+  { slug: "online-offline-ups", name: "Online & Offline UPS", tagline: "Keep operations running through power cuts.", body: "UPS systems sized to your load, protecting servers, workstations, and critical equipment from outages and voltage spikes.", subItems: [
+      { name: 'APC', desc: 'Dependable backup power and superior surge protection during outages and disruptions.' },
+      { name: 'Fingers', desc: 'Dependable backup power and surge protection, keeping devices running safely during outages.' },
+      { name: 'Luminous', desc: 'Continuous power with reliable backup and robust surge protection during outages and fluctuations.' }
+    ] },
+  { slug: "firewall-security-system", name: "Firewall", tagline: "Professional protection made simple for your network.", body: "Firewall appliances and configuration for businesses that need real network security, not just a default router setting.", subItems: [
+      { name: 'SonicWall', desc: 'Intrusion prevention, malware protection, and secure remote access to safeguard businesses against cyber threats.' },
+      { name: 'Sophos', desc: 'Advanced threat protection, centralized management, and detailed reporting for comprehensive security needs.' },
+      { name: 'Cisco', desc: "Advanced threat defense, high performance, deep packet inspection, VPN support, and scalable management through Cisco's security ecosystem." }
+    ] },
+  { slug: "it-peripherals", name: "IT Peripherals", tagline: "Peripherals that expand what your setup can do.", body: "Keyboards, mice, docking stations, monitors, and other peripherals for office and home office setups.", subItems: [
+      { name: 'Laptop', desc: 'Portable personal computers integrating a screen, keyboard, and processing components for computing on the go.' },
+      { name: 'Monitor', desc: 'Display devices presenting visual output, the main interface for viewing and managing applications and media.' },
+      { name: 'Mice', desc: 'Wired or wireless input devices with various designs and sensors for precise control and comfort.' },
+      { name: 'Keyboard', desc: 'Input devices across layouts and switch types, from basic to advanced models with backlighting and programmable keys.' },
+      { name: 'RAM', desc: 'Fast, temporary storage for active data and applications, enabling quick access and smooth multitasking.' },
+      { name: 'Motherboard', desc: 'The central circuit board connecting the CPU, RAM, and other components, managing data flow across the system.' }
+    ] },
   { slug: "wifi-access-point", name: "WiFi Access Point", tagline: "Reliable wireless coverage, properly planned.", body: "Access point placement and setup for offices and campuses that need consistent WiFi coverage across every room, not just near the router." },
-  { slug: "photocopier", name: "Photocopier", tagline: "Built for bulk printing and copying.", body: "Photocopiers and MFDs suited to high-volume offices, with service contracts to match." },
-  { slug: "data-storage", name: "Data Storage", tagline: "Fast, reliable storage for your business data.", body: "NAS and storage solutions sized for backup, file sharing, and growing data needs." },
+  { slug: "photocopier", name: "Photocopier", tagline: "Built for bulk printing and copying.", body: "Photocopiers and MFDs suited to high-volume offices, with service contracts to match.", subItems: [
+      { name: 'Analog Photocopiers', desc: 'Use a light source to transfer an image onto a photosensitive drum, coated with toner and fused onto paper.' },
+      { name: 'Digital Photocopiers', desc: 'Use a digital scanner to capture the image, then print it using toner or ink.' },
+      { name: 'Multifunctional Photocopiers', desc: 'Combine photocopier, scanner, printer, and sometimes fax functions into one device.' },
+      { name: 'Networked Photocopiers', desc: 'Connected to a network, allowing multiple users to print or copy from the same machine.' },
+      { name: 'Color Photocopiers', desc: 'Produce color copies, often used for marketing materials and documents requiring color.' },
+      { name: 'Portable Photocopiers', desc: 'Small, lightweight, and easy to transport for use on the go.' }
+    ] },
+  { slug: "data-storage", name: "Data Storage", tagline: "Fast, reliable storage for your business data.", body: "NAS and storage solutions sized for backup, file sharing, and growing data needs.", subItems: [
+      { name: 'HDD Storage', desc: 'Uses magnetic fields to store data on a hard disk drive or magnetic tape.' },
+      { name: 'Solid State Storage', desc: 'Uses flash memory technology on SSDs and USB flash drives.' },
+      { name: 'Cloud Storage', desc: 'Stores and accesses data over the internet through a third-party service provider.' },
+      { name: 'Network-Attached Storage (NAS)', desc: 'File-level storage that lets multiple users and devices access data over a local area network.' }
+    ] },
   { slug: "data-recovery-2", name: "Data Recovery", tagline: "Seamless recovery when data goes missing.", body: "Recovery services for failed drives and accidental deletion, handled with the care that critical business data needs." },
   { slug: "projector", name: "Projector", tagline: "Clear projection for meetings and classrooms.", body: "Projectors for boardrooms, classrooms, and events, matched to room size and lighting conditions." }
 ];
@@ -216,8 +324,26 @@ const FAQ_KB = [
 ];
 const FAQ_FALLBACK = "Thanks for your question. For an exact answer, please message our team directly on WhatsApp, we reply fast and can quote accurately once we know your requirement.";
 
+// Real client logos, pulled from the old site's Customers page image gallery.
+// No alt text existed on the old images, names below identified visually from the logos themselves.
+const CLIENT_LOGOS = [
+  { name: "Cryolor", image: "/images/clients/cryolor.jpg" },
+  { name: "Bay-Forge Limited", image: "/images/clients/bay-forge.jpg" },
+  { name: "Pearl Global", image: "/images/clients/pearl-global.jpg" },
+  { name: "Jayitri Garden City", image: "/images/clients/jayitri-garden-city.jpg" },
+  { name: "Pinak Group", image: "/images/clients/pinak-group.jpg" },
+  { name: "Teyro Labs Private Ltd", image: "/images/clients/teyro-labs.jpg" },
+  { name: "Green Trends", image: "/images/clients/green-trends.jpg" },
+  { name: "Triton Healthcare Pvt Ltd", image: "/images/clients/triton-healthcare.jpg" },
+  { name: "Jamna Auto Industries Ltd", image: "/images/clients/jamna-auto.jpg" },
+  { name: "TVS", image: "/images/clients/tvs.jpg" },
+  { name: "Vimal Enterprises", image: "/images/clients/vimal-enterprises.jpg" },
+  { name: "Naturals Unisex Salon & Spa", image: "/images/clients/naturals-salon.jpg" },
+  { name: "Zee", image: "/images/clients/zee.jpg" }
+];
+
 module.exports = {
-  BRAND, LOCATIONS, TEAM_CONTACTS, HOME_QUOTES, SOLAR_TYPES, SOLAR_FINANCE, SOLAR_FAQ, TRUSTED_BY, waLink, NAV, UTILITY_NAV,
+  BRAND, LOCATIONS, TEAM_CONTACTS, HOME_QUOTES, SOLAR_TYPES, SOLAR_FINANCE, SOLAR_FAQ, TRUSTED_BY, CLIENT_LOGOS, waLink, NAV, UTILITY_NAV,
   SECURITY_ITEMS, IT_ITEMS, AMC_PLANS, SHOP_PRODUCTS, BLOG_POSTS, TESTIMONIALS,
   FAQ_KB, FAQ_FALLBACK
 };
