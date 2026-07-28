@@ -164,3 +164,14 @@ li { list-style: none; }
 @media (max-width: 900px) {
   .blog-list { grid-template-columns: 1fr; }
 }
+
+/* Real homepage quotes + team contacts — merged from old site content */
+.home-quote-strip { background: var(--light); padding: 32px 0; margin: 10px 0; }
+.quote-strip-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.quote-strip-inner blockquote { margin: 0; font-size: 16px; font-style: italic; color: var(--navy); border-left: 3px solid var(--orange); padding-left: 16px; }
+.team-contacts { margin-top: 18px; border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+.team-contacts h3 { font-size: 15px; margin-bottom: 8px; color: var(--navy); }
+.team-contacts li { font-size: 13px; padding: 3px 0; color: var(--grey); }
+@media (max-width: 900px) {
+  .quote-strip-inner { grid-template-columns: 1fr; }
+}

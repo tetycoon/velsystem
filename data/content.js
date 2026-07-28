@@ -6,7 +6,7 @@ const BRAND = {
   phone: "(+91) 98651 99933",
   whatsappNumber: "919865199933",
   email: "sales@velsystems.in",
-  address: "No.7, Varadhanar Street, Vedhachala Nagar, Chengalpattu, Tamil Nadu 603001",
+  address: "7A, Varadhanar Street, Vedachalam Nagar, Chengalpattu – 603001, Tamil Nadu",
   instagram: "https://www.instagram.com/velsystems.in/",
   facebook: "https://www.facebook.com/VELSYSTEMSCPT",
   youtube: "https://www.youtube.com/@VelSystems",
@@ -19,7 +19,7 @@ const BRAND = {
 const LOCATIONS = [
   {
     name: "Vel Systems (Corporate Office)",
-    address: "No.7, Varadhanar Street, Vedhachala Nagar, Chengalpattu, Tamil Nadu 603001",
+    address: "7A, Varadhanar Street, Vedachalam Nagar, Chengalpattu – 603001, Tamil Nadu",
     email: "sales@velsystems.in",
     phone: "(+91) 98651 99933"
   },
@@ -36,6 +36,21 @@ const LOCATIONS = [
     phone: "(+91) 98945 09664"
   }
 ];
+
+// Direct team contacts, listed in the old site's footer on every page.
+const TEAM_CONTACTS = [
+  { role: "Manager", name: "", phone: "89254 49972", email: "manager@velsystems.in" },
+  { role: "Accountant", name: "", phone: "98651 80102", email: "accounts@velsystems.in" },
+  { role: "General Manager", name: "", phone: "98651 80300", email: "gm@velsystems.in" },
+  { role: "Murali", name: "", phone: "98651 80104", email: "murali@velsystems.in" }
+];
+
+// Real quotes pulled verbatim from the old homepage's rotating banner.
+const HOME_QUOTES = {
+  solarBlurb: "We provide end-to-end solar energy solutions that are intelligently tailored to the specific needs of homeowners, business owners, and industrial operators. Our systems are designed to be clean, efficient, and scalable, empowering you with future-ready energy that delivers long-term value.",
+  serviceQuote: "Our job doesn't end when you buy, it begins. With Vel Systems, you get support that stays, long after the sale.",
+  scaleQuote: "20,000 customers and 500+ corporate partners choose Vel Systems, because results matter."
+};
 
 function waLink(message) {
   return `https://wa.me/${BRAND.whatsappNumber}?text=${encodeURIComponent(message)}`;
@@ -142,7 +157,7 @@ const FAQ_KB = [
 const FAQ_FALLBACK = "Thanks for your question. For an exact answer, please message our team directly on WhatsApp, we reply fast and can quote accurately once we know your requirement.";
 
 module.exports = {
-  BRAND, LOCATIONS, waLink, NAV, UTILITY_NAV,
+  BRAND, LOCATIONS, TEAM_CONTACTS, HOME_QUOTES, waLink, NAV, UTILITY_NAV,
   SECURITY_ITEMS, IT_ITEMS, AMC_PLANS, SHOP_PRODUCTS, BLOG_POSTS, TESTIMONIALS,
   FAQ_KB, FAQ_FALLBACK
 };

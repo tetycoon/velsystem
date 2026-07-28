@@ -1,4 +1,4 @@
-import { BRAND, LOCATIONS } from "../../data/content";
+import { BRAND, LOCATIONS, TEAM_CONTACTS } from "../../data/content";
 import { WhatsAppCta } from "../../components/Sections";
 import EnquiryForm from "../../components/EnquiryForm";
 
@@ -20,6 +20,14 @@ export default function ContactPage() {
                 <p><strong>Email:</strong> {loc.email}</p>
               </div>
             ))}
+          </div>
+          <div className="team-contacts">
+            <h3>Direct Team Contacts</h3>
+            <ul>
+              {TEAM_CONTACTS.map(t => (
+                <li key={t.role}><strong>{t.role}:</strong> {t.phone} &middot; {t.email}</li>
+              ))}
+            </ul>
           </div>
         </div>
         <EnquiryForm />

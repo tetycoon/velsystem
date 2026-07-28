@@ -1,4 +1,4 @@
-import { TESTIMONIALS } from "../data/content";
+import { TESTIMONIALS, HOME_QUOTES } from "../data/content";
 import { WhatsAppCta, TrustBar, AudienceSwitch, PillarGrid, TestimonialsSection, InstagramSection, GovernmentStrip } from "../components/Sections";
 
 export const metadata = {
@@ -13,12 +13,18 @@ export default function HomePage() {
         <div className="container hero-inner">
           <span className="eyebrow">25+ Years of Experience</span>
           <h1>Solar Power, Backed by 25 Years of Trust</h1>
-          <p>End-to-end solar energy solutions for homes, businesses, and industrial sites, from the same team that has kept Chengalpattu running on reliable tech and security since 2002.</p>
+          <p>{HOME_QUOTES.solarBlurb}</p>
           <WhatsAppCta label="Get a Free Solar Quote on WhatsApp" message="Hi Vel Systems, I'm interested in a solar quote for my property." extraClass="hero-cta" />
           <p className="hero-note">Placeholder hero image slot — replace with a real installed solar project photo.</p>
         </div>
       </section>
       <TrustBar />
+      <section className="home-quote-strip">
+        <div className="container quote-strip-inner">
+          <blockquote>&ldquo;{HOME_QUOTES.serviceQuote}&rdquo;</blockquote>
+          <blockquote>&ldquo;{HOME_QUOTES.scaleQuote}&rdquo;</blockquote>
+        </div>
+      </section>
       <AudienceSwitch />
       <PillarGrid />
       <TestimonialsSection list={TESTIMONIALS} />
