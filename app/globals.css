@@ -28,8 +28,8 @@ li { list-style: none; }
 .social-links a { color: #fff; margin-left: 14px; opacity: .85; }
 .social-links a:hover { opacity: 1; }
 .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; position: relative; }
-.logo { display: flex; flex-direction: column; font-size: 22px; font-weight: 800; color: var(--navy); }
-.logo-sub { font-size: 11px; font-weight: 400; color: var(--grey); }
+.logo { display: flex; align-items: center; }
+.logo-img { height: 54px; width: auto; display: block; }
 .nav-toggle { display: none; background: none; border: none; font-size: 26px; cursor: pointer; }
 .main-nav { display: flex; align-items: center; gap: 18px; }
 .nav-main { display: flex; gap: 16px; }

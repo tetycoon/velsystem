@@ -37,8 +37,7 @@ export default function Header() {
       </div>
       <div className="container header-inner">
         <Link href="/" className="logo">
-          {BRAND.name}
-          <span className="logo-sub">Comprehensive tech &amp; security solutions</span>
+          <img src="/images/vel-systems-logo.png" alt="Vel Systems - Sales, Service, Accessories" className="logo-img" />
         </Link>
         <button className="nav-toggle" aria-label="Menu" onClick={() => setOpen(!open)}>&#9776;</button>
         <nav className={`main-nav${open ? " open" : ""}`}>
