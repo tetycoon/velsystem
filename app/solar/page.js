@@ -1,3 +1,4 @@
+import { SOLAR_TYPES, SOLAR_FINANCE, SOLAR_FAQ, TRUSTED_BY, TESTIMONIALS, HOME_QUOTES } from "../../data/content";
 import { WhatsAppCta, GovernmentStrip } from "../../components/Sections";
 
 export const metadata = {
@@ -6,24 +7,107 @@ export const metadata = {
 };
 
 export default function SolarPage() {
+  const testimonial = TESTIMONIALS[0];
   return (
     <>
       <section className="page-hero">
         <div className="container">
-          <h1>Solar Expertise</h1>
-          <p>We design and install solar energy systems tailored to homeowners, business owners, and industrial operators, clean, efficient, and built for long-term value.</p>
+          <h1>Power Your Future with Smart Solar Solutions</h1>
+          <p>{HOME_QUOTES.solarBlurb}</p>
           <WhatsAppCta label="Get a Free Solar Quote on WhatsApp" message="Hi Vel Systems, I'm interested in a solar quote for my property." />
         </div>
       </section>
+
+      <section className="container content-section">
+        <h2>Our Customized Solutions</h2>
+        <div className="solar-types-grid">
+          {SOLAR_TYPES.map(t => (
+            <div className="solar-type-card" key={t.name}>
+              <h3>{t.name}</h3>
+              <p>{t.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section className="container content-section">
         <h2>Why Solar With Vel Systems</h2>
         <ul className="check-list">
-          <li>25+ years of technical service experience in Chengalpattu and surrounding areas.</li>
-          <li>End-to-end handling: site assessment, design, installation, and after-sale support.</li>
-          <li>Scalable systems for homes, shops, offices, and industrial rooftops.</li>
+          <li>Residential &amp; commercial solar panel installation</li>
+          <li>On-grid, off-grid &amp; hybrid systems</li>
+          <li>High-quality solar inverters &amp; batteries</li>
+          <li>Expert guidance, hassle-free setup, and AMC support</li>
         </ul>
-        <p className="placeholder-note">Package tiers and installed project photos to be added once first solar projects/photos are supplied.</p>
+        <p>We use trusted brands and the latest technology to ensure maximum output and long-term reliability. From planning to installation and after-sales service, we provide end-to-end solar solutions.</p>
       </section>
+
+      <section className="container content-section solar-finance">
+        <h2>Subsidy + EMI = Hassle-Free Solar for All</h2>
+        <div className="finance-grid">
+          <div>
+            <h3>Finance</h3>
+            <p>Interest: {SOLAR_FINANCE.overview.interest}</p>
+            <p>Loan Tenure: {SOLAR_FINANCE.overview.tenure}</p>
+            <p>Loan Amount: {SOLAR_FINANCE.overview.amount}</p>
+            <p>Finance By: {SOLAR_FINANCE.overview.financeBy}</p>
+          </div>
+          <div>
+            <h3>Loan Types &amp; Interest Rates</h3>
+            {SOLAR_FINANCE.loanTypes.map(l => (
+              <p key={l.name}><strong>{l.name}:</strong> {l.rate}</p>
+            ))}
+          </div>
+          <div>
+            <h3>Subsidy for Residential Households</h3>
+            {SOLAR_FINANCE.residentialSubsidy.map(line => <p key={line}>{line}</p>)}
+          </div>
+          <div>
+            <h3>Subsidy for GHS / RWA Households</h3>
+            <p>{SOLAR_FINANCE.ghsSubsidy}</p>
+          </div>
+        </div>
+        <p className="placeholder-note">Financing partners and rates change. Reconfirm these figures with Vel Systems before publishing to a live audience.</p>
+      </section>
+
+      {testimonial && (
+        <section className="container content-section">
+          <div className="testimonial-card solar-testimonial">
+            <p>&ldquo;{testimonial.quote}&rdquo;</p>
+            <strong>{testimonial.name}</strong>
+            <span>{testimonial.company}</span>
+          </div>
+        </section>
+      )}
+
+      <section className="gov-strip">
+        <div className="container gov-strip-inner">
+          <div>
+            <h2>Let the Sun Pay Your Bills</h2>
+            <p>Cut down electricity expenses with our end-to-end solar installation services, backed by 25+ years of trust and 20,000+ happy clients.</p>
+          </div>
+          <WhatsAppCta label="Talk to Our Solar Experts Today" message="Hi Vel Systems, I'd like to talk to your solar experts." extraClass="gov-cta" />
+        </div>
+      </section>
+
+      <section className="container content-section">
+        <h2>Solar FAQ</h2>
+        <div className="faq-list">
+          {SOLAR_FAQ.map((f, i) => (
+            <details className="faq-item" key={i}>
+              <summary>{i + 1}. {f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <section className="container content-section">
+        <h2>Trusted By</h2>
+        <div className="trusted-by-list">
+          {TRUSTED_BY.map(name => <span className="trusted-by-item" key={name}>{name}</span>)}
+        </div>
+      </section>
+
       <GovernmentStrip />
     </>
   );

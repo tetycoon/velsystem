@@ -143,8 +143,68 @@ const BLOG_POSTS = [
   { slug: "why-switch-to-solar-now", title: "Top 5 Reasons Why Now's the Perfect Time to Switch to Solar Power for Your Home" }
 ];
 
-// Not fabricating client quotes. This stays empty/placeholder until real testimonials are collected.
-const TESTIMONIALS = [];
+// The 5 solar categories shown on the old site's power-solutions page.
+const SOLAR_TYPES = [
+  { name: "Residential Solar", desc: "Rooftop systems sized for homes." },
+  { name: "Commercial Solar", desc: "Systems for shops, offices, and business premises." },
+  { name: "Industrial Solar", desc: "Larger installations for factories and industrial rooftops." },
+  { name: "Solar Plant", desc: "Ground-mounted plants for bigger capacity needs." },
+  { name: "Floating Solar", desc: "Panels installed over water bodies where land is limited." }
+];
+
+// Real financing and subsidy figures from the old site. Rates change, so these should be
+// reconfirmed with Vel Systems before every relaunch, not treated as permanently accurate.
+const SOLAR_FINANCE = {
+  overview: {
+    interest: "6.5% onwards",
+    tenure: "1 to 10 years",
+    amount: "₹1 Lakh to ₹10 Crores",
+    financeBy: "All Nationalised Banks, Private Banks, NBFC"
+  },
+  loanTypes: [
+    { name: "Residential Solar Loan", rate: "6.50% onwards" },
+    { name: "Commercial / Industrial Solar Loan", rate: "7.99% onwards" },
+    { name: "Housing Society Solar Loan", rate: "8.99% onwards" }
+  ],
+  residentialSubsidy: [
+    "₹30,000 per kW (up to 2 kW)",
+    "₹18,000 per kW (for additional capacity up to 3 kW)",
+    "₹78,000 total subsidy (capped for systems larger than 3 kW)"
+  ],
+  ghsSubsidy: "₹18,000 per kW for common facilities including EV charging, up to 500 kW capacity at 3 kW per house. This upper limit excludes individual rooftop plants installed by residents in the GHS/RWA."
+};
+
+// Real FAQ, pulled verbatim (question and answer) from the old site's Solar page.
+const SOLAR_FAQ = [
+  { q: "What are the benefits of installing solar panels at home?", a: "Installing residential solar panels helps you reduce electricity bills, increase property value, and lower your carbon footprint. You can also take advantage of government subsidies and enjoy long-term energy savings." },
+  { q: "How do solar panels work?", a: "Solar panels convert sunlight into electricity using photovoltaic (PV) cells. This electricity powers your home or industrial equipment, and any excess can be stored or fed back into the grid, depending on your system." },
+  { q: "How long do solar panels last?", a: "Most solar panels last 25 to 30 years with minimal maintenance. Vel Systems provides high-quality panels with warranties and expert support to ensure long-term performance." },
+  { q: "Is solar energy suitable for industrial use?", a: "Absolutely. We offer industrial solar panel solutions that help reduce operational costs and provide a reliable power supply for factories, warehouses, and plants." },
+  { q: "Can I get a subsidy or financial support for solar installation?", a: "Yes, residential customers in India are eligible for government subsidies on solar panel systems. Vel Systems assists you in availing these benefits and provides complete guidance on the paperwork." },
+  { q: "How much roof space is needed for a solar installation?", a: "On average, a 1 kW solar system requires about 100 square feet of shadow-free rooftop area. We'll conduct a site assessment to determine the best setup for your space and needs." },
+  { q: "How long does the installation take?", a: "Installation usually takes 2 to 5 days for homes and up to a few weeks for larger industrial projects, depending on the complexity. Our team ensures a smooth and timely process." },
+  { q: "Will solar panels work during cloudy days or at night?", a: "Solar panels generate less power on cloudy days and none at night. However, with battery storage or a grid-tied system, your power supply remains uninterrupted." },
+  { q: "Does Vel Systems provide maintenance and after-sales support?", a: "Yes. We offer ongoing maintenance, performance checks, and customer support to keep your system running at its best." }
+];
+
+// Client names shown in the old site's trust strip. Logos themselves weren't recoverable
+// (no alt text on the old site's images), so these are text-only for now.
+const TRUSTED_BY = [
+  "Primary Agricultural Cooperative Credit Society",
+  "Cryolor",
+  "Nippon Steel",
+  "Jamna Auto Inc"
+];
+
+// Not fabricating client quotes. Real ones only — this one is pulled verbatim from the
+// old site's Solar page. Still nothing on the dedicated Customers page itself.
+const TESTIMONIALS = [
+  {
+    quote: "I've known Vel Systems for the past 25 years and have purchased four laptops, batteries, and CCTV systems from them. I've always been satisfied with their service. Recently, they recommended solar to help reduce my electricity bills. Once approvals were granted, they took full responsibility for the solar installation, including arranging a loan through Canara Bank and securing the government subsidy. I didn't have to worry about anything, they handled all the paperwork efficiently. Their end-to-end service and after-sales support are commendable. I'm completely happy and have already referred them to my friends. Vel Systems is a trusted one-stop solution for all tech and energy needs.",
+    name: "Umesh",
+    company: "Residential Solar Customer"
+  }
+];
 
 const FAQ_KB = [
   { keywords: ["solar", "panel", "electricity", "bill"], answer: "We design and install end-to-end solar systems for homes, businesses, and industrial sites. Share your monthly electricity bill or rooftop size on WhatsApp and we'll give you a free estimate." },
@@ -157,7 +217,7 @@ const FAQ_KB = [
 const FAQ_FALLBACK = "Thanks for your question. For an exact answer, please message our team directly on WhatsApp, we reply fast and can quote accurately once we know your requirement.";
 
 module.exports = {
-  BRAND, LOCATIONS, TEAM_CONTACTS, HOME_QUOTES, waLink, NAV, UTILITY_NAV,
+  BRAND, LOCATIONS, TEAM_CONTACTS, HOME_QUOTES, SOLAR_TYPES, SOLAR_FINANCE, SOLAR_FAQ, TRUSTED_BY, waLink, NAV, UTILITY_NAV,
   SECURITY_ITEMS, IT_ITEMS, AMC_PLANS, SHOP_PRODUCTS, BLOG_POSTS, TESTIMONIALS,
   FAQ_KB, FAQ_FALLBACK
 };

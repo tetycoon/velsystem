@@ -175,3 +175,28 @@ li { list-style: none; }
 @media (max-width: 900px) {
   .quote-strip-inner { grid-template-columns: 1fr; }
 }
+
+/* Solar page real content — types grid, finance/subsidy, FAQ, trusted-by */
+.solar-types-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 16px; }
+.solar-type-card { border: 1px solid var(--border); border-radius: 8px; padding: 14px; text-align: center; }
+.solar-type-card h3 { font-size: 14px; margin-bottom: 6px; color: var(--navy); }
+.solar-type-card p { font-size: 12px; color: var(--grey); margin: 0; }
+.finance-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 16px; }
+.finance-grid > div { background: var(--light); border-radius: 8px; padding: 16px; }
+.finance-grid h3 { font-size: 15px; margin-bottom: 8px; color: var(--navy); }
+.finance-grid p { font-size: 13px; margin-bottom: 4px; color: var(--grey); }
+.solar-testimonial { max-width: 720px; margin: 0 auto; text-align: center; }
+.faq-list { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.faq-item { border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.faq-item summary { cursor: pointer; font-weight: 600; color: var(--navy); }
+.faq-item p { margin-top: 10px; font-size: 14px; color: var(--grey); }
+.trusted-by-list { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
+.trusted-by-item { background: var(--light); border-radius: 20px; padding: 8px 16px; font-size: 13px; font-weight: 600; color: var(--navy); }
+@media (max-width: 900px) {
+  .solar-types-grid { grid-template-columns: repeat(2, 1fr); }
+  .finance-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .solar-types-grid { grid-template-columns: 1fr; }
+  .finance-grid { grid-template-columns: 1fr; }
+}
