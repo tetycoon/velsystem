@@ -38,8 +38,9 @@ li { list-style: none; }
 .nav-item > a.active { color: var(--orange); }
 .nav-item .dropdown { display: none; position: absolute; top: 100%; left: 0; background: #fff; border: 1px solid var(--border); border-radius: 6px; min-width: 220px; padding: 8px 0; box-shadow: 0 8px 20px rgba(0,0,0,.08); z-index: 20; }
 .nav-item.has-dropdown:hover .dropdown { display: block; }
-.dropdown a { display: block; padding: 8px 16px; font-weight: 400; font-size: 14px; }
+.dropdown a { display: flex; align-items: center; gap: 10px; padding: 8px 16px; font-weight: 400; font-size: 14px; }
 .dropdown a:hover { background: var(--light); }
+.dropdown-icon { width: 22px; height: 22px; object-fit: contain; flex-shrink: 0; }
 .nav-utility { display: none; }
 .nav-cta { font-size: 13px; padding: 9px 16px; }
 .hero { background: linear-gradient(120deg, var(--navy) 0%, var(--navy-dark) 100%); color: #fff; padding: 70px 0; }

@@ -11,12 +11,18 @@ export default function Header() {
   function dropdownFor(item) {
     if (item.children === "security") {
       return SECURITY_ITEMS.map(s => (
-        <Link key={s.slug} href={`/security-systems/${s.slug}/`}>{s.name}</Link>
+        <Link key={s.slug} href={`/security-systems/${s.slug}/`}>
+          {s.icon && <img className="dropdown-icon" src={s.icon} alt="" />}
+          {s.name}
+        </Link>
       ));
     }
     if (item.children === "itHardware") {
       return IT_ITEMS.map(s => (
-        <Link key={s.slug} href={`/it-hardware/${s.slug}/`}>{s.name}</Link>
+        <Link key={s.slug} href={`/it-hardware/${s.slug}/`}>
+          {s.icon && <img className="dropdown-icon" src={s.icon} alt="" />}
+          {s.name}
+        </Link>
       ));
     }
     return null;
