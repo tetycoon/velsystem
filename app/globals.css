@@ -55,7 +55,13 @@ li { list-style: none; }
 .dropdown-icon { width: 22px; height: 22px; object-fit: contain; flex-shrink: 0; }
 .nav-utility { display: none; }
 .nav-cta { font-size: 13px; padding: 9px 16px; }
-.hero { background: linear-gradient(120deg, var(--navy) 0%, var(--navy-dark) 65%, var(--teal) 160%); color: #fff; padding: 70px 0; }
+.hero {
+  background:
+    linear-gradient(120deg, rgba(31,58,95,.93) 0%, rgba(20,42,69,.91) 65%, rgba(30,138,122,.85) 160%),
+    url('/images/hero/hero-solar.jpg') center/cover no-repeat;
+  color: #fff;
+  padding: 70px 0;
+}
 .hero-inner { max-width: 700px; }
 .hero-inner-split { display: flex; align-items: center; gap: 40px; }
 .hero-with-image .hero-inner { max-width: 560px; flex: 1; }
