@@ -1,4 +1,5 @@
 import { TrustBar } from "../../components/Sections";
+import { TEAM_SIZE } from "../../data/content";
 
 export const metadata = {
   title: "About Us | Vel Systems",
@@ -14,7 +15,7 @@ export default function AboutPage() {
         <div className="about-grid">
           <div><h3>Our Motto</h3><p>Customer satisfaction is our breath.</p></div>
           <div><h3>Our Vision</h3><p>Providing superior quality products to customers and delivering real value for their money.</p></div>
-          <div><h3>Our Team</h3><p>Well trained and experienced engineers who back every sale with real service.</p></div>
+          <div><h3>Our Team</h3><p>{TEAM_SIZE} of well trained and experienced engineers who back every sale with real service.</p></div>
         </div>
         <TrustBar />
       </section>

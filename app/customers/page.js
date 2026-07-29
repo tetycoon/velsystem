@@ -1,4 +1,4 @@
-import { TESTIMONIALS, CLIENT_LOGOS } from "../../data/content";
+import { TESTIMONIALS, CLIENT_LOGOS, ADDITIONAL_CLIENTS } from "../../data/content";
 import { TestimonialsSection } from "../../components/Sections";
 
 export const metadata = {
@@ -25,6 +25,13 @@ export default function CustomersPage() {
               <span>{c.name}</span>
             </div>
           ))}
+        </div>
+      </section>
+      <section className="container content-section">
+        <h2>And Many More Across Chengalpattu &amp; Beyond</h2>
+        <p>From our company profile: factories, schools, hospitals, and businesses that trust Vel Systems for IT, security, and solar.</p>
+        <div className="trusted-by-list">
+          {ADDITIONAL_CLIENTS.map(name => <span className="trusted-by-item" key={name}>{name}</span>)}
         </div>
       </section>
       <section className="container content-section">

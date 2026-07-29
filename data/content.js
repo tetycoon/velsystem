@@ -42,8 +42,15 @@ const TEAM_CONTACTS = [
   { role: "Manager", name: "", phone: "89254 49972", email: "manager@velsystems.in" },
   { role: "Accountant", name: "", phone: "98651 80102", email: "accounts@velsystems.in" },
   { role: "General Manager", name: "", phone: "98651 80300", email: "gm@velsystems.in" },
-  { role: "Murali", name: "", phone: "98651 80104", email: "murali@velsystems.in" }
+  { role: "Murali", name: "", phone: "98651 80104", email: "murali@velsystems.in" },
+  // From the printed company profile (VEL SYSTEMS PROFILE 23-24.pdf) — a dedicated
+  // service line, separate from the sales number already in BRAND.phone.
+  { role: "Service Support", name: "", phone: "98651 80110", email: BRAND.email }
 ];
+
+// Real, printed on the company's official profile brochure. Not shown elsewhere on
+// the site yet, so surfaced on the About page.
+const TEAM_SIZE = "40+ Employees";
 
 // Real quotes pulled verbatim from the old homepage's rotating banner.
 const HOME_QUOTES = {
@@ -131,7 +138,14 @@ const SECURITY_ITEMS = [
   { slug: "burglar-alarm-system", name: "Burglar Alarm System", tagline: "Detect unauthorized entry the moment it happens.", body: "Motion and entry sensors linked to a central alarm, sized for homes, shops, and warehouses.", subItems: [
       { image: "/images/subitems/subitem-burglar-alarm-system-0.jpg", name: 'Honeywell', desc: 'Motion detection and real-time alerts for comprehensive protection of homes and businesses.' },
       { image: "/images/subitems/subitem-burglar-alarm-system-1.jpg", name: 'Godrej', desc: 'A control panel, entry sensors, an audible alarm, keypad or remote control, real-time alert connectivity, and battery backup.' }
-    ] }
+    ] },
+  // The next three items are pulled from the company's printed profile brochure
+  // (VEL SYSTEMS PROFILE 23-24.pdf), which lists services not yet documented on
+  // the old website. No stock photos available for these yet, so no icon/subItems
+  // images — same pattern already used for signal-booster, cash-counting-machine, etc.
+  { slug: "pas-av-system-bell-timer", name: "PAS (AV System) & Bell Timer", tagline: "Public address, conferencing, and automated bell timing.", body: "Public Address Systems (Analog and IP PA), Audio and Video Conference Systems for meeting rooms, and automated bell timers that handle period bell timings for schools and institutions on a set schedule." },
+  { slug: "canteen-visitor-management", name: "Canteen & Visitor Management", tagline: "Automated canteen billing and visitor tracking.", body: "Fully automated canteen management with per-day food slip counts, online credit top-ups, prepaid or postpaid options for employees, and daily, weekly, or monthly item-wise reports. Paired with visitor management for tracking who's on-site and when." },
+  { slug: "home-automation", name: "Home & Office Automation", tagline: "Remote and sensor-based control for doors, windows, and more.", body: "Automation for sliding doors and windows, dimmers, water heater control, and IR/on-off switches, controlled from a wall-mounted or wireless touch panel. Includes video monitoring, motion detection, and event-based actions." }
 ];
 
 const IT_ITEMS = [
@@ -360,8 +374,38 @@ const CLIENT_LOGOS = [
   { name: "Zee", image: "/images/clients/zee.jpg" }
 ];
 
+// Additional real client names — pulled from the two "Trusted By" pages of the
+// printed company profile (VEL SYSTEMS PROFILE 23-24.pdf), which lists far more
+// clients than the old website's Customers page image gallery ever did. No logo
+// image files for these (they only exist as flattened images inside the PDF), so
+// shown as a text pill list rather than fabricated logo graphics. Names already
+// covered by CLIENT_LOGOS or TRUSTED_BY are left out to avoid duplicates.
+const ADDITIONAL_CLIENTS = [
+  "Wheels India Limited", "Spirax Sarco", "Check Point", "SV Chem", "Sigma Corporation",
+  "Balmer Lawrie Van Leer Limited", "Tamil Nadu Police", "District Collector Office, Chengalpattu",
+  "Allison Transmission", "Sri Lakshmi Engineering Works", "Madras Mines", "Binny Mills Limited",
+  "Akshayakalpa", "Lucas TVS", "Deejay Constructions", "Highbrow Healthcare", "Ceebros",
+  "PL Agro", "Chengalpattu Medical College", "Rane TRW", "HBL Biotech Limited", "Esterkote",
+  "IIITD&M Kancheepuram", "Dynamic Engineers & Electroplaters", "Shoks Projects Private Limited",
+  "Arihant TVS", "RLT", "School of Seamanship & Nautical Technology", "Nilgiris 1905",
+  "Soorya Chengalpattu", "City Collection Textiles", "Brindavan Schools", "Ramakrishna Mission",
+  "St. Mary's Girls Hr. Sec. School", "Vivekananda School", "Triveni Academy Senior Secondary School",
+  "Vikas Mantra Public School", "Kidzee", "Pattammal Alagesan College", "Subham Vidhyalayaa CBSE School",
+  "V.S. Stars Public School", "Ela Green School", "Rajeswari Vedachalam Govt Arts College",
+  "Mount Litera Zee School", "Mahindra Aqualily", "Iris Court", "Sylvan County",
+  "Arihant Villa Viviana", "Laurel", "Lathaa Cinemas", "SRK Cinemas", "Shieeld Light Roof",
+  "Netafim", "Beent Hospital Eye & ENT", "Sree Renga Hospital", "Dr. Wahaab's Pranic Acupuncture",
+  "Athveka Multi Speciality Clinic", "RUWSEC Hospital", "Samyuktha Clinic", "Pallava Scans",
+  "Chengai Scans", "Sandeep Scans", "Nanmayam Health Care", "Balaji Heartcare Centre",
+  "Jaas Bone & Joint Centre", "Baby Scans", "SMS Blue Metals", "RS Blue Metals", "AGD Steels",
+  "Esthell", "Sangaminn Hotel & Banquets", "Bala Farms", "Sharda Motor", "Fatima Furniture",
+  "Ashapura", "Hotel Shri Ganesh Bhavan", "Ranga Residency", "Kuppanna", "FLSmidth",
+  "Jayam Store", "Ansar Stores", "NSK Thanga Maaligai", "Fashion Trends", "Valuimurugan Traders",
+  "Karpagam", "Arihant Bikes", "Bajaj"
+];
+
 module.exports = {
-  BRAND, LOCATIONS, TEAM_CONTACTS, HOME_QUOTES, SOLAR_TYPES, SOLAR_FINANCE, SOLAR_FAQ, TRUSTED_BY, CLIENT_LOGOS, waLink, NAV, UTILITY_NAV,
+  BRAND, LOCATIONS, TEAM_CONTACTS, TEAM_SIZE, HOME_QUOTES, SOLAR_TYPES, SOLAR_FINANCE, SOLAR_FAQ, TRUSTED_BY, CLIENT_LOGOS, ADDITIONAL_CLIENTS, waLink, NAV, UTILITY_NAV,
   SECURITY_ITEMS, IT_ITEMS, AMC_PLANS, SHOP_PRODUCTS, BLOG_POSTS, TESTIMONIALS, THIRD_PARTY_RATING,
   FAQ_KB, FAQ_FALLBACK
 };
