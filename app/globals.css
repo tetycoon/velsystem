@@ -34,6 +34,7 @@ li { list-style: none; }
 .btn-outline { background: transparent; border: 2px solid var(--navy); color: var(--navy); }
 .btn-outline:hover { background: var(--navy); color: #fff; }
 .btn[disabled] { opacity: .5; cursor: not-allowed; }
+.site-header { position: sticky; top: 0; z-index: 50; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,.08); }
 .topbar { background: var(--navy-dark); color: #fff; font-size: 13px; }
 .topbar-inner { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; flex-wrap: wrap; gap: 6px; }
 .social-links a { color: #fff; margin-left: 14px; opacity: .85; }
