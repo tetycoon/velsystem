@@ -252,12 +252,14 @@ const BLOG_POSTS = [
 ];
 
 // The 5 solar categories shown on the old site's power-solutions page.
+// Images pulled from the old site's Solar page "Our Customized Solutions" graphic
+// (velsystems.in/power-solutions/) — cropped out of the two composite banners used there.
 const SOLAR_TYPES = [
-  { name: "Residential Solar", desc: "Rooftop systems sized for homes." },
-  { name: "Commercial Solar", desc: "Systems for shops, offices, and business premises." },
-  { name: "Industrial Solar", desc: "Larger installations for factories and industrial rooftops." },
-  { name: "Solar Plant", desc: "Ground-mounted plants for bigger capacity needs." },
-  { name: "Floating Solar", desc: "Panels installed over water bodies where land is limited." }
+  { name: "Residential Solar", desc: "Rooftop systems sized for homes.", image: "/images/solar/solar-residential.jpg" },
+  { name: "Commercial Solar", desc: "Systems for shops, offices, and business premises.", image: "/images/solar/solar-commercial.jpg" },
+  { name: "Industrial Solar", desc: "Larger installations for factories and industrial rooftops.", image: "/images/solar/solar-industrial.jpg" },
+  { name: "Solar Plant", desc: "Ground-mounted plants for bigger capacity needs.", image: "/images/solar/solar-plant.jpg" },
+  { name: "Floating Solar", desc: "Panels installed over water bodies where land is limited.", image: "/images/solar/solar-floating.jpg" }
 ];
 
 // Real financing and subsidy figures from the old site. Rates change, so these should be

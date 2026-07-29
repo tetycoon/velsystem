@@ -23,6 +23,7 @@ export default function SolarPage() {
         <div className="solar-types-grid">
           {SOLAR_TYPES.map((t, i) => (
             <div className="solar-type-card reveal hover-lift" style={{ "--delay": `${i * 60}ms` }} key={t.name}>
+              {t.image && <img className="solar-type-photo" src={t.image} alt={t.name} loading="lazy" />}
               <h3>{t.name}</h3>
               <p>{t.desc}</p>
             </div>
@@ -30,15 +31,18 @@ export default function SolarPage() {
         </div>
       </section>
 
-      <section className="container content-section">
-        <h2>Why Solar With Vel Systems</h2>
-        <ul className="check-list">
-          <li>Residential &amp; commercial solar panel installation</li>
-          <li>On-grid, off-grid &amp; hybrid systems</li>
-          <li>High-quality solar inverters &amp; batteries</li>
-          <li>Expert guidance, hassle-free setup, and AMC support</li>
-        </ul>
-        <p>We use trusted brands and the latest technology to ensure maximum output and long-term reliability. From planning to installation and after-sales service, we provide end-to-end solar solutions.</p>
+      <section className="container content-section why-solar-split">
+        <div className="reveal-left">
+          <h2>Why Solar With Vel Systems</h2>
+          <ul className="check-list">
+            <li>Residential &amp; commercial solar panel installation</li>
+            <li>On-grid, off-grid &amp; hybrid systems</li>
+            <li>High-quality solar inverters &amp; batteries</li>
+            <li>Expert guidance, hassle-free setup, and AMC support</li>
+          </ul>
+          <p>We use trusted brands and the latest technology to ensure maximum output and long-term reliability. From planning to installation and after-sales service, we provide end-to-end solar solutions.</p>
+        </div>
+        <img className="why-solar-photo reveal-right" src="/images/solar/solar-installation.jpg" alt="Vel Systems technician installing rooftop solar panels" loading="lazy" />
       </section>
 
       <section className="container content-section solar-finance">
