@@ -8,8 +8,9 @@ export default function BlogPage() {
       <section className="page-hero"><div className="container"><h1>Blog</h1></div></section>
       <section className="container content-section">
         <div className="blog-list">
-          {BLOG_POSTS.map(post => (
-            <article className="blog-card" key={post.slug}>
+          {BLOG_POSTS.map((post, i) => (
+            <article className="blog-card reveal hover-lift" style={{ "--delay": `${(i % 4) * 60}ms` }} key={post.slug}>
+              {post.image && <img className="blog-card-photo" src={post.image} alt="" loading="lazy" />}
               <h3>{post.title}</h3>
               <p className="placeholder-note">Full post coming soon.</p>
             </article>

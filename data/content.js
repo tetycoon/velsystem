@@ -141,11 +141,12 @@ const SECURITY_ITEMS = [
     ] },
   // The next three items are pulled from the company's printed profile brochure
   // (VEL SYSTEMS PROFILE 23-24.pdf), which lists services not yet documented on
-  // the old website. No stock photos available for these yet, so no icon/subItems
-  // images — same pattern already used for signal-booster, cash-counting-machine, etc.
-  { slug: "pas-av-system-bell-timer", name: "PAS (AV System) & Bell Timer", tagline: "Public address, conferencing, and automated bell timing.", body: "Public Address Systems (Analog and IP PA), Audio and Video Conference Systems for meeting rooms, and automated bell timers that handle period bell timings for schools and institutions on a set schedule." },
-  { slug: "canteen-visitor-management", name: "Canteen & Visitor Management", tagline: "Automated canteen billing and visitor tracking.", body: "Fully automated canteen management with per-day food slip counts, online credit top-ups, prepaid or postpaid options for employees, and daily, weekly, or monthly item-wise reports. Paired with visitor management for tracking who's on-site and when." },
-  { slug: "home-automation", name: "Home & Office Automation", tagline: "Remote and sensor-based control for doors, windows, and more.", body: "Automation for sliding doors and windows, dimmers, water heater control, and IR/on-off switches, controlled from a wall-mounted or wireless touch panel. Includes video monitoring, motion detection, and event-based actions." }
+  // the old website. No dedicated stock photos exist for these yet, so each
+  // reuses the closest real product photo already in our library (same
+  // equipment family) rather than shipping with no image at all.
+  { slug: "pas-av-system-bell-timer", name: "PAS (AV System) & Bell Timer", icon: "/images/icons/icon-intercom.jpg", tagline: "Public address, conferencing, and automated bell timing.", body: "Public Address Systems (Analog and IP PA), Audio and Video Conference Systems for meeting rooms, and automated bell timers that handle period bell timings for schools and institutions on a set schedule." },
+  { slug: "canteen-visitor-management", name: "Canteen & Visitor Management", icon: "/images/icons/icon-biometric-system.jpg", tagline: "Automated canteen billing and visitor tracking.", body: "Fully automated canteen management with per-day food slip counts, online credit top-ups, prepaid or postpaid options for employees, and daily, weekly, or monthly item-wise reports. Paired with visitor management for tracking who's on-site and when." },
+  { slug: "home-automation", name: "Home & Office Automation", icon: "/images/icons/icon-video-door-phone.jpg", tagline: "Remote and sensor-based control for doors, windows, and more.", body: "Automation for sliding doors and windows, dimmers, water heater control, and IR/on-off switches, controlled from a wall-mounted or wireless touch panel. Includes video monitoring, motion detection, and event-based actions." }
 ];
 
 const IT_ITEMS = [
@@ -231,9 +232,18 @@ const IT_ITEMS = [
 ];
 
 const AMC_PLANS = [
-  { name: "Annual Maintenance Contract – Comprehensive (AMC)", body: "We assess your full specification and fix one annual amount that covers spare parts. This includes preventive maintenance at least once a month, plus service as needed through the year." },
-  { name: "Annual Service Contract – Non-Comprehensive (ASC)", body: "Our engineers service all model configurations for a fixed reasonable amount, excluding spare parts cost. Covers preventive maintenance and on-demand service through the contract period." },
-  { name: "On-Call Services", body: "Experienced service engineers respond to requests within working hours when you don't need a full annual contract." }
+  { name: "Annual Maintenance Contract – Comprehensive (AMC)", image: "/images/icons/icon-server-workstation.jpg", body: "We assess your full specification and fix one annual amount that covers spare parts. This includes preventive maintenance at least once a month, plus service as needed through the year." },
+  { name: "Annual Service Contract – Non-Comprehensive (ASC)", image: "/images/icons/icon-desktop.jpg", body: "Our engineers service all model configurations for a fixed reasonable amount, excluding spare parts cost. Covers preventive maintenance and on-demand service through the contract period." },
+  { name: "On-Call Services", image: "/images/icons/icon-network-hardware-solution.jpg", body: "Experienced service engineers respond to requests within working hours when you don't need a full annual contract." }
+];
+
+// Real product photos we already have, matched to the categories the old site's
+// rental page actually rents out (laptops, desktops, projectors, printers).
+const RENTAL_CATEGORIES = [
+  { name: "Laptop Rental", image: "/images/icons/icon-laptop.jpg", desc: "Touchscreen laptops with dedicated graphics, M.2 SSD storage, and FHD displays." },
+  { name: "Desktop Rental", image: "/images/icons/icon-desktop.jpg", desc: "Core i3 to Core i9 desktops with fast delivery, setup, and technical support." },
+  { name: "Projector Rental", image: "/images/icons/icon-projector.jpg", desc: "Crisp, clear projection for presentations and events, by the day, week, or month." },
+  { name: "Printer Rental", image: "/images/icons/icon-printer.jpg", desc: "Laser printers for short or long-term hire, single-function or all-in-one." }
 ];
 
 // Real products, pulled directly from the old site's shop, with real current prices.
@@ -256,13 +266,13 @@ const SHOP_PRODUCTS = [
 // Real post titles from the old site's blog. Full post bodies not yet migrated,
 // these seed the page instead of launching it empty.
 const BLOG_POSTS = [
-  { slug: "video-door-phone-not-a-luxury", title: "Secure Your Home with a Smart Touch: Why a Video Door Phone Is No Longer a Luxury" },
-  { slug: "top-5-solar-myths", title: "Top 5 Myths About Solar Power, And the Truth Behind Them" },
-  { slug: "choosing-the-right-printer", title: "Choosing the Right Printer Made Simple, A Local Guide from Vel Systems, Chengalpattu" },
-  { slug: "best-solar-system-tamil-nadu", title: "How to Choose the Best Solar System for Your Home in Tamil Nadu" },
-  { slug: "power-up-your-tech-life", title: "Power Up Your Tech Life, at Vel Systems" },
-  { slug: "top-5-reasons-cctv-2025", title: "Top 5 Reasons to Install CCTV at Home in 2025" },
-  { slug: "why-switch-to-solar-now", title: "Top 5 Reasons Why Now's the Perfect Time to Switch to Solar Power for Your Home" }
+  { slug: "video-door-phone-not-a-luxury", title: "Secure Your Home with a Smart Touch: Why a Video Door Phone Is No Longer a Luxury", image: "/images/icons/icon-video-door-phone.jpg" },
+  { slug: "top-5-solar-myths", title: "Top 5 Myths About Solar Power, And the Truth Behind Them", image: "/images/solar/solar-residential.jpg" },
+  { slug: "choosing-the-right-printer", title: "Choosing the Right Printer Made Simple, A Local Guide from Vel Systems, Chengalpattu", image: "/images/icons/icon-printer.jpg" },
+  { slug: "best-solar-system-tamil-nadu", title: "How to Choose the Best Solar System for Your Home in Tamil Nadu", image: "/images/solar/solar-plant.jpg" },
+  { slug: "power-up-your-tech-life", title: "Power Up Your Tech Life, at Vel Systems", image: "/images/icons/icon-laptop.jpg" },
+  { slug: "top-5-reasons-cctv-2025", title: "Top 5 Reasons to Install CCTV at Home in 2025", image: "/images/icons/icon-cctv-camera.jpg" },
+  { slug: "why-switch-to-solar-now", title: "Top 5 Reasons Why Now's the Perfect Time to Switch to Solar Power for Your Home", image: "/images/solar/solar-installation.jpg" }
 ];
 
 // The 5 solar categories shown on the old site's power-solutions page.
@@ -406,6 +416,6 @@ const ADDITIONAL_CLIENTS = [
 
 module.exports = {
   BRAND, LOCATIONS, TEAM_CONTACTS, TEAM_SIZE, HOME_QUOTES, SOLAR_TYPES, SOLAR_FINANCE, SOLAR_FAQ, TRUSTED_BY, CLIENT_LOGOS, ADDITIONAL_CLIENTS, waLink, NAV, UTILITY_NAV,
-  SECURITY_ITEMS, IT_ITEMS, AMC_PLANS, SHOP_PRODUCTS, BLOG_POSTS, TESTIMONIALS, THIRD_PARTY_RATING,
+  SECURITY_ITEMS, IT_ITEMS, AMC_PLANS, RENTAL_CATEGORIES, SHOP_PRODUCTS, BLOG_POSTS, TESTIMONIALS, THIRD_PARTY_RATING,
   FAQ_KB, FAQ_FALLBACK
 };

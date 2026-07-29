@@ -17,8 +17,9 @@ export default function AmcPage() {
       </section>
       <section className="container content-section">
         <div className="amc-grid">
-          {AMC_PLANS.map(p => (
-            <div className="amc-card" key={p.name}>
+          {AMC_PLANS.map((p, i) => (
+            <div className="amc-card reveal hover-lift" style={{ "--delay": `${i * 70}ms` }} key={p.name}>
+              {p.image && <img className="amc-card-icon" src={p.image} alt="" loading="lazy" />}
               <h3>{p.name}</h3>
               <p>{p.body}</p>
             </div>
