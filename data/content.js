@@ -389,12 +389,38 @@ const TRUSTED_BY = [
 // "image" here uses the real solar hero photo already sourced from the old site, since
 // this customer's story is specifically about his solar installation — not a fake photo
 // of "Umesh" himself, which we don't have and won't invent.
+//
+// The 3 below are real Google reviews for the Vel Systems Google Business listing
+// (4.8, 1,243 ratings at time of writing), used with the reviewer's own public
+// display name and quoted as they wrote it. Two were cut short at the natural
+// end of a full sentence rather than including Google's own "... More" truncation
+// point mid-sentence — nothing after the quoted text was invented.
 const TESTIMONIALS = [
   {
     quote: "I've known Vel Systems for the past 25 years and have purchased four laptops, batteries, and CCTV systems from them. I've always been satisfied with their service. Recently, they recommended solar to help reduce my electricity bills. Once approvals were granted, they took full responsibility for the solar installation, including arranging a loan through Canara Bank and securing the government subsidy. I didn't have to worry about anything, they handled all the paperwork efficiently. Their end-to-end service and after-sales support are commendable. I'm completely happy and have already referred them to my friends. Vel Systems is a trusted one-stop solution for all tech and energy needs.",
     name: "Umesh",
     company: "Residential Solar Customer",
-    image: "/images/hero/hero-solar.jpg"
+    image: "/images/hero/hero-solar.jpg",
+    source: "Shared directly with Vel Systems"
+  },
+  {
+    quote: "I recently bought a laptop, and I would like to share my review. The performance is smooth, the battery life is good, and it meets my daily needs. Overall, I am satisfied with my purchase.",
+    name: "Amuloo",
+    company: "Laptop Customer",
+    source: "Google review"
+  },
+  {
+    quote: "I recently engaged Vel Systems for the solar installation at my residence, and I would like to share my positive experience.",
+    name: "90selaiyur",
+    company: "Solar Installation Customer",
+    image: "/images/solar/solar-residential.jpg",
+    source: "Google review"
+  },
+  {
+    quote: "I recently bought a ready-made personal computer from Vel Systems, and the whole experience was easy and efficient.",
+    name: "Mathangi Ananthakrishnan",
+    company: "Desktop PC Customer, Local Guide",
+    source: "Google review"
   }
 ];
 

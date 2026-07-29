@@ -103,6 +103,7 @@ export function TestimonialsSection({ list }) {
               <p>&ldquo;{t.quote}&rdquo;</p>
               <strong>{t.name}</strong>
               <span>{t.company}</span>
+              {t.source && <span className="testimonial-source">via {t.source}</span>}
             </div>
           ))}
         </div>
