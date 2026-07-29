@@ -33,6 +33,7 @@ export default function SecurityDetailPage({ params }) {
           <div className="sub-items-grid">
             {item.subItems.map(sub => (
               <div className="sub-item-card" key={sub.name}>
+                {sub.image && <img className="sub-item-photo" src={sub.image} alt={sub.name} loading="lazy" />}
                 <h3>{sub.name}</h3>
                 <p>{sub.desc}</p>
               </div>
