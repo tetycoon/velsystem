@@ -11,23 +11,23 @@ export default function HomePage() {
     <>
       <section className="hero hero-solar hero-with-image">
         <div className="container hero-inner-split">
-          <div className="hero-inner">
+          <div className="hero-inner reveal-left">
             <span className="eyebrow">25+ Years of Experience</span>
             <h1>Solar Power, Backed by 25 Years of Trust</h1>
             <p>{HOME_QUOTES.solarBlurb}</p>
             <WhatsAppCta label="Get a Free Solar Quote on WhatsApp" message="Hi Vel Systems, I'm interested in a solar quote for my property." extraClass="hero-cta" />
           </div>
-          <img className="hero-photo" src="/images/hero/hero-solar.jpg" alt="Rooftop solar installation at sunset" loading="eager" />
+          <img className="hero-photo reveal-right" src="/images/hero/hero-solar.jpg" alt="Rooftop solar installation at sunset" loading="eager" />
         </div>
       </section>
       <TrustBar />
       <section className="home-quote-strip">
         <div className="container quote-strip-inner">
-          <figure className="quote-figure">
+          <figure className="quote-figure reveal-left">
             <img src="/images/hero/quote-service.jpg" alt="" loading="lazy" />
             <blockquote>&ldquo;{HOME_QUOTES.serviceQuote}&rdquo;</blockquote>
           </figure>
-          <figure className="quote-figure">
+          <figure className="quote-figure reveal-right">
             <img src="/images/hero/quote-scale.jpg" alt="" loading="lazy" />
             <blockquote>&ldquo;{HOME_QUOTES.scaleQuote}&rdquo;</blockquote>
           </figure>

@@ -21,8 +21,8 @@ export default function SolarPage() {
       <section className="container content-section">
         <h2>Our Customized Solutions</h2>
         <div className="solar-types-grid">
-          {SOLAR_TYPES.map(t => (
-            <div className="solar-type-card" key={t.name}>
+          {SOLAR_TYPES.map((t, i) => (
+            <div className="solar-type-card reveal hover-lift" style={{ "--delay": `${i * 60}ms` }} key={t.name}>
               <h3>{t.name}</h3>
               <p>{t.desc}</p>
             </div>
@@ -71,7 +71,8 @@ export default function SolarPage() {
 
       {testimonial && (
         <section className="container content-section">
-          <div className="testimonial-card solar-testimonial">
+          <div className="testimonial-card solar-testimonial reveal">
+            {testimonial.image && <img className="testimonial-photo" src={testimonial.image} alt="" loading="lazy" />}
             <p>&ldquo;{testimonial.quote}&rdquo;</p>
             <strong>{testimonial.name}</strong>
             <span>{testimonial.company}</span>

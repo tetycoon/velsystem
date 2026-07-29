@@ -306,13 +306,29 @@ const TRUSTED_BY = [
 
 // Not fabricating client quotes. Real ones only — this one is pulled verbatim from the
 // old site's Solar page. Still nothing on the dedicated Customers page itself.
+// Checked again for more (homepage, Customers page, Facebook reviews) — old site only
+// ever had this one written testimonial. Facebook page has zero reviews. Adding an
+// "image" here uses the real solar hero photo already sourced from the old site, since
+// this customer's story is specifically about his solar installation — not a fake photo
+// of "Umesh" himself, which we don't have and won't invent.
 const TESTIMONIALS = [
   {
     quote: "I've known Vel Systems for the past 25 years and have purchased four laptops, batteries, and CCTV systems from them. I've always been satisfied with their service. Recently, they recommended solar to help reduce my electricity bills. Once approvals were granted, they took full responsibility for the solar installation, including arranging a loan through Canara Bank and securing the government subsidy. I didn't have to worry about anything, they handled all the paperwork efficiently. Their end-to-end service and after-sales support are commendable. I'm completely happy and have already referred them to my friends. Vel Systems is a trusted one-stop solution for all tech and energy needs.",
     name: "Umesh",
-    company: "Residential Solar Customer"
+    company: "Residential Solar Customer",
+    image: "/images/hero/hero-solar.jpg"
   }
 ];
+
+// Real, verifiable third-party rating — not a quote we're putting in anyone's mouth.
+// Pulled from Vel Systems' live Justdial listing (Chengalpattu Main Road branch) on
+// 2026-07-29. Reconfirm the number periodically since Justdial ratings move over time.
+const THIRD_PARTY_RATING = {
+  source: "Justdial",
+  rating: 4.7,
+  reviewCount: 1285,
+  url: "https://www.justdial.com/Chengalpattu/search?q=Vel-Systems-Chengalpattu-Main-Road&stype=company_list"
+};
 
 const FAQ_KB = [
   { keywords: ["solar", "panel", "electricity", "bill"], answer: "We design and install end-to-end solar systems for homes, businesses, and industrial sites. Share your monthly electricity bill or rooftop size on WhatsApp and we'll give you a free estimate." },
@@ -344,6 +360,6 @@ const CLIENT_LOGOS = [
 
 module.exports = {
   BRAND, LOCATIONS, TEAM_CONTACTS, HOME_QUOTES, SOLAR_TYPES, SOLAR_FINANCE, SOLAR_FAQ, TRUSTED_BY, CLIENT_LOGOS, waLink, NAV, UTILITY_NAV,
-  SECURITY_ITEMS, IT_ITEMS, AMC_PLANS, SHOP_PRODUCTS, BLOG_POSTS, TESTIMONIALS,
+  SECURITY_ITEMS, IT_ITEMS, AMC_PLANS, SHOP_PRODUCTS, BLOG_POSTS, TESTIMONIALS, THIRD_PARTY_RATING,
   FAQ_KB, FAQ_FALLBACK
 };
