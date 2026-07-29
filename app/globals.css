@@ -48,6 +48,11 @@ li { list-style: none; }
 .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; position: relative; }
 .logo { display: flex; align-items: center; }
 .logo-img { height: 54px; width: auto; display: block; }
+.header-badges { display: none; align-items: center; gap: 18px; margin-right: auto; margin-left: 22px; padding-left: 22px; border-left: 1px solid var(--border); }
+.header-badges img { height: 40px; width: auto; object-fit: contain; }
+@media (min-width: 1220px) {
+  .header-badges { display: flex; }
+}
 .nav-toggle { display: none; background: none; border: none; font-size: 26px; cursor: pointer; }
 .main-nav { display: flex; align-items: center; gap: 18px; }
 .nav-main { display: flex; gap: 16px; }

@@ -45,6 +45,11 @@ export default function Header() {
         <Link href="/" className="logo">
           <img src="/images/vel-systems-logo.png" alt="Vel Systems - Sales, Service, Accessories" className="logo-img" />
         </Link>
+        <div className="header-badges">
+          <img src="/images/badges/25-years-excellence.png" alt="25+ Years of Excellence" />
+          <img src="/images/badges/gem-logo.png" alt="GeM Registered Supplier" />
+          <img src="/images/badges/iso-9001-2015.png" alt="ISO 9001:2015 Certified" />
+        </div>
         <button className="nav-toggle" aria-label="Menu" onClick={() => setOpen(!open)}>&#9776;</button>
         <nav className={`main-nav${open ? " open" : ""}`}>
           <ul className="nav-main">
