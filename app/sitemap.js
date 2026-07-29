@@ -1,4 +1,4 @@
-import { SECURITY_ITEMS, IT_ITEMS } from "../data/content";
+import { SECURITY_ITEMS, IT_ITEMS, BLOG_POSTS } from "../data/content";
 
 // Swap this once velsystems.in is pointed at this deployment.
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://velsystem.vercel.app";
@@ -32,5 +32,12 @@ export default function sitemap() {
     priority: 0.6
   }));
 
-  return [...staticEntries, ...securityEntries, ...itEntries];
+  const blogEntries = BLOG_POSTS.map(post => ({
+    url: `${BASE_URL}/blog/${post.slug}/`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.5
+  }));
+
+  return [...staticEntries, ...securityEntries, ...itEntries, ...blogEntries];
 }

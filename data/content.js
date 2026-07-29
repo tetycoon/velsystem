@@ -139,6 +139,8 @@ const SECURITY_ITEMS = [
       { image: "/images/subitems/subitem-burglar-alarm-system-0.jpg", name: 'Honeywell', desc: 'Motion detection and real-time alerts for comprehensive protection of homes and businesses.' },
       { image: "/images/subitems/subitem-burglar-alarm-system-1.jpg", name: 'Godrej', desc: 'A control panel, entry sensors, an audible alarm, keypad or remote control, real-time alert connectivity, and battery backup.' }
     ] },
+  // Pulled directly from the old site's own guard-tour-patrol-security page.
+  { slug: "guard-tour-patrol-security", name: "Guard Tour Patrol Security", icon: "/images/icons/icon-gps-vehicle-tracker.jpg", tagline: "Real-time tracking and accountability for security patrols.", body: "The eSSL guard tour patrol system tracks patrol activities in real time, using RFID, GPS, or mobile technology to monitor security personnel and confirm checkpoints are actually being covered on schedule." },
   // The next three items are pulled from the company's printed profile brochure
   // (VEL SYSTEMS PROFILE 23-24.pdf), which lists services not yet documented on
   // the old website. No dedicated stock photos exist for these yet, so each
@@ -263,16 +265,66 @@ const SHOP_PRODUCTS = [
   { slug: "consistent-cmb-g41-motherboard", name: "Consistent Motherboard CMB-G41 DDR3", price: 1850, category: "IT Hardware", image: "/images/products/consistent-cmb-g41-motherboard.jpg" }
 ];
 
-// Real post titles from the old site's blog. Full post bodies not yet migrated,
-// these seed the page instead of launching it empty.
+// Real post titles from the old site's blog. Full bodies below are written fresh,
+// but every claim is grounded in facts already verified elsewhere in this file
+// (SOLAR_FAQ, SOLAR_FINANCE, and the security/IT sub-item descriptions) rather
+// than invented statistics.
 const BLOG_POSTS = [
-  { slug: "video-door-phone-not-a-luxury", title: "Secure Your Home with a Smart Touch: Why a Video Door Phone Is No Longer a Luxury", image: "/images/icons/icon-video-door-phone.jpg" },
-  { slug: "top-5-solar-myths", title: "Top 5 Myths About Solar Power, And the Truth Behind Them", image: "/images/solar/solar-residential.jpg" },
-  { slug: "choosing-the-right-printer", title: "Choosing the Right Printer Made Simple, A Local Guide from Vel Systems, Chengalpattu", image: "/images/icons/icon-printer.jpg" },
-  { slug: "best-solar-system-tamil-nadu", title: "How to Choose the Best Solar System for Your Home in Tamil Nadu", image: "/images/solar/solar-plant.jpg" },
-  { slug: "power-up-your-tech-life", title: "Power Up Your Tech Life, at Vel Systems", image: "/images/icons/icon-laptop.jpg" },
-  { slug: "top-5-reasons-cctv-2025", title: "Top 5 Reasons to Install CCTV at Home in 2025", image: "/images/icons/icon-cctv-camera.jpg" },
-  { slug: "why-switch-to-solar-now", title: "Top 5 Reasons Why Now's the Perfect Time to Switch to Solar Power for Your Home", image: "/images/solar/solar-installation.jpg" }
+  { slug: "video-door-phone-not-a-luxury", title: "Secure Your Home with a Smart Touch: Why a Video Door Phone Is No Longer a Luxury", image: "/images/icons/icon-video-door-phone.jpg", body: [
+    "A knock on the door used to mean walking over, opening it, and finding out who it was. A video door phone removes the guesswork. You see and speak to whoever's outside before you decide whether to open up at all, which matters whether you're home alone, expecting a delivery, or just don't want to deal with someone at the door.",
+    "The units we install, from Hikvision and Honeywell, both give you high-resolution video, two-way audio, and remote access from your phone, so you can answer the door from another room or another city. Motion detection and night vision mean you're not caught off guard after dark either.",
+    "For apartment buildings and gated communities, multi-unit versions let each flat run its own handset off a shared entry panel, so every resident gets the same visitor screening without needing a separate wired system per door.",
+    "It's a small addition to install, usually done alongside your existing wiring or as a standalone WiFi unit, but it changes a basic daily habit: you stop opening the door on faith and start opening it on information. That's the shift from luxury to just sensible."
+  ] },
+  { slug: "top-5-solar-myths", title: "Top 5 Myths About Solar Power, And the Truth Behind Them", image: "/images/solar/solar-residential.jpg", body: [
+    "Solar gets talked about a lot, and not all of it is accurate. Here are five things people commonly get wrong, and what's actually true.",
+    "Myth 1: Panels don't work on cloudy days. They generate less power when it's overcast, that part is true, but they don't stop working. Paired with battery storage or a grid-tied setup, your home's power supply stays uninterrupted even through a run of bad weather.",
+    "Myth 2: Solar panels don't last long. Most quality panels last 25 to 30 years with minimal maintenance. That's a multi-decade return on a single installation, not a short-term gadget.",
+    "Myth 3: You need a huge roof. On average, a 1 kW system needs about 100 square feet of shadow-free rooftop area. Most homes have more than enough space; a proper site assessment tells you exactly what your roof can support.",
+    "Myth 4: There's no financial help available. Residential customers in India can access government subsidies on rooftop solar, and we handle the paperwork side of that process rather than leaving you to figure it out alone.",
+    "Myth 5: Installation takes forever. A home installation typically takes 2 to 5 days. Larger industrial projects take longer, but that's a matter of scale, not a sign that solar itself is a slow, complicated process."
+  ] },
+  { slug: "choosing-the-right-printer", title: "Choosing the Right Printer Made Simple, A Local Guide from Vel Systems, Chengalpattu", image: "/images/icons/icon-printer.jpg", body: [
+    "Printers aren't one-size-fits-all, and picking the wrong type usually shows up later as a high per-page cost or a machine that can't keep up with what you actually print. Here's how the main categories break down.",
+    "Inkjet printers give you high-quality, fast printing with wireless connectivity and automatic duplexing in a compact, energy-efficient design, good for home offices and light everyday use.",
+    "Laser printers use toner and a laser to produce high-quality prints at fast speeds, which makes them the better fit for offices with steady, higher-volume printing.",
+    "Thermal printers use heat to transfer images onto special paper, built specifically for receipts and small documents rather than general-purpose printing.",
+    "Dot matrix printers strike an ink ribbon to produce text and images, and they're still the standard choice for invoices and multi-part carbon-copy documents in many businesses.",
+    "Barcode printers handle high-speed label and barcode printing for retail and inventory management, while ink tank printers use refillable tanks for cost-effective, high-quality printing across a range of paper sizes.",
+    "If you're not sure which category fits your volume and use case, tell us what you print and how often. That's a five-minute conversation that saves you from buying the wrong machine."
+  ] },
+  { slug: "best-solar-system-tamil-nadu", title: "How to Choose the Best Solar System for Your Home in Tamil Nadu", image: "/images/solar/solar-plant.jpg", body: [
+    "Tamil Nadu gets strong, consistent sunlight for most of the year, which makes solar a genuinely practical option here, not just a trend. The right system depends on what you're powering and how much space you have.",
+    "Residential Solar covers rooftop systems sized for homes. Commercial Solar fits shops, offices, and business premises. Industrial Solar scales up for factories and industrial rooftops, and where land is available but rooftop space isn't, Solar Plant setups (ground-mounted) or Floating Solar over water bodies are the alternative.",
+    "On financing: rates start around 6.5% for residential loans, 7.99% for commercial and industrial, and 8.99% for housing society loans, with loan amounts ranging from ₹1 lakh to ₹10 crores through nationalised banks, private banks, and NBFCs. Note that rates change, so treat these as a starting point to confirm at the time you apply.",
+    "On subsidy: residential households can get ₹30,000 per kW for the first 2 kW, and ₹18,000 per kW for additional capacity up to 3 kW, capped at ₹78,000 total for larger systems. Housing societies and RWAs get ₹18,000 per kW for common facilities including EV charging, up to 500 kW capacity.",
+    "The best system isn't the biggest one, it's the one sized correctly for your actual roof area and power usage. That's what a proper site assessment is for, and it's the first step before any quote means anything."
+  ] },
+  { slug: "power-up-your-tech-life", title: "Power Up Your Tech Life, at Vel Systems", image: "/images/icons/icon-laptop.jpg", body: [
+    "Most people only think about their IT setup when something breaks. A little planning ahead of that point saves a lot of downtime later.",
+    "On the hardware side, that means picking desktops and laptops sized to what you actually do, from everyday office work to demanding workstation tasks, backed by on-site service instead of a box that ships and disappears.",
+    "On the infrastructure side, that means networking that doesn't fall over under load, whether that's switches and structured cabling for an office or a properly planned WiFi access point layout for consistent coverage across every room. It also means a UPS sized to your load, so a power cut doesn't take your server or workstation down with it.",
+    "And on the ongoing side, that means an AMC or ASC contract, so maintenance is a scheduled, predictable cost instead of an emergency call when something finally fails.",
+    "None of this is complicated in isolation. It's just easier to get right with someone who's been doing it locally for over two decades than to piece it together machine by machine."
+  ] },
+  { slug: "top-5-reasons-cctv-2025", title: "Top 5 Reasons to Install CCTV at Home in 2025", image: "/images/icons/icon-cctv-camera.jpg", body: [
+    "CCTV has moved well past grainy black-and-white footage. Here's what modern home surveillance actually gives you.",
+    "1. Coverage that fits the space. Dome cameras suit indoor settings with a wide, hard-to-read viewing angle, while bullet cameras are built for outdoor durability with sharp, high-definition footage.",
+    "2. Control when you need it. PTZ (pan-tilt-zoom) cameras let you move the camera and zoom into specific areas remotely, useful for keeping an eye on a larger compound from one unit.",
+    "3. Easy remote access. IP cameras integrate easily with your network for real-time alerts and remote viewing from your phone, wherever you are.",
+    "4. Coverage in the dark. Thermal cameras detect movement through heat rather than light, which makes them genuinely useful in low-light or pitch-dark areas outdoors.",
+    "5. Flexible installation. Wireless cameras connect over your network without a cabling overhaul, and DVR/NVR systems record and store footage from multiple cameras at once, with motion detection so you're not reviewing hours of nothing.",
+    "The right home setup is usually a mix of two or three of these, not just one camera at the front gate. Tell us your layout and we'll tell you what actually covers it."
+  ] },
+  { slug: "why-switch-to-solar-now", title: "Top 5 Reasons Why Now's the Perfect Time to Switch to Solar Power for Your Home", image: "/images/solar/solar-installation.jpg", body: [
+    "If you've been putting off going solar, here's what's actually working in your favour right now.",
+    "1. The subsidy is live and specific. ₹30,000 per kW for the first 2 kW, ₹18,000 per kW up to 3 kW, capped at ₹78,000 for residential systems. That's a real reduction in your upfront cost, not a vague promise.",
+    "2. Financing is accessible. Loans start from 6.5% through nationalised banks, private banks, and NBFCs, with tenures from 1 to 10 years, so the upfront cost doesn't have to be paid in one go.",
+    "3. The panels last. 25 to 30 years of service life with minimal maintenance means this is a decision you make once, not something you revisit every few years.",
+    "4. Installation is fast. Most home systems are installed in 2 to 5 days, so you're not living through a long, disruptive project to get there.",
+    "5. Your roof is probably already suitable. A 1 kW system needs roughly 100 square feet of shadow-free space, which is less than most homeowners expect, and a site assessment tells you exactly what your setup would look like.",
+    "None of these reasons depend on a limited-time offer or a sales deadline. They're just the current state of subsidy, financing, and technology, and none of them get better by waiting."
+  ] }
 ];
 
 // The 5 solar categories shown on the old site's power-solutions page.

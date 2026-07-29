@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { BLOG_POSTS } from "../../data/content";
 
 export const metadata = { title: "Blog | Vel Systems", description: "News and articles from Vel Systems." };
@@ -9,11 +10,11 @@ export default function BlogPage() {
       <section className="container content-section">
         <div className="blog-list">
           {BLOG_POSTS.map((post, i) => (
-            <article className="blog-card reveal hover-lift" style={{ "--delay": `${(i % 4) * 60}ms` }} key={post.slug}>
+            <Link className="blog-card reveal hover-lift" href={`/blog/${post.slug}/`} style={{ "--delay": `${(i % 4) * 60}ms` }} key={post.slug}>
               {post.image && <img className="blog-card-photo" src={post.image} alt="" loading="lazy" />}
               <h3>{post.title}</h3>
-              <p className="placeholder-note">Full post coming soon.</p>
-            </article>
+              <span className="pillar-link">Read more &rarr;</span>
+            </Link>
           ))}
         </div>
       </section>
