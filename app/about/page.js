@@ -17,6 +17,17 @@ export default function AboutPage() {
           <div><h3>Our Vision</h3><p>Providing superior quality products to customers and delivering real value for their money.</p></div>
           <div><h3>Our Team</h3><p>{TEAM_SIZE} of well trained and experienced engineers who back every sale with real service.</p></div>
         </div>
+
+        <h2 className="section-title-left reveal">Leadership</h2>
+        <div className="leadership-card reveal hover-lift">
+          <div className="leadership-avatar">KMK</div>
+          <div>
+            <h3>Dr. Rtn. K. Murali Krishnan</h3>
+            <span className="leadership-title">Founder, Vel Systems &middot; since 2002</span>
+            <p>Founded Vel Systems in 2002 and has led its growth from an IT hardware business into a company covering IT, security systems, and solar, registered under the Tamil Nadu Sales Registration Act.</p>
+          </div>
+        </div>
+
         <TrustBar />
       </section>
     </>
