@@ -31,7 +31,7 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="topbar">
-        <div className="container-wide topbar-inner">
+        <div className="container topbar-inner">
           <span>{BRAND.email} &nbsp;|&nbsp; {BRAND.phone}</span>
           <div className="social-links">
             <a href={waLink("Hi Vel Systems, I have a question.")} target="_blank" rel="noopener noreferrer">WhatsApp</a>
@@ -41,15 +41,17 @@ export default function Header() {
           </div>
         </div>
       </div>
-      <div className="container-wide header-inner">
-        <Link href="/" className="logo">
-          <img src="/images/vel-systems-logo.png" alt="Vel Systems - Sales, Service, Accessories" className="logo-img" />
-        </Link>
-        <div className="header-badges">
+      <div className="header-badges-strip">
+        <div className="container header-badges">
           <img src="/images/badges/25-years-excellence.png" alt="25+ Years of Excellence" />
           <img src="/images/badges/gem-logo.png" alt="GeM Registered Supplier" />
           <img src="/images/badges/iso-9001-2015.png" alt="ISO 9001:2015 Certified" />
         </div>
+      </div>
+      <div className="container header-inner">
+        <Link href="/" className="logo">
+          <img src="/images/vel-systems-logo.png" alt="Vel Systems - Sales, Service, Accessories" className="logo-img" />
+        </Link>
         <button className="nav-toggle" aria-label="Menu" onClick={() => setOpen(!open)}>&#9776;</button>
         <nav className={`main-nav${open ? " open" : ""}`}>
           <ul className="nav-main">
