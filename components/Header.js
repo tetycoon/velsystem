@@ -31,7 +31,7 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="topbar">
-        <div className="container topbar-inner">
+        <div className="container-wide topbar-inner">
           <span>{BRAND.email} &nbsp;|&nbsp; {BRAND.phone}</span>
           <div className="social-links">
             <a href={waLink("Hi Vel Systems, I have a question.")} target="_blank" rel="noopener noreferrer">WhatsApp</a>
@@ -41,7 +41,7 @@ export default function Header() {
           </div>
         </div>
       </div>
-      <div className="container header-inner">
+      <div className="container-wide header-inner">
         <Link href="/" className="logo">
           <img src="/images/vel-systems-logo.png" alt="Vel Systems - Sales, Service, Accessories" className="logo-img" />
         </Link>
