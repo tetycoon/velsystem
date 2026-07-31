@@ -8,6 +8,8 @@
   --gold: #E8A93C;
   --teal: #1E8A7A;
   --teal-light: #E4F3F0;
+  --spark: #12C9B5;
+  --spark-dark: #0EA394;
   --grey: #555555;
   --light: #F4F6F8;
   --border: #E1E5EA;
@@ -327,6 +329,60 @@ li { list-style: none; }
 /* Generic lift-on-hover utility, layered on top of a card's own hover rules. */
 .hover-lift { transition: transform .25s var(--ease), box-shadow .25s var(--ease); }
 .hover-lift:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+
+/* ===== Bolder homepage pass — bigger hero, floating stats, photo-backed
+   bento pillars, "why choose us", homepage client logos, blog teaser.
+   Scoped to homepage-only classes so other pages are untouched. ===== */
+.hero-bold { padding: 90px 0 0; }
+.hero-bold h1 { font-size: 46px; }
+.hero-bold .eyebrow { background: linear-gradient(100deg, var(--orange) 0%, var(--spark) 160%); }
+
+.stats-float-wrap { position: relative; z-index: 5; margin-top: -56px; margin-bottom: 20px; }
+.stats-float-card { background: #fff; border-radius: 16px; box-shadow: var(--shadow-lg); padding: 30px 20px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; text-align: center; }
+.stats-float-card strong { display: block; font-size: 27px; font-weight: 800; color: var(--spark-dark); }
+.stats-float-card span { font-size: 12px; color: var(--grey); }
+@media (max-width: 900px) { .stats-float-card { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 600px) { .stats-float-card { grid-template-columns: repeat(2, 1fr); } }
+
+.pillar-bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; }
+.pillar-bento-card { position: relative; grid-column: span 2; min-height: 220px; border-radius: 16px; overflow: hidden; display: flex; align-items: flex-end; box-shadow: var(--shadow-md); }
+.pillar-bento-card:nth-child(1), .pillar-bento-card:nth-child(2) { grid-column: span 3; min-height: 280px; }
+.pillar-bento-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+.pillar-bento-card:hover img { transform: scale(1.08); }
+.pillar-bento-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(20,42,69,.92) 0%, rgba(20,42,69,.4) 55%, rgba(20,42,69,.05) 100%); }
+.pillar-bento-content { position: relative; z-index: 2; padding: 22px; color: #fff; }
+.pillar-bento-content h3 { color: #fff; font-size: 19px; margin-bottom: 6px; }
+.pillar-bento-content p { font-size: 13px; color: #dde5ee; margin: 0 0 10px; max-width: 320px; }
+.pillar-bento-link { font-size: 13px; font-weight: 700; color: var(--spark); }
+@media (max-width: 900px) {
+  .pillar-bento { grid-template-columns: repeat(2, 1fr); }
+  .pillar-bento-card, .pillar-bento-card:nth-child(1), .pillar-bento-card:nth-child(2) { grid-column: span 1; }
+}
+@media (max-width: 600px) { .pillar-bento { grid-template-columns: 1fr; } }
+
+.why-choose { padding: 70px 0; }
+.why-choose-split { display: flex; align-items: center; gap: 48px; }
+.why-choose-photo { flex: 1; max-width: 460px; width: 100%; height: 380px; object-fit: cover; border-radius: 16px; box-shadow: var(--shadow-lg); }
+.why-list { flex: 1.2; display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 22px; }
+.why-item strong { display: block; color: var(--navy); font-size: 16px; margin-bottom: 6px; padding-left: 14px; border-left: 3px solid var(--spark); }
+.why-item p { font-size: 13px; color: var(--grey); margin: 0; padding-left: 14px; }
+@media (max-width: 900px) {
+  .why-choose-split { flex-direction: column; }
+  .why-choose-photo { max-width: 100%; }
+  .why-list { grid-template-columns: 1fr; }
+}
+
+.home-clients { background: var(--light); padding: 60px 0; }
+.home-client-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-top: 20px; }
+.home-clients-more { text-align: center; margin-top: 22px; font-size: 14px; color: var(--grey); }
+.home-clients-more a { font-weight: 700; }
+@media (max-width: 900px) { .home-client-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 600px) { .home-client-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.testimonial-card { position: relative; padding-top: 40px; overflow: hidden; }
+.testimonial-quote-mark { position: absolute; top: 2px; left: 18px; font-size: 52px; font-family: Georgia, serif; color: var(--border); line-height: 1; }
+.testimonial-avatar { position: relative; z-index: 1; width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, var(--navy) 0%, var(--spark-dark) 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; margin-bottom: 12px; }
+.testimonial-card p { position: relative; z-index: 1; }
 
 /* Respect users who've asked their OS to cut down on motion. */
 @media (prefers-reduced-motion: reduce) {

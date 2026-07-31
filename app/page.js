@@ -1,5 +1,5 @@
 import { TESTIMONIALS, HOME_QUOTES } from "../data/content";
-import { WhatsAppCta, TrustBar, AudienceSwitch, PillarGrid, TestimonialsSection, InstagramSection, GovernmentStrip } from "../components/Sections";
+import { WhatsAppCta, HomeStats, AudienceSwitch, PillarGrid, WhyChooseUs, HomeClients, TestimonialsSection, BlogTeaser, InstagramSection, GovernmentStrip } from "../components/Sections";
 
 export const metadata = {
   title: "Vel Systems - Comprehensive Sales & Service for Solar, Security & IT",
@@ -9,7 +9,7 @@ export const metadata = {
 export default function HomePage() {
   return (
     <>
-      <section className="hero hero-solar hero-with-image">
+      <section className="hero hero-solar hero-with-image hero-bold">
         <div className="container hero-inner-split">
           <div className="hero-inner reveal-left">
             <span className="eyebrow">25+ Years of Experience</span>
@@ -20,7 +20,7 @@ export default function HomePage() {
           <img className="hero-photo reveal-right" src="/images/hero/hero-solar.jpg" alt="Rooftop solar installation at sunset" loading="eager" />
         </div>
       </section>
-      <TrustBar />
+      <HomeStats />
       <section className="home-quote-strip">
         <div className="container quote-strip-inner">
           <figure className="quote-figure reveal-left">
@@ -35,7 +35,10 @@ export default function HomePage() {
       </section>
       <AudienceSwitch />
       <PillarGrid />
+      <WhyChooseUs />
+      <HomeClients />
       <TestimonialsSection list={TESTIMONIALS} />
+      <BlogTeaser />
       <InstagramSection />
       <GovernmentStrip />
     </>
