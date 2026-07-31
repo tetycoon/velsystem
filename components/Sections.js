@@ -140,7 +140,7 @@ export function HomeStats() {
     ["25+", "Years of Experience"],
     ["20,000+", "Customers Served"],
     ["500+", "Corporate Clients"],
-    [TEAM_SIZE.replace(" Employees", "+"), "In-House Engineers"],
+    [TEAM_SIZE.replace(" Employees", ""), "In-House Engineers"],
     [`${THIRD_PARTY_RATING.rating}★`, `${THIRD_PARTY_RATING.source} Rating`]
   ];
   return (
