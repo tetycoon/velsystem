@@ -64,6 +64,7 @@ function waLink(message) {
 }
 
 const NAV = [
+  { label: "Home", href: "/" },
   { label: "Solar", href: "/solar/" },
   { label: "Security Systems", href: "/security-systems/", children: "security" },
   { label: "IT Hardware", href: "/it-hardware/", children: "itHardware" },
