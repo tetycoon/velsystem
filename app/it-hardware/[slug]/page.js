@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { IT_ITEMS } from "../../../data/content";
 import { WhatsAppCta, CategoryGrid } from "../../../components/Sections";
+import CategoryIcon from "../../../components/CategoryIcon";
 
 export function generateStaticParams() {
   return IT_ITEMS.map(item => ({ slug: item.slug }));
@@ -20,7 +21,7 @@ export default function ITDetailPage({ params }) {
     <>
       <section className="page-hero">
         <div className="container detail-hero-inner">
-          {item.icon && <img className="detail-hero-icon" src={item.icon} alt="" />}
+          <div className="detail-hero-icon-badge"><CategoryIcon slug={item.slug} size={30} /></div>
           <div>
             <h1>{item.name}</h1>
             <p>{item.tagline}</p>

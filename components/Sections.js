@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { BRAND, waLink, THIRD_PARTY_RATING, TEAM_SIZE, CLIENT_LOGOS, ADDITIONAL_CLIENTS, BLOG_POSTS } from "../data/content";
+import CategoryIcon from "./CategoryIcon";
 
 export function WhatsAppCta({ label, message, extraClass = "" }) {
   return (
@@ -127,7 +128,7 @@ export function BlogTeaser() {
         {posts.map((post, i) => (
           <Link className="blog-card reveal hover-lift" style={{ "--delay": `${i * 70}ms` }} href={`/blog/${post.slug}/`} key={post.slug}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="blog-card-photo" src={post.image} alt="" loading="lazy" />
+            <img className="blog-card-photo" src={post.image} alt={post.title} loading="lazy" />
             <h3>{post.title}</h3>
             <span className="pillar-link">Read more &rarr;</span>
           </Link>
@@ -225,7 +226,7 @@ function TestimonialsCarousel({ list }) {
           <div className="testimonial-card testimonial-card-single hover-lift" key={index}>
             <span className="testimonial-quote-mark">&ldquo;</span>
             {t.image
-              ? <img className="testimonial-photo" src={t.image} alt="" loading="lazy" />
+              ? <img className="testimonial-photo" src={t.image} alt={t.company} loading="lazy" />
               : <div className="testimonial-avatar">{t.name.slice(0, 2).toUpperCase()}</div>}
             <p>&ldquo;{t.quote}&rdquo;</p>
             <strong>{t.name}</strong>
@@ -299,7 +300,7 @@ export function CategoryGrid({ items, basePath }) {
     <div className="category-grid">
       {items.map((item, i) => (
         <Link className="product-card reveal hover-lift" style={{ "--delay": `${(i % 4) * 60}ms` }} href={`${basePath}${item.slug}/`} key={item.slug}>
-          {item.icon && <div className="icon-badge"><img className="category-card-icon" src={item.icon} alt="" loading="lazy" /></div>}
+          <div className="icon-badge"><CategoryIcon slug={item.slug} size={28} className="category-card-icon" /></div>
           <h3>{item.name}</h3>
           <p>{item.tagline}</p>
         </Link>

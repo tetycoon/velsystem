@@ -3,6 +3,7 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { NAV, UTILITY_NAV, BRAND, waLink, SECURITY_ITEMS, IT_ITEMS } from "../data/content";
+import CategoryIcon from "./CategoryIcon";
 
 export default function Header() {
   const current = usePathname();
@@ -12,7 +13,7 @@ export default function Header() {
     if (item.children === "security") {
       return SECURITY_ITEMS.map(s => (
         <Link key={s.slug} href={`/security-systems/${s.slug}/`}>
-          {s.icon && <img className="dropdown-icon" src={s.icon} alt="" />}
+          <CategoryIcon slug={s.slug} size={18} className="dropdown-icon" />
           {s.name}
         </Link>
       ));
@@ -20,7 +21,7 @@ export default function Header() {
     if (item.children === "itHardware") {
       return IT_ITEMS.map(s => (
         <Link key={s.slug} href={`/it-hardware/${s.slug}/`}>
-          {s.icon && <img className="dropdown-icon" src={s.icon} alt="" />}
+          <CategoryIcon slug={s.slug} size={18} className="dropdown-icon" />
           {s.name}
         </Link>
       ));
