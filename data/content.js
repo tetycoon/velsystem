@@ -270,8 +270,8 @@ const SHOP_PRODUCTS = [
 // (SOLAR_FAQ, SOLAR_FINANCE, and the security/IT sub-item descriptions) rather
 // than invented statistics.
 const BLOG_POSTS = [
-  { slug: "video-door-phone-not-a-luxury", title: "Secure Your Home with a Smart Touch: Why a Video Door Phone Is No Longer a Luxury", image: "/images/icons/icon-video-door-phone.jpg", body: [
-    "A knock on the door used to mean walking over, opening it, and finding out who it was. A video door phone removes the guesswork. You see and speak to whoever's outside before you decide whether to open up at all, which matters whether you're home alone, expecting a delivery, or just don't want to deal with someone at the door.",
+  { slug: "video-door-phone-not-a-luxury", title: "Secure Your Home with a Smart Touch: Why a Video Door Phone Is No Longer a Luxury", image: "/images/subitems/subitem-video-door-phone-0.jpg", body: [
+    "A knock on the door used to mean walking over, opening it, and finding out who it was. Installing a video door phone removes the guesswork. A video door phone lets you see and speak to whoever's outside before you decide whether to open up at all, which matters whether you're home alone, expecting a delivery, or just don't want to deal with someone at the door.",
     "The units we install, from Hikvision and Honeywell, both give you high-resolution video, two-way audio, and remote access from your phone, so you can answer the door from another room or another city. Motion detection and night vision mean you're not caught off guard after dark either.",
     "For apartment buildings and gated communities, multi-unit versions let each flat run its own handset off a shared entry panel, so every resident gets the same visitor screening without needing a separate wired system per door.",
     "It's a small addition to install, usually done alongside your existing wiring or as a standalone WiFi unit, but it changes a basic daily habit: you stop opening the door on faith and start opening it on information. That's the shift from luxury to just sensible."
@@ -284,7 +284,7 @@ const BLOG_POSTS = [
     "Myth 4: There's no financial help available. Residential customers in India can access government subsidies on rooftop solar, and we handle the paperwork side of that process rather than leaving you to figure it out alone.",
     "Myth 5: Installation takes forever. A home installation typically takes 2 to 5 days. Larger industrial projects take longer, but that's a matter of scale, not a sign that solar itself is a slow, complicated process."
   ] },
-  { slug: "choosing-the-right-printer", title: "Choosing the Right Printer Made Simple, A Local Guide from Vel Systems, Chengalpattu", image: "/images/icons/icon-printer.jpg", body: [
+  { slug: "choosing-the-right-printer", title: "Choosing the Right Printer Made Simple, A Local Guide from Vel Systems, Chengalpattu", image: "/images/subitems/subitem-printer-1.jpg", body: [
     "Printers aren't one-size-fits-all, and picking the wrong type usually shows up later as a high per-page cost or a machine that can't keep up with what you actually print. Here's how the main categories break down.",
     "Inkjet printers give you high-quality, fast printing with wireless connectivity and automatic duplexing in a compact, energy-efficient design, good for home offices and light everyday use.",
     "Laser printers use toner and a laser to produce high-quality prints at fast speeds, which makes them the better fit for offices with steady, higher-volume printing.",
@@ -300,15 +300,15 @@ const BLOG_POSTS = [
     "On subsidy: residential households can get ₹30,000 per kW for the first 2 kW, and ₹18,000 per kW for additional capacity up to 3 kW, capped at ₹78,000 total for larger systems. Housing societies and RWAs get ₹18,000 per kW for common facilities including EV charging, up to 500 kW capacity.",
     "The best system isn't the biggest one, it's the one sized correctly for your actual roof area and power usage. That's what a proper site assessment is for, and it's the first step before any quote means anything."
   ] },
-  { slug: "power-up-your-tech-life", title: "Power Up Your Tech Life, at Vel Systems", image: "/images/icons/icon-laptop.jpg", body: [
-    "Most people only think about their IT setup when something breaks. A little planning ahead of that point saves a lot of downtime later.",
+  { slug: "power-up-your-tech-life", title: "IT Hardware, Networking & AMC Support: Power Up Your Tech Life at Vel Systems", image: "/images/icons/icon-laptop.jpg", body: [
+    "Most people only think about their IT hardware setup when something breaks. A little planning ahead of that point, on hardware, networking, and AMC support, saves a lot of downtime later.",
     "On the hardware side, that means picking desktops and laptops sized to what you actually do, from everyday office work to demanding workstation tasks, backed by on-site service instead of a box that ships and disappears.",
     "On the infrastructure side, that means networking that doesn't fall over under load, whether that's switches and structured cabling for an office or a properly planned WiFi access point layout for consistent coverage across every room. It also means a UPS sized to your load, so a power cut doesn't take your server or workstation down with it.",
     "And on the ongoing side, that means an AMC or ASC contract, so maintenance is a scheduled, predictable cost instead of an emergency call when something finally fails.",
     "None of this is complicated in isolation. It's just easier to get right with someone who's been doing it locally for over two decades than to piece it together machine by machine."
   ] },
-  { slug: "top-5-reasons-cctv-2025", title: "Top 5 Reasons to Install CCTV at Home in 2025", image: "/images/icons/icon-cctv-camera.jpg", body: [
-    "CCTV has moved well past grainy black-and-white footage. Here's what modern home surveillance actually gives you.",
+  { slug: "top-5-reasons-cctv-2025", title: "Top 5 Reasons to Install CCTV at Home in 2026", image: "/images/icons/icon-cctv-camera.jpg", body: [
+    "CCTV has moved well past grainy black-and-white footage. Here's what modern CCTV home surveillance actually gives you.",
     "1. Coverage that fits the space. Dome cameras suit indoor settings with a wide, hard-to-read viewing angle, while bullet cameras are built for outdoor durability with sharp, high-definition footage.",
     "2. Control when you need it. PTZ (pan-tilt-zoom) cameras let you move the camera and zoom into specific areas remotely, useful for keeping an eye on a larger compound from one unit.",
     "3. Easy remote access. IP cameras integrate easily with your network for real-time alerts and remote viewing from your phone, wherever you are.",
@@ -324,6 +324,14 @@ const BLOG_POSTS = [
     "4. Installation is fast. Most home systems are installed in 2 to 5 days, so you're not living through a long, disruptive project to get there.",
     "5. Your roof is probably already suitable. A 1 kW system needs roughly 100 square feet of shadow-free space, which is less than most homeowners expect, and a site assessment tells you exactly what your setup would look like.",
     "None of these reasons depend on a limited-time offer or a sales deadline. They're just the current state of subsidy, financing, and technology, and none of them get better by waiting."
+  ] },
+  { slug: "amc-vs-asc-annual-maintenance-contract-explained", title: "AMC vs ASC: Which Annual Maintenance Contract Actually Fits Your Business", image: "/images/hero/quote-service.jpg", body: [
+    "An Annual Maintenance Contract is the difference between IT problems getting fixed on a schedule and IT problems getting fixed in a panic. Once you own more than a couple of computers, printers, or a network, an AMC turns unpredictable repair calls into a fixed, planned cost. The confusing part is that AMC isn't one product, it's a few, and picking the wrong one means paying for cover you don't need or missing cover you do.",
+    "Comprehensive AMC is the full-cover option. We assess your complete setup and agree one annual amount that includes spare parts, plus preventive maintenance at least once a month with additional service visits as needed through the year. This suits businesses running critical equipment where downtime costs more than the contract itself, think servers, workstations running production software, or a network that can't afford to go dark.",
+    "Non-Comprehensive ASC (Annual Service Contract) covers the same preventive maintenance and on-demand service, but spare parts are billed separately at a fixed, reasonable rate rather than bundled into the annual fee. It's the right call when your hardware is newer, still under manufacturer warranty for parts, or when you'd rather pay for components only when they actually fail.",
+    "On-Call Services skip the annual commitment entirely. Our service engineers respond to requests within working hours whenever something comes up, which fits businesses with a small setup that doesn't yet justify a full annual contract.",
+    "The honest way to choose: count your machines, check what's still under warranty, and be realistic about how much downtime you can absorb before it costs you money. A five-machine office with warranty cover still running rarely needs Comprehensive AMC. A factory floor running 40 workstations with zero tolerance for downtime almost always does.",
+    "We've been servicing AMC and ASC contracts for businesses around Chengalpattu for over 25 years, with an in-house team of 40+ engineers rather than subcontracted technicians. Tell us your equipment list on WhatsApp and we'll tell you plainly which contract type actually fits, not just which one we'd prefer to sell."
   ] }
 ];
 
