@@ -32,10 +32,10 @@ export function TrustBar() {
 
 const PILLARS = [
   { name: "Solar", href: "/solar/", desc: "End-to-end solar energy systems for home, business, and industrial use.", image: "/images/solar/solar-residential.jpg" },
-  { name: "Security Systems", href: "/security-systems/", desc: "CCTV, access control, biometric, fire alarm, and more.", image: "/images/icons/icon-cctv-camera.jpg" },
-  { name: "IT Hardware", href: "/it-hardware/", desc: "Desktops, laptops, servers, networking, and IT peripherals.", image: "/images/icons/icon-laptop.jpg" },
-  { name: "AMC Contracts", href: "/amc/", desc: "Comprehensive and non-comprehensive maintenance contracts.", image: "/images/icons/icon-server-workstation.jpg" },
-  { name: "Shop", href: "/shop/", desc: "Buy select products online with direct WhatsApp support.", image: "/images/products/tplink-archer-c24-router.jpg" }
+  { name: "Security Systems", href: "/security-systems/", desc: "CCTV, access control, biometric, fire alarm, and more.", image: "/images/subitems/subitem-cctv-camera-1.jpg" },
+  { name: "IT Hardware", href: "/it-hardware/", desc: "Desktops, laptops, servers, networking, and IT peripherals.", image: "/images/subitems/subitem-laptop-0.jpg" },
+  { name: "AMC Contracts", href: "/amc/", desc: "Comprehensive and non-comprehensive maintenance contracts.", image: "/images/subitems/subitem-network-hardware-solution-0.jpg" },
+  { name: "Shop", href: "/shop/", desc: "Buy select products online with direct WhatsApp support.", image: "/images/products/lenovo-bluetooth-headphone.jpg" }
 ];
 
 export function PillarGrid() {
