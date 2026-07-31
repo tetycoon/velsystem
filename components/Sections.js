@@ -299,7 +299,7 @@ export function CategoryGrid({ items, basePath }) {
     <div className="category-grid">
       {items.map((item, i) => (
         <Link className="product-card reveal hover-lift" style={{ "--delay": `${(i % 4) * 60}ms` }} href={`${basePath}${item.slug}/`} key={item.slug}>
-          {item.icon && <img className="category-card-icon" src={item.icon} alt="" loading="lazy" />}
+          {item.icon && <div className="icon-badge"><img className="category-card-icon" src={item.icon} alt="" loading="lazy" /></div>}
           <h3>{item.name}</h3>
           <p>{item.tagline}</p>
         </Link>

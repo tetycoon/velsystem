@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ScrollReveal from "../components/ScrollReveal";
+import ScrollProgress from "../components/ScrollProgress";
 import { BRAND, LOCATIONS, THIRD_PARTY_RATING } from "../data/content";
 
 // Swap this once velsystems.in is pointed at this deployment (same env var the
@@ -79,6 +80,7 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <LocalBusinessSchema />
+        <ScrollProgress />
         <Header />
         <main>{children}</main>
         <Footer />

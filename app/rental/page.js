@@ -18,7 +18,7 @@ export default function RentalPage() {
         <div className="category-grid">
           {RENTAL_CATEGORIES.map((c, i) => (
             <div className="product-card reveal hover-lift" style={{ "--delay": `${i * 60}ms` }} key={c.name}>
-              <img className="category-card-icon" src={c.image} alt="" loading="lazy" />
+              <div className="icon-badge"><img className="category-card-icon" src={c.image} alt="" loading="lazy" /></div>
               <h3>{c.name}</h3>
               <p>{c.desc}</p>
             </div>
