@@ -107,6 +107,85 @@ li { list-style: none; }
 .page-hero { background: var(--light-blue); padding: 64px 0; border-bottom: 1px solid var(--border); }
 .page-hero h1 { font-size: 34px; margin-bottom: 10px; }
 .page-hero p { color: var(--grey); max-width: 700px; font-size: 16px; }
+
+/* Solar page hero carousel: full-bleed background-image slides with a fade
+   crossfade, dark gradient overlay for text contrast (same navy/red gradient
+   family as the homepage .hero), manual arrows + dots, pause on hover. */
+.solar-hero-carousel {
+  position: relative;
+  height: 560px;
+  overflow: hidden;
+  color: #fff;
+}
+.solar-hero-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--navy-dark);
+  opacity: 0;
+  transition: opacity 1s ease;
+  display: flex;
+  align-items: center;
+}
+.solar-hero-slide.active { opacity: 1; z-index: 1; }
+.solar-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(13,44,107,.88) 0%, rgba(9,30,74,.78) 55%, rgba(232,40,45,.4) 160%);
+}
+.solar-hero-content { position: relative; z-index: 2; max-width: 720px; }
+.solar-hero-content h1 { font-size: 40px; line-height: 1.15; color: #fff; margin-bottom: 16px; }
+.solar-hero-content h2 { font-size: 32px; color: #fff; margin: 0; }
+.solar-hero-content p { font-size: 17px; margin-bottom: 24px; color: #EAF2FE; }
+.solar-hero-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,.18);
+  color: #fff;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s;
+}
+.solar-hero-nav:hover { background: rgba(255,255,255,.32); }
+.solar-hero-nav.prev { left: 20px; }
+.solar-hero-nav.next { right: 20px; }
+.solar-hero-dots {
+  position: absolute;
+  bottom: 22px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  z-index: 3;
+}
+.solar-hero-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,.4);
+  cursor: pointer;
+  padding: 0;
+}
+.solar-hero-dot.active { background: #fff; }
+@media (max-width: 640px) {
+  .solar-hero-carousel { height: 460px; }
+  .solar-hero-content h1 { font-size: 26px; }
+  .solar-hero-content h2 { font-size: 20px; }
+  .solar-hero-nav { width: 36px; height: 36px; font-size: 20px; }
+}
 /* Both gradient stops kept dark enough that the gold numbers stay readable
    (checked at 6.4:1 and 5.21:1) — the old navy-light stop was too bright for
    gold text to clear contrast against. */

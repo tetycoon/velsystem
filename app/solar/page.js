@@ -1,22 +1,17 @@
-import { SOLAR_TYPES, SOLAR_FINANCE, SOLAR_FAQ, TRUSTED_BY, TESTIMONIALS, HOME_QUOTES } from "../../data/content";
+import { SOLAR_TYPES, SOLAR_FINANCE, SOLAR_FAQ, TRUSTED_BY, TESTIMONIALS } from "../../data/content";
 import { WhatsAppCta, GovernmentStrip } from "../../components/Sections";
+import SolarHeroCarousel from "../../components/SolarHeroCarousel";
 
 export const metadata = {
-  title: "Solar Energy Solutions | Vel Systems",
-  description: "End-to-end solar power systems for homes, businesses, and industrial sites, backed by 25 years of service experience."
+  title: "Solar Panel Installation Company in Chengalpattu, Tamil Nadu | Vel Systems",
+  description: "End-to-end solar power systems for homes, businesses, and industrial sites in Chengalpattu and Tamil Nadu, backed by 25+ years of service experience."
 };
 
 export default function SolarPage() {
   const testimonial = TESTIMONIALS[0];
   return (
     <>
-      <section className="page-hero">
-        <div className="container">
-          <h1>Power Your Future with Smart Solar Solutions</h1>
-          <p>{HOME_QUOTES.solarBlurb}</p>
-          <WhatsAppCta label="Get a Free Solar Quote on WhatsApp" message="Hi Vel Systems, I'm interested in a solar quote for my property." />
-        </div>
-      </section>
+      <SolarHeroCarousel />
 
       <section className="container content-section">
         <h2>Our Customized Solutions</h2>
@@ -76,7 +71,7 @@ export default function SolarPage() {
       {testimonial && (
         <section className="container content-section">
           <div className="testimonial-card solar-testimonial reveal">
-            {testimonial.image && <img className="testimonial-photo" src={testimonial.image} alt="" loading="lazy" />}
+            {testimonial.image && <img className="testimonial-photo" src={testimonial.image} alt={testimonial.company} loading="lazy" />}
             <p>&ldquo;{testimonial.quote}&rdquo;</p>
             <strong>{testimonial.name}</strong>
             <span>{testimonial.company}</span>
