@@ -1,3 +1,5 @@
+"use client";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { BRAND, waLink, THIRD_PARTY_RATING, TEAM_SIZE, CLIENT_LOGOS, ADDITIONAL_CLIENTS, BLOG_POSTS } from "../data/content";
 
@@ -193,24 +195,59 @@ export function TestimonialsSection({ list }) {
       </section>
     );
   }
+  return <TestimonialsCarousel list={list} />;
+}
+
+function TestimonialsCarousel({ list }) {
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (list.length <= 1 || paused) return;
+    const timer = setInterval(() => setIndex(i => (i + 1) % list.length), 5000);
+    return () => clearInterval(timer);
+  }, [list.length, paused]);
+
+  const t = list[index];
+
   return (
     <section className="testimonials">
       <div className="container">
         <h2 className="section-title reveal">What Our Customers Say</h2>
-        <div className="testimonial-grid">
-          {list.map((t, i) => (
-            <div className={`testimonial-card hover-lift ${i % 2 === 0 ? "reveal-left" : "reveal-right"}`} style={{ "--delay": `${i * 90}ms` }} key={i}>
-              <span className="testimonial-quote-mark">&ldquo;</span>
-              {t.image
-                ? <img className="testimonial-photo" src={t.image} alt="" loading="lazy" />
-                : <div className="testimonial-avatar">{t.name.slice(0, 2).toUpperCase()}</div>}
-              <p>&ldquo;{t.quote}&rdquo;</p>
-              <strong>{t.name}</strong>
-              <span>{t.company}</span>
-              {t.source && <span className="testimonial-source">via {t.source}</span>}
-            </div>
-          ))}
+        <div
+          className="testimonial-carousel"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
+          {list.length > 1 && (
+            <button className="testimonial-nav prev" aria-label="Previous testimonial" onClick={() => setIndex(i => (i - 1 + list.length) % list.length)}>&#8249;</button>
+          )}
+          <div className="testimonial-card testimonial-card-single hover-lift" key={index}>
+            <span className="testimonial-quote-mark">&ldquo;</span>
+            {t.image
+              ? <img className="testimonial-photo" src={t.image} alt="" loading="lazy" />
+              : <div className="testimonial-avatar">{t.name.slice(0, 2).toUpperCase()}</div>}
+            <p>&ldquo;{t.quote}&rdquo;</p>
+            <strong>{t.name}</strong>
+            <span>{t.company}</span>
+            {t.source && <span className="testimonial-source">via {t.source}</span>}
+          </div>
+          {list.length > 1 && (
+            <button className="testimonial-nav next" aria-label="Next testimonial" onClick={() => setIndex(i => (i + 1) % list.length)}>&#8250;</button>
+          )}
         </div>
+        {list.length > 1 && (
+          <div className="testimonial-dots">
+            {list.map((_, i) => (
+              <button
+                key={i}
+                className={`testimonial-dot${i === index ? " active" : ""}`}
+                aria-label={`Go to testimonial ${i + 1}`}
+                onClick={() => setIndex(i)}
+              />
+            ))}
+          </div>
+        )}
         {THIRD_PARTY_RATING && (
           <a
             className="rating-badge reveal"
