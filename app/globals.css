@@ -62,7 +62,7 @@ li { list-style: none; }
 .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; position: relative; }
 .logo { display: flex; align-items: center; }
 .logo-img { height: 54px; width: auto; display: block; }
-.header-badges-strip { background: var(--navy-dark); border-bottom: 1px solid rgba(255,255,255,.12); }
+.header-badges-strip { background: var(--light-blue); border-bottom: 1px solid var(--border); }
 .header-badges { display: flex; align-items: center; justify-content: flex-end; gap: 22px; padding: 8px 24px; }
 .header-badges img { height: 36px; width: auto; object-fit: contain; }
 @media (max-width: 600px) {
