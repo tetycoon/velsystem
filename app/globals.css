@@ -11,9 +11,9 @@
   --brand-blue-bright: #2984F6;
   --orange: #E8282D;
   --orange-dark: #C71E22;
-  --orange-light: #F0605F;
+  --orange-light: #FF8A87;
   --gold: #E8A93C;
-  --teal: #2984F6;
+  --teal: #1D5FC2;
   --teal-light: #EAF2FE;
   --spark: #2984F6;
   --spark-dark: #1D5FC2;
@@ -107,7 +107,10 @@ li { list-style: none; }
 .page-hero { background: var(--light-blue); padding: 64px 0; border-bottom: 1px solid var(--border); }
 .page-hero h1 { font-size: 34px; margin-bottom: 10px; }
 .page-hero p { color: var(--grey); max-width: 700px; font-size: 16px; }
-.trust-bar { background: linear-gradient(100deg, var(--navy) 0%, var(--navy-light) 100%); padding: 34px 0; }
+/* Both gradient stops kept dark enough that the gold numbers stay readable
+   (checked at 6.4:1 and 5.21:1) — the old navy-light stop was too bright for
+   gold text to clear contrast against. */
+.trust-bar { background: linear-gradient(100deg, var(--navy-dark) 0%, #123A82 100%); padding: 34px 0; }
 .trust-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; text-align: center; color: #fff; }
 .trust-grid strong { display: block; font-size: 26px; font-weight: 800; color: var(--gold); transition: transform .25s var(--ease); }
 .trust-grid span { font-size: 12px; color: #cfd9e5; }
@@ -208,7 +211,7 @@ li { list-style: none; }
 .footer-grid h4 { color: #fff; font-size: 15px; font-weight: 700; letter-spacing: .02em; margin-bottom: 14px; }
 .footer-links li { padding: 4px 0; }
 .footer-links a { color: #cfd9e5; font-size: 14px; }
-.footer-links a:hover { color: var(--orange); }
+.footer-links a:hover { color: var(--orange-light); }
 .footer-bottom { border-top: 1px solid #2a4266; padding: 16px 0; font-size: 13px; text-align: center; }
 .whatsapp-float { position: fixed; bottom: 22px; right: 22px; background: #25D366; color: #fff; width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; box-shadow: 0 6px 16px rgba(0,0,0,.25); z-index: 40; animation: whatsappPulse 2.6s ease-in-out infinite; transition: transform .2s var(--ease); }
 .whatsapp-float:hover { transform: scale(1.08); animation-play-state: paused; }
@@ -380,7 +383,7 @@ li { list-style: none; }
 .pillar-bento-content { position: relative; z-index: 2; padding: 22px; color: #fff; }
 .pillar-bento-content h3 { color: #fff; font-size: 19px; margin-bottom: 6px; }
 .pillar-bento-content p { font-size: 13px; color: #dde5ee; margin: 0 0 10px; max-width: 320px; }
-.pillar-bento-link { font-size: 13px; font-weight: 700; color: var(--spark); }
+.pillar-bento-link { font-size: 13px; font-weight: 700; color: var(--orange-light); }
 @media (max-width: 900px) {
   .pillar-bento { grid-template-columns: repeat(2, 1fr); }
   .pillar-bento-card, .pillar-bento-card:nth-child(1), .pillar-bento-card:nth-child(2) { grid-column: span 1; }
