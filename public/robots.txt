@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /shop/cart/
+Disallow: /api/
+Disallow: /admin
+Disallow: /payload-api/
+
+Sitemap: https://velsystem.vercel.app/sitemap.xml
