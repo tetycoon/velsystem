@@ -522,3 +522,28 @@ li { list-style: none; }
     transition: none !important;
   }
 }
+
+/* Shop page restyle: category filter pills, hot-deal ribbon, stock
+   indicator, evenly aligned card buttons. Layout patterns borrowed from a
+   reference catalog site the client pointed to, adapted to Vel Systems'
+   own brand colors and kept strictly B2C (no login gates, no hidden
+   pricing, no dealer accounts). */
+.shop-toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 26px; }
+.shop-filter-pill { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--border); background: #fff; font-size: 13px; font-weight: 600; color: var(--grey); cursor: pointer; transition: all .2s var(--ease); }
+.shop-filter-pill:hover { border-color: var(--navy); color: var(--navy); }
+.shop-filter-pill.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+.shop-section-heading { font-size: 19px; margin: 30px 0 14px; display: flex; align-items: center; gap: 8px; }
+.shop-featured { margin-bottom: 8px; }
+.shop-featured .shop-section-heading { color: var(--orange-dark); }
+.product-tile { position: relative; display: flex; flex-direction: column; overflow: hidden; }
+.hot-deal-ribbon { position: absolute; top: 14px; left: 0; background: var(--orange); color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; padding: 4px 12px 4px 10px; border-radius: 0 4px 4px 0; box-shadow: 0 2px 6px rgba(0,0,0,.18); }
+.tile-stock { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--grey); margin-bottom: 6px; }
+.tile-stock-dot { width: 7px; height: 7px; border-radius: 50%; background: #2CA36B; display: inline-block; flex-shrink: 0; }
+.tile-quote-note { font-size: 11px; color: var(--grey); font-style: italic; margin: -4px 0 8px; }
+.product-tile .price { font-size: 17px; }
+.product-tile .btn { margin-top: auto; text-align: center; }
+.shop-empty { text-align: center; padding: 48px 20px; color: var(--grey); background: #fff; border-radius: 12px; border: 1px solid var(--border); }
+@media (max-width: 600px) {
+  .shop-toolbar { gap: 8px; }
+  .shop-filter-pill { padding: 7px 13px; font-size: 12px; }
+}
