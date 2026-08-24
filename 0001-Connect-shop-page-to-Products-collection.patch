@@ -1,0 +1,2380 @@
+From 03cf302532ff2ab7d1102997f81135553d3ca9cb Mon Sep 17 00:00:00 2001
+From: Test <test@test.com>
+Date: Thu, 20 Aug 2026 23:12:01 +0530
+Subject: [PATCH] Connect shop page to Products collection
+
+- Products collection: add Accessories category, featured (Hot Deals)
+  checkbox, switch image field from upload to plain text URL (Vercel's
+  serverless filesystem can't keep uploaded files)
+- Shop page: fetch live products from Payload instead of the old
+  hardcoded SHOP_PRODUCTS list, via Payload's Local API
+- ShopGrid: read products from props, show a Hot Deals section for
+  featured items, and show a WhatsApp quote button instead of Add to
+  Cart for quote-only items
+- Commit the config split (payload.config.mjs + payload.config.js
+  shim) and the first migration, which were only ever applied by hand
+  before - now tracked in git so the repo matches the live database
+---
+ app/(site)/shop/page.js         |   24 +-
+ collections/Media.js            |    6 +
+ collections/Products.js         |   17 +-
+ components/ShopGrid.js          |   76 +-
+ migrations/20260820_124947.json | 1771 +++++++++++++++++++++++++++++++
+ migrations/20260820_124947.ts   |  239 +++++
+ migrations/index.ts             |    9 +
+ payload.config.js               |   52 +-
+ payload.config.mjs              |   42 +
+ 9 files changed, 2169 insertions(+), 67 deletions(-)
+ create mode 100644 migrations/20260820_124947.json
+ create mode 100644 migrations/20260820_124947.ts
+ create mode 100644 migrations/index.ts
+ create mode 100644 payload.config.mjs
+
+diff --git a/app/(site)/shop/page.js b/app/(site)/shop/page.js
+index e46eea7..99bb95a 100644
+--- a/app/(site)/shop/page.js
++++ b/app/(site)/shop/page.js
+@@ -1,3 +1,5 @@
++import { getPayload } from 'payload'
++import config from '../../../payload.config.mjs'
+ import ShopGrid from "../../../components/ShopGrid";
+ 
+ export const metadata = {
+@@ -5,7 +7,25 @@ export const metadata = {
+   description: "Buy IT hardware and security products online from Vel Systems."
+ };
+ 
+-export default function ShopPage() {
++// Always fetch fresh — staff can add/change products in the admin panel and
++// expect the shop to reflect it, not a cached build-time snapshot.
++export const dynamic = 'force-dynamic'
++
++async function getProducts() {
++  const payload = await getPayload({ config })
++  const { docs } = await payload.find({
++    collection: 'products',
++    where: { inStock: { equals: true } },
++    sort: '-featured',
++    limit: 100,
++    depth: 0,
++  })
++  return docs
++}
++
++export default async function ShopPage() {
++  const products = await getProducts();
++
+   return (
+     <>
+       <section className="page-hero">
+@@ -15,7 +35,7 @@ export default function ShopPage() {
+         </div>
+       </section>
+       <section className="container content-section">
+-        <ShopGrid />
++        <ShopGrid products={products} />
+       </section>
+     </>
+   );
+diff --git a/collections/Media.js b/collections/Media.js
+index 366e6e6..7ecdaaa 100644
+--- a/collections/Media.js
++++ b/collections/Media.js
+@@ -1,3 +1,9 @@
++// NOTE: not wired into anything yet, and not safe to use as-is. Vercel's
++// serverless functions run on a read-only filesystem, so this collection's
++// local-disk upload storage (staticDir below) will fail there. Needs a real
++// cloud storage adapter (e.g. @payloadcms/storage-vercel-blob) before any
++// collection should actually link to this one. Products.image is a plain
++// text URL field for now specifically to avoid this problem.
+ const loggedIn = ({ req: { user } }) => Boolean(user)
+ 
+ export const Media = {
+diff --git a/collections/Products.js b/collections/Products.js
+index 21a6a55..4ed2a61 100644
+--- a/collections/Products.js
++++ b/collections/Products.js
+@@ -1,14 +1,13 @@
+-// Backs the /shop page. Once this is wired up, the Shop page reads live
+-// products from here instead of the hardcoded SHOP_PRODUCTS array in
+-// data/content.js — so staff can add/change products and prices without
+-// a code deploy.
++// Backs the /shop page. The Shop page reads live products from here instead
++// of the old hardcoded SHOP_PRODUCTS array in data/content.js — so staff can
++// add/change products and prices without a code deploy.
+ const loggedIn = ({ req: { user } }) => Boolean(user)
+ 
+ export const Products = {
+   slug: 'products',
+   admin: {
+     useAsTitle: 'name',
+-    defaultColumns: ['name', 'price', 'inStock', 'updatedAt'],
++    defaultColumns: ['name', 'price', 'category', 'inStock', 'updatedAt'],
+   },
+   access: {
+     read: () => true, // public: the shop page reads this without logging in
+@@ -23,11 +22,17 @@ export const Products = {
+       { label: 'Solar', value: 'solar' },
+       { label: 'Security Systems', value: 'security-systems' },
+       { label: 'IT Hardware', value: 'it-hardware' },
++      { label: 'Accessories', value: 'accessories' },
+     ]},
+     { name: 'price', type: 'number', required: true, admin: { description: 'Price in INR. Leave blank and check "Quote only" for items without a fixed price.' } },
+     { name: 'quoteOnly', type: 'checkbox', defaultValue: false, label: 'Quote only (no fixed price shown)' },
+     { name: 'description', type: 'textarea' },
+-    { name: 'image', type: 'upload', relationTo: 'media' },
++    {
++      name: 'image',
++      type: 'text',
++      admin: { description: 'Path or URL to the product photo, e.g. "/images/products/cctv-camera.jpg". Not an upload field — Vercel\'s serverless functions can\'t keep uploaded files, so this is a link instead. Put new photos in the public/images/products folder in the code, or use a fully hosted image URL.' },
++    },
+     { name: 'inStock', type: 'checkbox', defaultValue: true },
++    { name: 'featured', type: 'checkbox', defaultValue: false, label: 'Show in "Hot Deals"', admin: { description: 'Featured products appear in the highlighted deals section at the top of the shop.' } },
+   ],
+ }
+diff --git a/components/ShopGrid.js b/components/ShopGrid.js
+index 227856c..10c56d5 100644
+--- a/components/ShopGrid.js
++++ b/components/ShopGrid.js
+@@ -1,10 +1,17 @@
+ "use client";
+ import { useState, useEffect } from "react";
+ import Link from "next/link";
+-import { SHOP_PRODUCTS, waLink } from "../data/content";
++import { waLink } from "../data/content";
+ import { addToCart, getCart } from "../lib/cart";
+ 
+-export default function ShopGrid() {
++const CATEGORY_LABELS = {
++  solar: "Solar",
++  "security-systems": "Security Systems",
++  "it-hardware": "IT Hardware",
++  accessories: "Accessories",
++};
++
++export default function ShopGrid({ products = [] }) {
+   const [cartCount, setCartCount] = useState(0);
+   const [addedSlug, setAddedSlug] = useState(null);
+ 
+@@ -20,25 +27,60 @@ export default function ShopGrid() {
+     setTimeout(() => setAddedSlug(null), 1200);
+   }
+ 
+-  return (
+-    <>
+-      <div className="shop-grid">
+-        {SHOP_PRODUCTS.map(p => (
+-          <div className="product-tile" key={p.slug}>
+-            {p.image && (
+-              <div className="tile-image">
+-                {/* eslint-disable-next-line @next/next/no-img-element */}
+-                <img src={p.image} alt={p.name} loading="lazy" />
+-              </div>
+-            )}
+-            <span className="tile-category">{p.category}</span>
+-            <h3>{p.name}</h3>
+-            <p className="price">&#8377;{p.price.toLocaleString("en-IN")}</p>
++  const featured = products.filter(p => p.featured);
++  const rest = products.filter(p => !p.featured);
++
++  function renderTile(p) {
++    return (
++      <div className="product-tile" key={p.slug}>
++        {p.image && (
++          <div className="tile-image">
++            {/* eslint-disable-next-line @next/next/no-img-element */}
++            <img src={p.image} alt={p.name} loading="lazy" />
++          </div>
++        )}
++        <span className="tile-category">{CATEGORY_LABELS[p.category] || p.category}</span>
++        <h3>{p.name}</h3>
++        {p.quoteOnly ? (
++          <>
++            <p className="price">Price on request</p>
++            <a
++              className="btn btn-outline"
++              href={waLink(`Hi Vel Systems, I would like a price quote for: ${p.name}`)}
++              target="_blank"
++              rel="noopener noreferrer"
++            >
++              Get a Quote
++            </a>
++          </>
++        ) : (
++          <>
++            <p className="price">&#8377;{Number(p.price || 0).toLocaleString("en-IN")}</p>
+             <button className="btn btn-outline" onClick={() => handleAdd(p)}>
+               {addedSlug === p.slug ? "Added" : "Add to Cart"}
+             </button>
++          </>
++        )}
++      </div>
++    );
++  }
++
++  if (products.length === 0) {
++    return <p>No products available right now. Message us on WhatsApp and we&apos;ll help you find what you need.</p>;
++  }
++
++  return (
++    <>
++      {featured.length > 0 && (
++        <div className="shop-featured">
++          <h2>Hot Deals</h2>
++          <div className="shop-grid">
++            {featured.map(renderTile)}
+           </div>
+-        ))}
++        </div>
++      )}
++      <div className="shop-grid">
++        {rest.map(renderTile)}
+       </div>
+       {cartCount > 0 && (
+         <div className="cart-bar">
+diff --git a/migrations/20260820_124947.json b/migrations/20260820_124947.json
+new file mode 100644
+index 0000000..9b33615
+--- /dev/null
++++ b/migrations/20260820_124947.json
+@@ -0,0 +1,1771 @@
++{
++  "version": "7",
++  "dialect": "postgresql",
++  "tables": {
++    "public.users_sessions": {
++      "name": "users_sessions",
++      "schema": "",
++      "columns": {
++        "_order": {
++          "name": "_order",
++          "type": "integer",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "_parent_id": {
++          "name": "_parent_id",
++          "type": "integer",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "id": {
++          "name": "id",
++          "type": "varchar",
++          "primaryKey": true,
++          "notNull": true
++        },
++        "created_at": {
++          "name": "created_at",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "expires_at": {
++          "name": "expires_at",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": true
++        }
++      },
++      "indexes": {
++        "users_sessions_order_idx": {
++          "name": "users_sessions_order_idx",
++          "columns": [
++            {
++              "expression": "_order",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "users_sessions_parent_id_idx": {
++          "name": "users_sessions_parent_id_idx",
++          "columns": [
++            {
++              "expression": "_parent_id",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        }
++      },
++      "foreignKeys": {
++        "users_sessions_parent_id_fk": {
++          "name": "users_sessions_parent_id_fk",
++          "tableFrom": "users_sessions",
++          "tableTo": "users",
++          "columnsFrom": [
++            "_parent_id"
++          ],
++          "columnsTo": [
++            "id"
++          ],
++          "onDelete": "cascade",
++          "onUpdate": "no action"
++        }
++      },
++      "compositePrimaryKeys": {},
++      "uniqueConstraints": {},
++      "policies": {},
++      "checkConstraints": {},
++      "isRLSEnabled": false
++    },
++    "public.users": {
++      "name": "users",
++      "schema": "",
++      "columns": {
++        "id": {
++          "name": "id",
++          "type": "serial",
++          "primaryKey": true,
++          "notNull": true
++        },
++        "name": {
++          "name": "name",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "role": {
++          "name": "role",
++          "type": "enum_users_role",
++          "typeSchema": "public",
++          "primaryKey": false,
++          "notNull": true,
++          "default": "'staff'"
++        },
++        "updated_at": {
++          "name": "updated_at",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": true,
++          "default": "now()"
++        },
++        "created_at": {
++          "name": "created_at",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": true,
++          "default": "now()"
++        },
++        "email": {
++          "name": "email",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "reset_password_token": {
++          "name": "reset_password_token",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "reset_password_expiration": {
++          "name": "reset_password_expiration",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "salt": {
++          "name": "salt",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "hash": {
++          "name": "hash",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "login_attempts": {
++          "name": "login_attempts",
++          "type": "numeric",
++          "primaryKey": false,
++          "notNull": false,
++          "default": 0
++        },
++        "lock_until": {
++          "name": "lock_until",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": false
++        }
++      },
++      "indexes": {
++        "users_updated_at_idx": {
++          "name": "users_updated_at_idx",
++          "columns": [
++            {
++              "expression": "updated_at",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "users_created_at_idx": {
++          "name": "users_created_at_idx",
++          "columns": [
++            {
++              "expression": "created_at",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "users_email_idx": {
++          "name": "users_email_idx",
++          "columns": [
++            {
++              "expression": "email",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": true,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        }
++      },
++      "foreignKeys": {},
++      "compositePrimaryKeys": {},
++      "uniqueConstraints": {},
++      "policies": {},
++      "checkConstraints": {},
++      "isRLSEnabled": false
++    },
++    "public.products": {
++      "name": "products",
++      "schema": "",
++      "columns": {
++        "id": {
++          "name": "id",
++          "type": "serial",
++          "primaryKey": true,
++          "notNull": true
++        },
++        "name": {
++          "name": "name",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "slug": {
++          "name": "slug",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "category": {
++          "name": "category",
++          "type": "enum_products_category",
++          "typeSchema": "public",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "price": {
++          "name": "price",
++          "type": "numeric",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "quote_only": {
++          "name": "quote_only",
++          "type": "boolean",
++          "primaryKey": false,
++          "notNull": false,
++          "default": false
++        },
++        "description": {
++          "name": "description",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "image_id": {
++          "name": "image_id",
++          "type": "integer",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "in_stock": {
++          "name": "in_stock",
++          "type": "boolean",
++          "primaryKey": false,
++          "notNull": false,
++          "default": true
++        },
++        "updated_at": {
++          "name": "updated_at",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": true,
++          "default": "now()"
++        },
++        "created_at": {
++          "name": "created_at",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": true,
++          "default": "now()"
++        }
++      },
++      "indexes": {
++        "products_slug_idx": {
++          "name": "products_slug_idx",
++          "columns": [
++            {
++              "expression": "slug",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": true,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "products_image_idx": {
++          "name": "products_image_idx",
++          "columns": [
++            {
++              "expression": "image_id",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "products_updated_at_idx": {
++          "name": "products_updated_at_idx",
++          "columns": [
++            {
++              "expression": "updated_at",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "products_created_at_idx": {
++          "name": "products_created_at_idx",
++          "columns": [
++            {
++              "expression": "created_at",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        }
++      },
++      "foreignKeys": {
++        "products_image_id_media_id_fk": {
++          "name": "products_image_id_media_id_fk",
++          "tableFrom": "products",
++          "tableTo": "media",
++          "columnsFrom": [
++            "image_id"
++          ],
++          "columnsTo": [
++            "id"
++          ],
++          "onDelete": "set null",
++          "onUpdate": "no action"
++        }
++      },
++      "compositePrimaryKeys": {},
++      "uniqueConstraints": {},
++      "policies": {},
++      "checkConstraints": {},
++      "isRLSEnabled": false
++    },
++    "public.testimonials": {
++      "name": "testimonials",
++      "schema": "",
++      "columns": {
++        "id": {
++          "name": "id",
++          "type": "serial",
++          "primaryKey": true,
++          "notNull": true
++        },
++        "customer_name": {
++          "name": "customer_name",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "location": {
++          "name": "location",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "quote": {
++          "name": "quote",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "rating": {
++          "name": "rating",
++          "type": "numeric",
++          "primaryKey": false,
++          "notNull": false,
++          "default": 5
++        },
++        "published": {
++          "name": "published",
++          "type": "boolean",
++          "primaryKey": false,
++          "notNull": false,
++          "default": false
++        },
++        "updated_at": {
++          "name": "updated_at",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": true,
++          "default": "now()"
++        },
++        "created_at": {
++          "name": "created_at",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": true,
++          "default": "now()"
++        }
++      },
++      "indexes": {
++        "testimonials_updated_at_idx": {
++          "name": "testimonials_updated_at_idx",
++          "columns": [
++            {
++              "expression": "updated_at",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "testimonials_created_at_idx": {
++          "name": "testimonials_created_at_idx",
++          "columns": [
++            {
++              "expression": "created_at",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        }
++      },
++      "foreignKeys": {},
++      "compositePrimaryKeys": {},
++      "uniqueConstraints": {},
++      "policies": {},
++      "checkConstraints": {},
++      "isRLSEnabled": false
++    },
++    "public.enquiries": {
++      "name": "enquiries",
++      "schema": "",
++      "columns": {
++        "id": {
++          "name": "id",
++          "type": "serial",
++          "primaryKey": true,
++          "notNull": true
++        },
++        "name": {
++          "name": "name",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "email": {
++          "name": "email",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "whatsapp": {
++          "name": "whatsapp",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "subject": {
++          "name": "subject",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "message": {
++          "name": "message",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "status": {
++          "name": "status",
++          "type": "enum_enquiries_status",
++          "typeSchema": "public",
++          "primaryKey": false,
++          "notNull": false,
++          "default": "'new'"
++        },
++        "updated_at": {
++          "name": "updated_at",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": true,
++          "default": "now()"
++        },
++        "created_at": {
++          "name": "created_at",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": true,
++          "default": "now()"
++        }
++      },
++      "indexes": {
++        "enquiries_updated_at_idx": {
++          "name": "enquiries_updated_at_idx",
++          "columns": [
++            {
++              "expression": "updated_at",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "enquiries_created_at_idx": {
++          "name": "enquiries_created_at_idx",
++          "columns": [
++            {
++              "expression": "created_at",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        }
++      },
++      "foreignKeys": {},
++      "compositePrimaryKeys": {},
++      "uniqueConstraints": {},
++      "policies": {},
++      "checkConstraints": {},
++      "isRLSEnabled": false
++    },
++    "public.orders_items": {
++      "name": "orders_items",
++      "schema": "",
++      "columns": {
++        "_order": {
++          "name": "_order",
++          "type": "integer",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "_parent_id": {
++          "name": "_parent_id",
++          "type": "integer",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "id": {
++          "name": "id",
++          "type": "varchar",
++          "primaryKey": true,
++          "notNull": true
++        },
++        "product_id": {
++          "name": "product_id",
++          "type": "integer",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "quantity": {
++          "name": "quantity",
++          "type": "numeric",
++          "primaryKey": false,
++          "notNull": false,
++          "default": 1
++        },
++        "price_at_order": {
++          "name": "price_at_order",
++          "type": "numeric",
++          "primaryKey": false,
++          "notNull": false
++        }
++      },
++      "indexes": {
++        "orders_items_order_idx": {
++          "name": "orders_items_order_idx",
++          "columns": [
++            {
++              "expression": "_order",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "orders_items_parent_id_idx": {
++          "name": "orders_items_parent_id_idx",
++          "columns": [
++            {
++              "expression": "_parent_id",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "orders_items_product_idx": {
++          "name": "orders_items_product_idx",
++          "columns": [
++            {
++              "expression": "product_id",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        }
++      },
++      "foreignKeys": {
++        "orders_items_product_id_products_id_fk": {
++          "name": "orders_items_product_id_products_id_fk",
++          "tableFrom": "orders_items",
++          "tableTo": "products",
++          "columnsFrom": [
++            "product_id"
++          ],
++          "columnsTo": [
++            "id"
++          ],
++          "onDelete": "set null",
++          "onUpdate": "no action"
++        },
++        "orders_items_parent_id_fk": {
++          "name": "orders_items_parent_id_fk",
++          "tableFrom": "orders_items",
++          "tableTo": "orders",
++          "columnsFrom": [
++            "_parent_id"
++          ],
++          "columnsTo": [
++            "id"
++          ],
++          "onDelete": "cascade",
++          "onUpdate": "no action"
++        }
++      },
++      "compositePrimaryKeys": {},
++      "uniqueConstraints": {},
++      "policies": {},
++      "checkConstraints": {},
++      "isRLSEnabled": false
++    },
++    "public.orders": {
++      "name": "orders",
++      "schema": "",
++      "columns": {
++        "id": {
++          "name": "id",
++          "type": "serial",
++          "primaryKey": true,
++          "notNull": true
++        },
++        "order_number": {
++          "name": "order_number",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "customer_name": {
++          "name": "customer_name",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "customer_phone": {
++          "name": "customer_phone",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "customer_email": {
++          "name": "customer_email",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "total": {
++          "name": "total",
++          "type": "numeric",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "payment_status": {
++          "name": "payment_status",
++          "type": "enum_orders_payment_status",
++          "typeSchema": "public",
++          "primaryKey": false,
++          "notNull": false,
++          "default": "'pending'"
++        },
++        "fulfillment_status": {
++          "name": "fulfillment_status",
++          "type": "enum_orders_fulfillment_status",
++          "typeSchema": "public",
++          "primaryKey": false,
++          "notNull": false,
++          "default": "'processing'"
++        },
++        "notes": {
++          "name": "notes",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "updated_at": {
++          "name": "updated_at",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": true,
++          "default": "now()"
++        },
++        "created_at": {
++          "name": "created_at",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": true,
++          "default": "now()"
++        }
++      },
++      "indexes": {
++        "orders_order_number_idx": {
++          "name": "orders_order_number_idx",
++          "columns": [
++            {
++              "expression": "order_number",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": true,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "orders_updated_at_idx": {
++          "name": "orders_updated_at_idx",
++          "columns": [
++            {
++              "expression": "updated_at",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "orders_created_at_idx": {
++          "name": "orders_created_at_idx",
++          "columns": [
++            {
++              "expression": "created_at",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        }
++      },
++      "foreignKeys": {},
++      "compositePrimaryKeys": {},
++      "uniqueConstraints": {},
++      "policies": {},
++      "checkConstraints": {},
++      "isRLSEnabled": false
++    },
++    "public.media": {
++      "name": "media",
++      "schema": "",
++      "columns": {
++        "id": {
++          "name": "id",
++          "type": "serial",
++          "primaryKey": true,
++          "notNull": true
++        },
++        "alt": {
++          "name": "alt",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "updated_at": {
++          "name": "updated_at",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": true,
++          "default": "now()"
++        },
++        "created_at": {
++          "name": "created_at",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": true,
++          "default": "now()"
++        },
++        "url": {
++          "name": "url",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "thumbnail_u_r_l": {
++          "name": "thumbnail_u_r_l",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "filename": {
++          "name": "filename",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "mime_type": {
++          "name": "mime_type",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "filesize": {
++          "name": "filesize",
++          "type": "numeric",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "width": {
++          "name": "width",
++          "type": "numeric",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "height": {
++          "name": "height",
++          "type": "numeric",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "focal_x": {
++          "name": "focal_x",
++          "type": "numeric",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "focal_y": {
++          "name": "focal_y",
++          "type": "numeric",
++          "primaryKey": false,
++          "notNull": false
++        }
++      },
++      "indexes": {
++        "media_updated_at_idx": {
++          "name": "media_updated_at_idx",
++          "columns": [
++            {
++              "expression": "updated_at",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "media_created_at_idx": {
++          "name": "media_created_at_idx",
++          "columns": [
++            {
++              "expression": "created_at",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "media_filename_idx": {
++          "name": "media_filename_idx",
++          "columns": [
++            {
++              "expression": "filename",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": true,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        }
++      },
++      "foreignKeys": {},
++      "compositePrimaryKeys": {},
++      "uniqueConstraints": {},
++      "policies": {},
++      "checkConstraints": {},
++      "isRLSEnabled": false
++    },
++    "public.payload_kv": {
++      "name": "payload_kv",
++      "schema": "",
++      "columns": {
++        "id": {
++          "name": "id",
++          "type": "serial",
++          "primaryKey": true,
++          "notNull": true
++        },
++        "key": {
++          "name": "key",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "data": {
++          "name": "data",
++          "type": "jsonb",
++          "primaryKey": false,
++          "notNull": true
++        }
++      },
++      "indexes": {
++        "payload_kv_key_idx": {
++          "name": "payload_kv_key_idx",
++          "columns": [
++            {
++              "expression": "key",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": true,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        }
++      },
++      "foreignKeys": {},
++      "compositePrimaryKeys": {},
++      "uniqueConstraints": {},
++      "policies": {},
++      "checkConstraints": {},
++      "isRLSEnabled": false
++    },
++    "public.payload_locked_documents": {
++      "name": "payload_locked_documents",
++      "schema": "",
++      "columns": {
++        "id": {
++          "name": "id",
++          "type": "serial",
++          "primaryKey": true,
++          "notNull": true
++        },
++        "global_slug": {
++          "name": "global_slug",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "updated_at": {
++          "name": "updated_at",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": true,
++          "default": "now()"
++        },
++        "created_at": {
++          "name": "created_at",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": true,
++          "default": "now()"
++        }
++      },
++      "indexes": {
++        "payload_locked_documents_global_slug_idx": {
++          "name": "payload_locked_documents_global_slug_idx",
++          "columns": [
++            {
++              "expression": "global_slug",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "payload_locked_documents_updated_at_idx": {
++          "name": "payload_locked_documents_updated_at_idx",
++          "columns": [
++            {
++              "expression": "updated_at",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "payload_locked_documents_created_at_idx": {
++          "name": "payload_locked_documents_created_at_idx",
++          "columns": [
++            {
++              "expression": "created_at",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        }
++      },
++      "foreignKeys": {},
++      "compositePrimaryKeys": {},
++      "uniqueConstraints": {},
++      "policies": {},
++      "checkConstraints": {},
++      "isRLSEnabled": false
++    },
++    "public.payload_locked_documents_rels": {
++      "name": "payload_locked_documents_rels",
++      "schema": "",
++      "columns": {
++        "id": {
++          "name": "id",
++          "type": "serial",
++          "primaryKey": true,
++          "notNull": true
++        },
++        "order": {
++          "name": "order",
++          "type": "integer",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "parent_id": {
++          "name": "parent_id",
++          "type": "integer",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "path": {
++          "name": "path",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "users_id": {
++          "name": "users_id",
++          "type": "integer",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "products_id": {
++          "name": "products_id",
++          "type": "integer",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "testimonials_id": {
++          "name": "testimonials_id",
++          "type": "integer",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "enquiries_id": {
++          "name": "enquiries_id",
++          "type": "integer",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "orders_id": {
++          "name": "orders_id",
++          "type": "integer",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "media_id": {
++          "name": "media_id",
++          "type": "integer",
++          "primaryKey": false,
++          "notNull": false
++        }
++      },
++      "indexes": {
++        "payload_locked_documents_rels_order_idx": {
++          "name": "payload_locked_documents_rels_order_idx",
++          "columns": [
++            {
++              "expression": "order",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "payload_locked_documents_rels_parent_idx": {
++          "name": "payload_locked_documents_rels_parent_idx",
++          "columns": [
++            {
++              "expression": "parent_id",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "payload_locked_documents_rels_path_idx": {
++          "name": "payload_locked_documents_rels_path_idx",
++          "columns": [
++            {
++              "expression": "path",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "payload_locked_documents_rels_users_id_idx": {
++          "name": "payload_locked_documents_rels_users_id_idx",
++          "columns": [
++            {
++              "expression": "users_id",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "payload_locked_documents_rels_products_id_idx": {
++          "name": "payload_locked_documents_rels_products_id_idx",
++          "columns": [
++            {
++              "expression": "products_id",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "payload_locked_documents_rels_testimonials_id_idx": {
++          "name": "payload_locked_documents_rels_testimonials_id_idx",
++          "columns": [
++            {
++              "expression": "testimonials_id",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "payload_locked_documents_rels_enquiries_id_idx": {
++          "name": "payload_locked_documents_rels_enquiries_id_idx",
++          "columns": [
++            {
++              "expression": "enquiries_id",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "payload_locked_documents_rels_orders_id_idx": {
++          "name": "payload_locked_documents_rels_orders_id_idx",
++          "columns": [
++            {
++              "expression": "orders_id",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "payload_locked_documents_rels_media_id_idx": {
++          "name": "payload_locked_documents_rels_media_id_idx",
++          "columns": [
++            {
++              "expression": "media_id",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        }
++      },
++      "foreignKeys": {
++        "payload_locked_documents_rels_parent_fk": {
++          "name": "payload_locked_documents_rels_parent_fk",
++          "tableFrom": "payload_locked_documents_rels",
++          "tableTo": "payload_locked_documents",
++          "columnsFrom": [
++            "parent_id"
++          ],
++          "columnsTo": [
++            "id"
++          ],
++          "onDelete": "cascade",
++          "onUpdate": "no action"
++        },
++        "payload_locked_documents_rels_users_fk": {
++          "name": "payload_locked_documents_rels_users_fk",
++          "tableFrom": "payload_locked_documents_rels",
++          "tableTo": "users",
++          "columnsFrom": [
++            "users_id"
++          ],
++          "columnsTo": [
++            "id"
++          ],
++          "onDelete": "cascade",
++          "onUpdate": "no action"
++        },
++        "payload_locked_documents_rels_products_fk": {
++          "name": "payload_locked_documents_rels_products_fk",
++          "tableFrom": "payload_locked_documents_rels",
++          "tableTo": "products",
++          "columnsFrom": [
++            "products_id"
++          ],
++          "columnsTo": [
++            "id"
++          ],
++          "onDelete": "cascade",
++          "onUpdate": "no action"
++        },
++        "payload_locked_documents_rels_testimonials_fk": {
++          "name": "payload_locked_documents_rels_testimonials_fk",
++          "tableFrom": "payload_locked_documents_rels",
++          "tableTo": "testimonials",
++          "columnsFrom": [
++            "testimonials_id"
++          ],
++          "columnsTo": [
++            "id"
++          ],
++          "onDelete": "cascade",
++          "onUpdate": "no action"
++        },
++        "payload_locked_documents_rels_enquiries_fk": {
++          "name": "payload_locked_documents_rels_enquiries_fk",
++          "tableFrom": "payload_locked_documents_rels",
++          "tableTo": "enquiries",
++          "columnsFrom": [
++            "enquiries_id"
++          ],
++          "columnsTo": [
++            "id"
++          ],
++          "onDelete": "cascade",
++          "onUpdate": "no action"
++        },
++        "payload_locked_documents_rels_orders_fk": {
++          "name": "payload_locked_documents_rels_orders_fk",
++          "tableFrom": "payload_locked_documents_rels",
++          "tableTo": "orders",
++          "columnsFrom": [
++            "orders_id"
++          ],
++          "columnsTo": [
++            "id"
++          ],
++          "onDelete": "cascade",
++          "onUpdate": "no action"
++        },
++        "payload_locked_documents_rels_media_fk": {
++          "name": "payload_locked_documents_rels_media_fk",
++          "tableFrom": "payload_locked_documents_rels",
++          "tableTo": "media",
++          "columnsFrom": [
++            "media_id"
++          ],
++          "columnsTo": [
++            "id"
++          ],
++          "onDelete": "cascade",
++          "onUpdate": "no action"
++        }
++      },
++      "compositePrimaryKeys": {},
++      "uniqueConstraints": {},
++      "policies": {},
++      "checkConstraints": {},
++      "isRLSEnabled": false
++    },
++    "public.payload_preferences": {
++      "name": "payload_preferences",
++      "schema": "",
++      "columns": {
++        "id": {
++          "name": "id",
++          "type": "serial",
++          "primaryKey": true,
++          "notNull": true
++        },
++        "key": {
++          "name": "key",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "value": {
++          "name": "value",
++          "type": "jsonb",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "updated_at": {
++          "name": "updated_at",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": true,
++          "default": "now()"
++        },
++        "created_at": {
++          "name": "created_at",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": true,
++          "default": "now()"
++        }
++      },
++      "indexes": {
++        "payload_preferences_key_idx": {
++          "name": "payload_preferences_key_idx",
++          "columns": [
++            {
++              "expression": "key",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "payload_preferences_updated_at_idx": {
++          "name": "payload_preferences_updated_at_idx",
++          "columns": [
++            {
++              "expression": "updated_at",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "payload_preferences_created_at_idx": {
++          "name": "payload_preferences_created_at_idx",
++          "columns": [
++            {
++              "expression": "created_at",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        }
++      },
++      "foreignKeys": {},
++      "compositePrimaryKeys": {},
++      "uniqueConstraints": {},
++      "policies": {},
++      "checkConstraints": {},
++      "isRLSEnabled": false
++    },
++    "public.payload_preferences_rels": {
++      "name": "payload_preferences_rels",
++      "schema": "",
++      "columns": {
++        "id": {
++          "name": "id",
++          "type": "serial",
++          "primaryKey": true,
++          "notNull": true
++        },
++        "order": {
++          "name": "order",
++          "type": "integer",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "parent_id": {
++          "name": "parent_id",
++          "type": "integer",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "path": {
++          "name": "path",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": true
++        },
++        "users_id": {
++          "name": "users_id",
++          "type": "integer",
++          "primaryKey": false,
++          "notNull": false
++        }
++      },
++      "indexes": {
++        "payload_preferences_rels_order_idx": {
++          "name": "payload_preferences_rels_order_idx",
++          "columns": [
++            {
++              "expression": "order",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "payload_preferences_rels_parent_idx": {
++          "name": "payload_preferences_rels_parent_idx",
++          "columns": [
++            {
++              "expression": "parent_id",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "payload_preferences_rels_path_idx": {
++          "name": "payload_preferences_rels_path_idx",
++          "columns": [
++            {
++              "expression": "path",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "payload_preferences_rels_users_id_idx": {
++          "name": "payload_preferences_rels_users_id_idx",
++          "columns": [
++            {
++              "expression": "users_id",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        }
++      },
++      "foreignKeys": {
++        "payload_preferences_rels_parent_fk": {
++          "name": "payload_preferences_rels_parent_fk",
++          "tableFrom": "payload_preferences_rels",
++          "tableTo": "payload_preferences",
++          "columnsFrom": [
++            "parent_id"
++          ],
++          "columnsTo": [
++            "id"
++          ],
++          "onDelete": "cascade",
++          "onUpdate": "no action"
++        },
++        "payload_preferences_rels_users_fk": {
++          "name": "payload_preferences_rels_users_fk",
++          "tableFrom": "payload_preferences_rels",
++          "tableTo": "users",
++          "columnsFrom": [
++            "users_id"
++          ],
++          "columnsTo": [
++            "id"
++          ],
++          "onDelete": "cascade",
++          "onUpdate": "no action"
++        }
++      },
++      "compositePrimaryKeys": {},
++      "uniqueConstraints": {},
++      "policies": {},
++      "checkConstraints": {},
++      "isRLSEnabled": false
++    },
++    "public.payload_migrations": {
++      "name": "payload_migrations",
++      "schema": "",
++      "columns": {
++        "id": {
++          "name": "id",
++          "type": "serial",
++          "primaryKey": true,
++          "notNull": true
++        },
++        "name": {
++          "name": "name",
++          "type": "varchar",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "batch": {
++          "name": "batch",
++          "type": "numeric",
++          "primaryKey": false,
++          "notNull": false
++        },
++        "updated_at": {
++          "name": "updated_at",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": true,
++          "default": "now()"
++        },
++        "created_at": {
++          "name": "created_at",
++          "type": "timestamp(3) with time zone",
++          "primaryKey": false,
++          "notNull": true,
++          "default": "now()"
++        }
++      },
++      "indexes": {
++        "payload_migrations_updated_at_idx": {
++          "name": "payload_migrations_updated_at_idx",
++          "columns": [
++            {
++              "expression": "updated_at",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        },
++        "payload_migrations_created_at_idx": {
++          "name": "payload_migrations_created_at_idx",
++          "columns": [
++            {
++              "expression": "created_at",
++              "isExpression": false,
++              "asc": true,
++              "nulls": "last"
++            }
++          ],
++          "isUnique": false,
++          "concurrently": false,
++          "method": "btree",
++          "with": {}
++        }
++      },
++      "foreignKeys": {},
++      "compositePrimaryKeys": {},
++      "uniqueConstraints": {},
++      "policies": {},
++      "checkConstraints": {},
++      "isRLSEnabled": false
++    }
++  },
++  "enums": {
++    "public.enum_users_role": {
++      "name": "enum_users_role",
++      "schema": "public",
++      "values": [
++        "owner",
++        "staff"
++      ]
++    },
++    "public.enum_products_category": {
++      "name": "enum_products_category",
++      "schema": "public",
++      "values": [
++        "solar",
++        "security-systems",
++        "it-hardware"
++      ]
++    },
++    "public.enum_enquiries_status": {
++      "name": "enum_enquiries_status",
++      "schema": "public",
++      "values": [
++        "new",
++        "contacted",
++        "closed"
++      ]
++    },
++    "public.enum_orders_payment_status": {
++      "name": "enum_orders_payment_status",
++      "schema": "public",
++      "values": [
++        "pending",
++        "paid",
++        "failed",
++        "refunded"
++      ]
++    },
++    "public.enum_orders_fulfillment_status": {
++      "name": "enum_orders_fulfillment_status",
++      "schema": "public",
++      "values": [
++        "processing",
++        "dispatched",
++        "delivered",
++        "cancelled"
++      ]
++    }
++  },
++  "schemas": {},
++  "sequences": {},
++  "roles": {},
++  "policies": {},
++  "views": {},
++  "_meta": {
++    "schemas": {},
++    "tables": {},
++    "columns": {}
++  },
++  "id": "c7b720e3-4a45-4092-bcaf-92d5e6e3375b",
++  "prevId": "00000000-0000-0000-0000-000000000000"
++}
+\ No newline at end of file
+diff --git a/migrations/20260820_124947.ts b/migrations/20260820_124947.ts
+new file mode 100644
+index 0000000..95e7932
+--- /dev/null
++++ b/migrations/20260820_124947.ts
+@@ -0,0 +1,239 @@
++import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
++
++export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
++  await db.execute(sql`
++   CREATE TYPE "public"."enum_users_role" AS ENUM('owner', 'staff');
++  CREATE TYPE "public"."enum_products_category" AS ENUM('solar', 'security-systems', 'it-hardware');
++  CREATE TYPE "public"."enum_enquiries_status" AS ENUM('new', 'contacted', 'closed');
++  CREATE TYPE "public"."enum_orders_payment_status" AS ENUM('pending', 'paid', 'failed', 'refunded');
++  CREATE TYPE "public"."enum_orders_fulfillment_status" AS ENUM('processing', 'dispatched', 'delivered', 'cancelled');
++  CREATE TABLE "users_sessions" (
++  	"_order" integer NOT NULL,
++  	"_parent_id" integer NOT NULL,
++  	"id" varchar PRIMARY KEY NOT NULL,
++  	"created_at" timestamp(3) with time zone,
++  	"expires_at" timestamp(3) with time zone NOT NULL
++  );
++  
++  CREATE TABLE "users" (
++  	"id" serial PRIMARY KEY NOT NULL,
++  	"name" varchar NOT NULL,
++  	"role" "enum_users_role" DEFAULT 'staff' NOT NULL,
++  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
++  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
++  	"email" varchar NOT NULL,
++  	"reset_password_token" varchar,
++  	"reset_password_expiration" timestamp(3) with time zone,
++  	"salt" varchar,
++  	"hash" varchar,
++  	"login_attempts" numeric DEFAULT 0,
++  	"lock_until" timestamp(3) with time zone
++  );
++  
++  CREATE TABLE "products" (
++  	"id" serial PRIMARY KEY NOT NULL,
++  	"name" varchar NOT NULL,
++  	"slug" varchar NOT NULL,
++  	"category" "enum_products_category" NOT NULL,
++  	"price" numeric NOT NULL,
++  	"quote_only" boolean DEFAULT false,
++  	"description" varchar,
++  	"image_id" integer,
++  	"in_stock" boolean DEFAULT true,
++  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
++  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
++  );
++  
++  CREATE TABLE "testimonials" (
++  	"id" serial PRIMARY KEY NOT NULL,
++  	"customer_name" varchar NOT NULL,
++  	"location" varchar,
++  	"quote" varchar NOT NULL,
++  	"rating" numeric DEFAULT 5,
++  	"published" boolean DEFAULT false,
++  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
++  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
++  );
++  
++  CREATE TABLE "enquiries" (
++  	"id" serial PRIMARY KEY NOT NULL,
++  	"name" varchar NOT NULL,
++  	"email" varchar NOT NULL,
++  	"whatsapp" varchar NOT NULL,
++  	"subject" varchar,
++  	"message" varchar,
++  	"status" "enum_enquiries_status" DEFAULT 'new',
++  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
++  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
++  );
++  
++  CREATE TABLE "orders_items" (
++  	"_order" integer NOT NULL,
++  	"_parent_id" integer NOT NULL,
++  	"id" varchar PRIMARY KEY NOT NULL,
++  	"product_id" integer,
++  	"quantity" numeric DEFAULT 1,
++  	"price_at_order" numeric
++  );
++  
++  CREATE TABLE "orders" (
++  	"id" serial PRIMARY KEY NOT NULL,
++  	"order_number" varchar NOT NULL,
++  	"customer_name" varchar NOT NULL,
++  	"customer_phone" varchar NOT NULL,
++  	"customer_email" varchar,
++  	"total" numeric NOT NULL,
++  	"payment_status" "enum_orders_payment_status" DEFAULT 'pending',
++  	"fulfillment_status" "enum_orders_fulfillment_status" DEFAULT 'processing',
++  	"notes" varchar,
++  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
++  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
++  );
++  
++  CREATE TABLE "media" (
++  	"id" serial PRIMARY KEY NOT NULL,
++  	"alt" varchar,
++  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
++  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
++  	"url" varchar,
++  	"thumbnail_u_r_l" varchar,
++  	"filename" varchar,
++  	"mime_type" varchar,
++  	"filesize" numeric,
++  	"width" numeric,
++  	"height" numeric,
++  	"focal_x" numeric,
++  	"focal_y" numeric
++  );
++  
++  CREATE TABLE "payload_kv" (
++  	"id" serial PRIMARY KEY NOT NULL,
++  	"key" varchar NOT NULL,
++  	"data" jsonb NOT NULL
++  );
++  
++  CREATE TABLE "payload_locked_documents" (
++  	"id" serial PRIMARY KEY NOT NULL,
++  	"global_slug" varchar,
++  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
++  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
++  );
++  
++  CREATE TABLE "payload_locked_documents_rels" (
++  	"id" serial PRIMARY KEY NOT NULL,
++  	"order" integer,
++  	"parent_id" integer NOT NULL,
++  	"path" varchar NOT NULL,
++  	"users_id" integer,
++  	"products_id" integer,
++  	"testimonials_id" integer,
++  	"enquiries_id" integer,
++  	"orders_id" integer,
++  	"media_id" integer
++  );
++  
++  CREATE TABLE "payload_preferences" (
++  	"id" serial PRIMARY KEY NOT NULL,
++  	"key" varchar,
++  	"value" jsonb,
++  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
++  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
++  );
++  
++  CREATE TABLE "payload_preferences_rels" (
++  	"id" serial PRIMARY KEY NOT NULL,
++  	"order" integer,
++  	"parent_id" integer NOT NULL,
++  	"path" varchar NOT NULL,
++  	"users_id" integer
++  );
++  
++  CREATE TABLE "payload_migrations" (
++  	"id" serial PRIMARY KEY NOT NULL,
++  	"name" varchar,
++  	"batch" numeric,
++  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
++  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
++  );
++  
++  ALTER TABLE "users_sessions" ADD CONSTRAINT "users_sessions_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
++  ALTER TABLE "products" ADD CONSTRAINT "products_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
++  ALTER TABLE "orders_items" ADD CONSTRAINT "orders_items_product_id_products_id_fk" FOREIGN KEY ("product_id") REFERENCES "public"."products"("id") ON DELETE set null ON UPDATE no action;
++  ALTER TABLE "orders_items" ADD CONSTRAINT "orders_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."orders"("id") ON DELETE cascade ON UPDATE no action;
++  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."payload_locked_documents"("id") ON DELETE cascade ON UPDATE no action;
++  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
++  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_products_fk" FOREIGN KEY ("products_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
++  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_testimonials_fk" FOREIGN KEY ("testimonials_id") REFERENCES "public"."testimonials"("id") ON DELETE cascade ON UPDATE no action;
++  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_enquiries_fk" FOREIGN KEY ("enquiries_id") REFERENCES "public"."enquiries"("id") ON DELETE cascade ON UPDATE no action;
++  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_orders_fk" FOREIGN KEY ("orders_id") REFERENCES "public"."orders"("id") ON DELETE cascade ON UPDATE no action;
++  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_media_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;
++  ALTER TABLE "payload_preferences_rels" ADD CONSTRAINT "payload_preferences_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."payload_preferences"("id") ON DELETE cascade ON UPDATE no action;
++  ALTER TABLE "payload_preferences_rels" ADD CONSTRAINT "payload_preferences_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
++  CREATE INDEX "users_sessions_order_idx" ON "users_sessions" USING btree ("_order");
++  CREATE INDEX "users_sessions_parent_id_idx" ON "users_sessions" USING btree ("_parent_id");
++  CREATE INDEX "users_updated_at_idx" ON "users" USING btree ("updated_at");
++  CREATE INDEX "users_created_at_idx" ON "users" USING btree ("created_at");
++  CREATE UNIQUE INDEX "users_email_idx" ON "users" USING btree ("email");
++  CREATE UNIQUE INDEX "products_slug_idx" ON "products" USING btree ("slug");
++  CREATE INDEX "products_image_idx" ON "products" USING btree ("image_id");
++  CREATE INDEX "products_updated_at_idx" ON "products" USING btree ("updated_at");
++  CREATE INDEX "products_created_at_idx" ON "products" USING btree ("created_at");
++  CREATE INDEX "testimonials_updated_at_idx" ON "testimonials" USING btree ("updated_at");
++  CREATE INDEX "testimonials_created_at_idx" ON "testimonials" USING btree ("created_at");
++  CREATE INDEX "enquiries_updated_at_idx" ON "enquiries" USING btree ("updated_at");
++  CREATE INDEX "enquiries_created_at_idx" ON "enquiries" USING btree ("created_at");
++  CREATE INDEX "orders_items_order_idx" ON "orders_items" USING btree ("_order");
++  CREATE INDEX "orders_items_parent_id_idx" ON "orders_items" USING btree ("_parent_id");
++  CREATE INDEX "orders_items_product_idx" ON "orders_items" USING btree ("product_id");
++  CREATE UNIQUE INDEX "orders_order_number_idx" ON "orders" USING btree ("order_number");
++  CREATE INDEX "orders_updated_at_idx" ON "orders" USING btree ("updated_at");
++  CREATE INDEX "orders_created_at_idx" ON "orders" USING btree ("created_at");
++  CREATE INDEX "media_updated_at_idx" ON "media" USING btree ("updated_at");
++  CREATE INDEX "media_created_at_idx" ON "media" USING btree ("created_at");
++  CREATE UNIQUE INDEX "media_filename_idx" ON "media" USING btree ("filename");
++  CREATE UNIQUE INDEX "payload_kv_key_idx" ON "payload_kv" USING btree ("key");
++  CREATE INDEX "payload_locked_documents_global_slug_idx" ON "payload_locked_documents" USING btree ("global_slug");
++  CREATE INDEX "payload_locked_documents_updated_at_idx" ON "payload_locked_documents" USING btree ("updated_at");
++  CREATE INDEX "payload_locked_documents_created_at_idx" ON "payload_locked_documents" USING btree ("created_at");
++  CREATE INDEX "payload_locked_documents_rels_order_idx" ON "payload_locked_documents_rels" USING btree ("order");
++  CREATE INDEX "payload_locked_documents_rels_parent_idx" ON "payload_locked_documents_rels" USING btree ("parent_id");
++  CREATE INDEX "payload_locked_documents_rels_path_idx" ON "payload_locked_documents_rels" USING btree ("path");
++  CREATE INDEX "payload_locked_documents_rels_users_id_idx" ON "payload_locked_documents_rels" USING btree ("users_id");
++  CREATE INDEX "payload_locked_documents_rels_products_id_idx" ON "payload_locked_documents_rels" USING btree ("products_id");
++  CREATE INDEX "payload_locked_documents_rels_testimonials_id_idx" ON "payload_locked_documents_rels" USING btree ("testimonials_id");
++  CREATE INDEX "payload_locked_documents_rels_enquiries_id_idx" ON "payload_locked_documents_rels" USING btree ("enquiries_id");
++  CREATE INDEX "payload_locked_documents_rels_orders_id_idx" ON "payload_locked_documents_rels" USING btree ("orders_id");
++  CREATE INDEX "payload_locked_documents_rels_media_id_idx" ON "payload_locked_documents_rels" USING btree ("media_id");
++  CREATE INDEX "payload_preferences_key_idx" ON "payload_preferences" USING btree ("key");
++  CREATE INDEX "payload_preferences_updated_at_idx" ON "payload_preferences" USING btree ("updated_at");
++  CREATE INDEX "payload_preferences_created_at_idx" ON "payload_preferences" USING btree ("created_at");
++  CREATE INDEX "payload_preferences_rels_order_idx" ON "payload_preferences_rels" USING btree ("order");
++  CREATE INDEX "payload_preferences_rels_parent_idx" ON "payload_preferences_rels" USING btree ("parent_id");
++  CREATE INDEX "payload_preferences_rels_path_idx" ON "payload_preferences_rels" USING btree ("path");
++  CREATE INDEX "payload_preferences_rels_users_id_idx" ON "payload_preferences_rels" USING btree ("users_id");
++  CREATE INDEX "payload_migrations_updated_at_idx" ON "payload_migrations" USING btree ("updated_at");
++  CREATE INDEX "payload_migrations_created_at_idx" ON "payload_migrations" USING btree ("created_at");`)
++}
++
++export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
++  await db.execute(sql`
++   DROP TABLE "users_sessions" CASCADE;
++  DROP TABLE "users" CASCADE;
++  DROP TABLE "products" CASCADE;
++  DROP TABLE "testimonials" CASCADE;
++  DROP TABLE "enquiries" CASCADE;
++  DROP TABLE "orders_items" CASCADE;
++  DROP TABLE "orders" CASCADE;
++  DROP TABLE "media" CASCADE;
++  DROP TABLE "payload_kv" CASCADE;
++  DROP TABLE "payload_locked_documents" CASCADE;
++  DROP TABLE "payload_locked_documents_rels" CASCADE;
++  DROP TABLE "payload_preferences" CASCADE;
++  DROP TABLE "payload_preferences_rels" CASCADE;
++  DROP TABLE "payload_migrations" CASCADE;
++  DROP TYPE "public"."enum_users_role";
++  DROP TYPE "public"."enum_products_category";
++  DROP TYPE "public"."enum_enquiries_status";
++  DROP TYPE "public"."enum_orders_payment_status";
++  DROP TYPE "public"."enum_orders_fulfillment_status";`)
++}
+diff --git a/migrations/index.ts b/migrations/index.ts
+new file mode 100644
+index 0000000..b3d58c3
+--- /dev/null
++++ b/migrations/index.ts
+@@ -0,0 +1,9 @@
++import * as migration_20260820_124947 from './20260820_124947';
++
++export const migrations = [
++  {
++    up: migration_20260820_124947.up,
++    down: migration_20260820_124947.down,
++    name: '20260820_124947'
++  },
++];
+diff --git a/payload.config.js b/payload.config.js
+index 9ddaa8b..f495352 100644
+--- a/payload.config.js
++++ b/payload.config.js
+@@ -1,42 +1,10 @@
+-import sharp from 'sharp'
+-import { postgresAdapter } from '@payloadcms/db-postgres'
+-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+-import { buildConfig } from 'payload'
+-
+-import { Users } from './collections/Users.js'
+-import { Products } from './collections/Products.js'
+-import { Testimonials } from './collections/Testimonials.js'
+-import { Enquiries } from './collections/Enquiries.js'
+-import { Orders } from './collections/Orders.js'
+-import { Media } from './collections/Media.js'
+-
+-export default buildConfig({
+-  // Mounted at /payload-api instead of the default /api, so it never
+-  // collides with the site's own /api/enquiry and /api/chatbot routes,
+-  // which live in app/(site)/api and stay exactly as they were.
+-  routes: {
+-    api: '/payload-api',
+-  },
+-
+-  admin: {
+-    user: Users.slug,
+-  },
+-
+-  editor: lexicalEditor(),
+-
+-  collections: [Users, Products, Testimonials, Enquiries, Orders, Media],
+-
+-  secret: process.env.PAYLOAD_SECRET || '',
+-
+-  db: postgresAdapter({
+-    pool: {
+-      connectionString: process.env.DATABASE_URL || '',
+-    },
+-  }),
+-
+-  sharp,
+-
+-  typescript: {
+-    outputFile: undefined,
+-  },
+-})
++// Thin re-export so the Next.js app (which imports this relatively from
++// app/(payload)/*.js) keeps working unchanged. The real config lives in
++// payload.config.mjs — it has to be a genuine .mjs file so Node's CLI tools
++// (npx payload migrate, etc.) load it as real ESM. Loaded as plain CommonJS
++// .js, requiring @payloadcms/richtext-lexical crashes with
++// ERR_REQUIRE_ASYNC_MODULE, because that package uses top-level await deep
++// in its dependency tree and Node can never require() that synchronously.
++// Next's own bundler doesn't have this problem (it isn't using Node's raw
++// require()), so this re-export is transparent to the running site.
++export { default } from './payload.config.mjs'
+diff --git a/payload.config.mjs b/payload.config.mjs
+new file mode 100644
+index 0000000..9ddaa8b
+--- /dev/null
++++ b/payload.config.mjs
+@@ -0,0 +1,42 @@
++import sharp from 'sharp'
++import { postgresAdapter } from '@payloadcms/db-postgres'
++import { lexicalEditor } from '@payloadcms/richtext-lexical'
++import { buildConfig } from 'payload'
++
++import { Users } from './collections/Users.js'
++import { Products } from './collections/Products.js'
++import { Testimonials } from './collections/Testimonials.js'
++import { Enquiries } from './collections/Enquiries.js'
++import { Orders } from './collections/Orders.js'
++import { Media } from './collections/Media.js'
++
++export default buildConfig({
++  // Mounted at /payload-api instead of the default /api, so it never
++  // collides with the site's own /api/enquiry and /api/chatbot routes,
++  // which live in app/(site)/api and stay exactly as they were.
++  routes: {
++    api: '/payload-api',
++  },
++
++  admin: {
++    user: Users.slug,
++  },
++
++  editor: lexicalEditor(),
++
++  collections: [Users, Products, Testimonials, Enquiries, Orders, Media],
++
++  secret: process.env.PAYLOAD_SECRET || '',
++
++  db: postgresAdapter({
++    pool: {
++      connectionString: process.env.DATABASE_URL || '',
++    },
++  }),
++
++  sharp,
++
++  typescript: {
++    outputFile: undefined,
++  },
++})
+-- 
+2.34.1
+
