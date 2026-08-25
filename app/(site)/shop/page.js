@@ -1,5 +1,6 @@
 import { getPayload } from 'payload'
 import config from '../../../payload.config.mjs'
+import ShopHeroCarousel from "../../../components/ShopHeroCarousel";
 import ShopGrid from "../../../components/ShopGrid";
 
 export const metadata = {
@@ -28,12 +29,7 @@ export default async function ShopPage() {
 
   return (
     <>
-      <section className="page-hero">
-        <div className="container">
-          <h1>Shop</h1>
-          <p>Real products, real current prices, direct from Vel Systems. Message us on WhatsApp if you need something not listed below.</p>
-        </div>
-      </section>
+      <ShopHeroCarousel />
       <section className="container content-section">
         <ShopGrid products={products} />
       </section>
