@@ -2,30 +2,31 @@
 import { useState, useEffect } from "react";
 import { WhatsAppCta } from "./Sections";
 
-// Ships with 4 bundled SVG backgrounds (public/images/shop-hero/slide-1.svg
-// ... slide-4.svg) - abstract geometric patterns in the brand's navy/red/gold
-// colors, not photos of anything, so there's no risk of misrepresenting real
-// products or the shop itself. To switch to real photography later, drop
-// real photos into the same folder as slide-1.jpg ... slide-4.jpg (1920x1000
-// or wider, landscape, under ~400KB each) and update the file extensions
-// below from .svg to .jpg.
+// Uses real photos already in this codebase (not new AI-generated or
+// stock images) - the same rooftop solar shot used on the homepage hero,
+// plus real desktop/CCTV/solar-install photos already used elsewhere on
+// the site. These are small (under 700px), captured for use as square
+// content photos, not wide hero banners, so stretched across a full-width
+// hero they'll look softer/less sharp than a proper 1920px+ hero photo
+// would. Swap in real wide photos later (1920x1000+, under ~400KB) by
+// replacing the 4 paths below - no other code changes needed.
 const SLIDES = [
   {
-    image: "/images/shop-hero/slide-1.svg",
+    image: "/images/hero/hero-solar.jpg",
     h1: "Shop IT Hardware, Security & Solar Accessories Online",
     sub: "Real products, real current prices, direct from Vel Systems. 25+ years of local sales and service, no dealer sign-up needed.",
     showCta: true
   },
   {
-    image: "/images/shop-hero/slide-2.svg",
+    image: "/images/subitems/subitem-desktop-1.jpg",
     caption: "IT Hardware & Networking, In Stock"
   },
   {
-    image: "/images/shop-hero/slide-3.svg",
+    image: "/images/subitems/subitem-cctv-camera-0.jpg",
     caption: "Security Systems You Can Trust"
   },
   {
-    image: "/images/shop-hero/slide-4.svg",
+    image: "/images/solar/solar-industrial.jpg",
     caption: "Solar Accessories & More"
   }
 ];
