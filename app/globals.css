@@ -71,13 +71,13 @@ li { list-style: none; }
   content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
   background: linear-gradient(90deg, var(--orange) 0%, var(--gold) 50%, var(--orange) 100%);
 }
-.logo { display: flex; align-items: center; }
+.logo { display: flex; align-items: center; background: #fff; padding: 6px 14px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
 .logo-img { height: 54px; width: auto; display: block; }
 .header-badges { display: flex; align-items: center; justify-content: center; gap: 16px; }
-.header-badges img { height: 24px; width: auto; object-fit: contain; background: #fff; border-radius: 4px; padding: 2px 5px; }
+.header-badges img { height: 30px; width: auto; object-fit: contain; background: #fff; border-radius: 4px; padding: 3px 6px; }
 @media (max-width: 600px) {
   .header-badges { justify-content: center; gap: 14px; }
-  .header-badges img { height: 26px; }
+  .header-badges img { height: 32px; }
 }
 .nav-toggle { display: none; background: none; border: none; font-size: 26px; cursor: pointer; color: #fff; }
 .main-nav { display: flex; align-items: center; gap: 18px; }
