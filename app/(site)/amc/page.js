@@ -2,6 +2,7 @@ import { AMC_PLANS } from "../../../data/content";
 import { WhatsAppCta } from "../../../components/Sections";
 
 export const metadata = {
+  alternates: { canonical: "/amc/" },
   title: "AMC & Service Contracts | Vel Systems",
   description: "Comprehensive AMC, Non-Comprehensive ASC, and On-Call service contracts from Vel Systems."
 };

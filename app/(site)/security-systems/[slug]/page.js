@@ -10,7 +10,7 @@ export function generateStaticParams() {
 export function generateMetadata({ params }) {
   const item = SECURITY_ITEMS.find(i => i.slug === params.slug);
   if (!item) return {};
-  return { title: `${item.name} | Security Systems | Vel Systems`, description: item.tagline };
+  return { title: `${item.name} | Security Systems | Vel Systems`, description: item.tagline, alternates: { canonical: `/security-systems/${item.slug}/` } };
 }
 
 export default function SecurityDetailPage({ params }) {

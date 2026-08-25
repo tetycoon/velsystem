@@ -2,15 +2,38 @@ import { SOLAR_TYPES, SOLAR_FINANCE, SOLAR_FAQ, TRUSTED_BY, TESTIMONIALS } from 
 import { WhatsAppCta, GovernmentStrip } from "../../../components/Sections";
 import SolarHeroCarousel from "../../../components/SolarHeroCarousel";
 
+// Mirrors the visible "Solar FAQ" section below word-for-word — required by
+// Google's structured data guidelines, and it's what makes these questions
+// eligible to show as an expandable FAQ rich result in search.
+function SolarFAQSchema() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: SOLAR_FAQ.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a }
+    }))
+  };
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
 export const metadata = {
-  title: "Solar Panel Installation Company in Chengalpattu, Tamil Nadu | Vel Systems",
-  description: "End-to-end solar power systems for homes, businesses, and industrial sites in Chengalpattu and Tamil Nadu, backed by 25+ years of service experience."
+  alternates: { canonical: "/solar/" },
+  title: "Solar Panel Dealer & Installer in Chengalpattu, Tamil Nadu | Vel Systems",
+  description: "Vel Systems is a solar panel dealer and installer serving Chengalpattu and Tamil Nadu, for homes, businesses, and industrial sites, backed by 25+ years."
 };
 
 export default function SolarPage() {
   const testimonial = TESTIMONIALS[0];
   return (
     <>
+      <SolarFAQSchema />
       <SolarHeroCarousel />
 
       <section className="container content-section">

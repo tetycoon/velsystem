@@ -2,6 +2,7 @@ import { TESTIMONIALS, CLIENT_LOGOS, ADDITIONAL_CLIENTS } from "../../../data/co
 import { TestimonialsSection } from "../../../components/Sections";
 
 export const metadata = {
+  alternates: { canonical: "/customers/" },
   title: "Our Customers | Vel Systems",
   description: "20,000+ customers and 500+ corporate clients trust Vel Systems."
 };

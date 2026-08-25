@@ -2,8 +2,9 @@ import { TESTIMONIALS, HOME_QUOTES } from "../../data/content";
 import { WhatsAppCta, HomeStats, AudienceSwitch, PillarGrid, WhyChooseUs, HomeClients, TestimonialsSection, BlogTeaser, InstagramSection, GovernmentStrip } from "../../components/Sections";
 
 export const metadata = {
-  title: "Vel Systems - Comprehensive Sales & Service for Solar, Security & IT",
-  description: "Solar energy systems, CCTV & security solutions, IT hardware, and AMC contracts. 25+ years serving Chengalpattu and beyond."
+  alternates: { canonical: "/" },
+  title: "Solar Panel Dealer in Chengalpattu | Vel Systems",
+  description: "Solar panel dealer and installer in Chengalpattu, Tamil Nadu. Also CCTV & security systems, IT hardware, and AMC contracts. 25+ years of local service."
 };
 
 export default function HomePage() {
@@ -13,7 +14,7 @@ export default function HomePage() {
         <div className="container hero-inner-split">
           <div className="hero-inner reveal-left">
             <span className="eyebrow">25+ Years of Experience</span>
-            <h1>Solar Power, Backed by 25 Years of Trust</h1>
+            <h1>Solar Panel Dealer in Chengalpattu, Backed by 25 Years of Trust</h1>
             <p>{HOME_QUOTES.solarBlurb}</p>
             <WhatsAppCta label="Get a Free Solar Quote on WhatsApp" message="Hi Vel Systems, I'm interested in a solar quote for my property." extraClass="hero-cta" />
           </div>

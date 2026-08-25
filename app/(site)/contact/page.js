@@ -2,7 +2,8 @@ import { BRAND, LOCATIONS, TEAM_CONTACTS } from "../../../data/content";
 import { WhatsAppCta } from "../../../components/Sections";
 import EnquiryForm from "../../../components/EnquiryForm";
 
-export const metadata = { title: "Contact Us | Vel Systems", description: "Contact Vel Systems by phone, WhatsApp, or email. Three locations in Chengalpattu." };
+export const metadata = {
+  alternates: { canonical: "/contact/" }, title: "Contact Us | Vel Systems", description: "Contact Vel Systems by phone, WhatsApp, or email. Three locations in Chengalpattu." };
 
 export default function ContactPage() {
   return (

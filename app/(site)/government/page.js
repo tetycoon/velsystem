@@ -2,6 +2,7 @@ import { BRAND } from "../../../data/content";
 import { WhatsAppCta } from "../../../components/Sections";
 
 export const metadata = {
+  alternates: { canonical: "/government/" },
   title: "Government, PSU & Institution Supply | Vel Systems",
   description: "GeM registered supplier for government offices, schools, colleges, and corporate campuses."
 };

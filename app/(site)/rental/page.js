@@ -1,7 +1,8 @@
 import { RENTAL_CATEGORIES } from "../../../data/content";
 import { WhatsAppCta } from "../../../components/Sections";
 
-export const metadata = { title: "Rental | Vel Systems", description: "Rent laptops, desktops, monitors, TVs, projectors, and printers from Vel Systems." };
+export const metadata = {
+  alternates: { canonical: "/rental/" }, title: "Rental | Vel Systems", description: "Rent laptops, desktops, monitors, TVs, projectors, and printers from Vel Systems." };
 
 export default function RentalPage() {
   return (

@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { BLOG_POSTS } from "../../../data/content";
 
-export const metadata = { title: "Blog | Vel Systems", description: "News and articles from Vel Systems." };
+export const metadata = {
+  alternates: { canonical: "/blog/" }, title: "Blog | Vel Systems", description: "News and articles from Vel Systems." };
 
 export default function BlogPage() {
   return (

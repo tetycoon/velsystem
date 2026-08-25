@@ -2,6 +2,7 @@ import { TrustBar } from "../../../components/Sections";
 import { TEAM_SIZE } from "../../../data/content";
 
 export const metadata = {
+  alternates: { canonical: "/about/" },
   title: "About Us | Vel Systems",
   description: "Founded in 2002, Vel Systems has served Chengalpattu for over 25 years across IT, security, and now solar."
 };

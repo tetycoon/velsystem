@@ -8,7 +8,7 @@ import { WhatsAppCta } from "./Sections";
 const SLIDES = [
   {
     image: "/images/solar-hero/slide-1.jpg",
-    h1: "Solar Panel Installation Company in Chengalpattu, Tamil Nadu",
+    h1: "Solar Panel Dealer & Installer in Chengalpattu, Tamil Nadu",
     sub: "End-to-end solar energy solutions for homes, businesses, and industrial rooftops, backed by 25+ years of local service.",
     showCta: true
   },

@@ -7,12 +7,19 @@ export function generateStaticParams() {
   return BLOG_POSTS.map(post => ({ slug: post.slug }));
 }
 
+function truncateDescription(text, max = 155) {
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  return cut.slice(0, cut.lastIndexOf(" ")) + "...";
+}
+
 export function generateMetadata({ params }) {
   const post = BLOG_POSTS.find(p => p.slug === params.slug);
   if (!post) return {};
   return {
     title: `${post.title} | Vel Systems Blog`,
-    description: post.body ? post.body[0] : post.title
+    description: truncateDescription(post.body ? post.body[0] : post.title),
+    alternates: { canonical: `/blog/${post.slug}/` }
   };
 }
 

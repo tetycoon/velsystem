@@ -9,8 +9,8 @@ import { BRAND, LOCATIONS, THIRD_PARTY_RATING } from "../../data/content";
 // Swap this once velsystems.in is pointed at this deployment (same env var the
 // sitemap already uses).
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://velsystem.vercel.app";
-const SITE_TITLE = "Vel Systems - Comprehensive Sales & Service for Solar, Security & IT";
-const SITE_DESCRIPTION = "Solar energy systems, CCTV & security solutions, IT hardware, and AMC contracts. 25+ years serving Chengalpattu and beyond.";
+const SITE_TITLE = "Vel Systems - Solar Panel Dealer, Security Systems & IT Hardware";
+const SITE_DESCRIPTION = "Solar panel dealer and installer in Chengalpattu, Tamil Nadu. Also CCTV & security systems, IT hardware, and AMC contracts. 25+ years of local service.";
 
 export const metadata = {
   metadataBase: new URL(BASE_URL),

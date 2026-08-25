@@ -1,7 +1,8 @@
 import CartView from "../../../../components/CartView";
 import { WhatsAppCta } from "../../../../components/Sections";
 
-export const metadata = { title: "Your Cart | Vel Systems", description: "Review your cart and checkout with Vel Systems." };
+export const metadata = {
+  alternates: { canonical: "/shop/cart/" }, title: "Your Cart | Vel Systems", description: "Review your cart and checkout with Vel Systems." };
 
 export default function CartPage() {
   return (
