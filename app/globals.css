@@ -54,17 +54,27 @@ li { list-style: none; }
 .btn-outline:hover { background: var(--navy); color: #fff; }
 .btn[disabled] { opacity: .5; cursor: not-allowed; }
 .scroll-progress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--orange), var(--spark)); z-index: 60; transition: width .1s linear; }
-.site-header { position: sticky; top: 0; z-index: 50; background: var(--navy-dark); box-shadow: 0 2px 10px rgba(0,0,0,.25); }
-.topbar { background: var(--navy-dark); color: #fff; font-size: 13px; }
-.topbar-inner { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; flex-wrap: wrap; gap: 6px; }
-.social-links a { color: #fff; margin-left: 14px; opacity: .85; }
-.social-links a:hover { opacity: 1; }
+.site-header { position: sticky; top: 0; z-index: 50; background: linear-gradient(100deg, var(--navy-dark) 0%, var(--navy) 100%); box-shadow: 0 2px 10px rgba(0,0,0,.25); }
+.topbar { background: rgba(0,0,0,.18); color: #fff; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,.1); }
+.topbar-inner { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; flex-wrap: wrap; gap: 10px; }
+.topbar-contact { flex-shrink: 0; }
+.social-links { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.social-links a {
+  display: flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(255,255,255,.14); color: #fff; font-size: 13px;
+  transition: background .2s var(--ease), transform .2s var(--ease);
+}
+.social-links a:hover { background: var(--orange); transform: translateY(-2px); }
 .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; position: relative; }
+.header-inner::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+  background: linear-gradient(90deg, var(--orange) 0%, var(--gold) 50%, var(--orange) 100%);
+}
 .logo { display: flex; align-items: center; }
 .logo-img { height: 54px; width: auto; display: block; }
-.header-badges-strip { background: var(--light-blue); border-bottom: 1px solid var(--border); }
-.header-badges { display: flex; align-items: center; justify-content: flex-end; gap: 22px; padding: 8px 24px; }
-.header-badges img { height: 36px; width: auto; object-fit: contain; }
+.header-badges { display: flex; align-items: center; justify-content: center; gap: 16px; }
+.header-badges img { height: 24px; width: auto; object-fit: contain; background: #fff; border-radius: 4px; padding: 2px 5px; }
 @media (max-width: 600px) {
   .header-badges { justify-content: center; gap: 14px; }
   .header-badges img { height: 26px; }
@@ -85,7 +95,7 @@ li { list-style: none; }
 .nav-cta { font-size: 13px; padding: 9px 16px; }
 .hero {
   background:
-    linear-gradient(120deg, rgba(13,44,107,.94) 0%, rgba(9,30,74,.92) 55%, rgba(232,40,45,.55) 160%),
+    linear-gradient(120deg, rgba(13,44,107,.82) 0%, rgba(9,30,74,.7) 55%, rgba(232,40,45,.35) 160%),
     url('/images/hero/hero-solar.jpg') center/cover no-repeat;
   color: #fff;
   padding: 70px 0;
@@ -97,6 +107,19 @@ li { list-style: none; }
 .eyebrow { display: inline-block; background: var(--orange); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .06em; padding: 5px 12px; border-radius: 20px; margin-bottom: 16px; }
 .hero h1 { color: #fff; font-size: 40px; line-height: 1.15; margin-bottom: 16px; }
 .hero p { font-size: 17px; color: #dde5ee; margin-bottom: 22px; }
+
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-anim {
+  opacity: 0;
+  animation: heroFadeUp .7s var(--ease) forwards;
+  animation-delay: var(--hero-delay, 0s);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-anim { animation: none; opacity: 1; }
+}
 .hero-note { font-size: 12px; color: #9fb0c4; margin-top: 14px; font-style: italic; }
 .quote-figure { text-align: center; }
 .quote-figure img { width: 100%; max-width: 220px; height: 140px; object-fit: cover; border-radius: 8px; margin: 0 auto 14px; display: block; }

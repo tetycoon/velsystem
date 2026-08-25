@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { FaWhatsapp, FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
 import { NAV, UTILITY_NAV, BRAND, waLink, SECURITY_ITEMS, IT_ITEMS } from "../data/content";
 import CategoryIcon from "./CategoryIcon";
 
@@ -33,20 +34,18 @@ export default function Header() {
     <header className="site-header">
       <div className="topbar">
         <div className="container topbar-inner">
-          <span>{BRAND.email} &nbsp;|&nbsp; {BRAND.phone}</span>
-          <div className="social-links">
-            <a href={waLink("Hi Vel Systems, I have a question.")} target="_blank" rel="noopener noreferrer">WhatsApp</a>
-            <a href={BRAND.facebook} target="_blank" rel="noopener noreferrer">Facebook</a>
-            <a href={BRAND.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>
-            <a href={BRAND.youtube} target="_blank" rel="noopener noreferrer">YouTube</a>
+          <span className="topbar-contact">{BRAND.email} &nbsp;|&nbsp; {BRAND.phone}</span>
+          <div className="header-badges">
+            <img src="/images/badges/25-years-excellence.png" alt="25+ Years of Excellence" />
+            <img src="/images/badges/gem-logo.png" alt="GeM Registered Supplier" />
+            <img src="/images/badges/iso-9001-2015.png" alt="ISO 9001:2015 Certified" />
           </div>
-        </div>
-      </div>
-      <div className="header-badges-strip">
-        <div className="container header-badges">
-          <img src="/images/badges/25-years-excellence.png" alt="25+ Years of Excellence" />
-          <img src="/images/badges/gem-logo.png" alt="GeM Registered Supplier" />
-          <img src="/images/badges/iso-9001-2015.png" alt="ISO 9001:2015 Certified" />
+          <div className="social-links">
+            <a href={waLink("Hi Vel Systems, I have a question.")} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><FaWhatsapp /></a>
+            <a href={BRAND.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FaFacebookF /></a>
+            <a href={BRAND.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><FaInstagram /></a>
+            <a href={BRAND.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube"><FaYoutube /></a>
+          </div>
         </div>
       </div>
       <div className="container header-inner">

@@ -12,11 +12,13 @@ export default function HomePage() {
     <>
       <section className="hero hero-solar hero-with-image hero-bold">
         <div className="container hero-inner-split">
-          <div className="hero-inner reveal-left">
-            <span className="eyebrow">25+ Years of Experience</span>
-            <h1>Solar Panel Dealer in Chengalpattu, Backed by 25 Years of Trust</h1>
-            <p>{HOME_QUOTES.solarBlurb}</p>
-            <WhatsAppCta label="Get a Free Solar Quote on WhatsApp" message="Hi Vel Systems, I'm interested in a solar quote for my property." extraClass="hero-cta" />
+          <div className="hero-inner">
+            <span className="eyebrow hero-anim" style={{ "--hero-delay": "0s" }}>25+ Years of Experience</span>
+            <h1 className="hero-anim" style={{ "--hero-delay": "0.12s" }}>Solar Panel Dealer in Chengalpattu, Backed by 25 Years of Trust</h1>
+            <p className="hero-anim" style={{ "--hero-delay": "0.24s" }}>{HOME_QUOTES.solarBlurb}</p>
+            <div className="hero-anim" style={{ "--hero-delay": "0.36s" }}>
+              <WhatsAppCta label="Get a Free Solar Quote on WhatsApp" message="Hi Vel Systems, I'm interested in a solar quote for my property." extraClass="hero-cta" />
+            </div>
           </div>
           <img className="hero-photo reveal-right" src="/images/hero/hero-solar.jpg" alt="Rooftop solar installation at sunset" loading="eager" />
         </div>
