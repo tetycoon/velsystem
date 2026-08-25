@@ -2,29 +2,30 @@
 import { useState, useEffect } from "react";
 import { WhatsAppCta } from "./Sections";
 
-// Drop 4 real, wide photos into public/images/shop-hero/ using these exact
-// filenames (slide-1.jpg ... slide-4.jpg), same approach as the solar page's
-// hero. Recommended: 1920x1000px or wider, landscape, under ~400KB each.
-// Good subjects: your shop counter/showroom, a stack of real stock (routers,
-// motherboards, CCTV units), or a customer handover photo - anything real,
-// not stock photography.
+// Ships with 4 bundled SVG backgrounds (public/images/shop-hero/slide-1.svg
+// ... slide-4.svg) - abstract geometric patterns in the brand's navy/red/gold
+// colors, not photos of anything, so there's no risk of misrepresenting real
+// products or the shop itself. To switch to real photography later, drop
+// real photos into the same folder as slide-1.jpg ... slide-4.jpg (1920x1000
+// or wider, landscape, under ~400KB each) and update the file extensions
+// below from .svg to .jpg.
 const SLIDES = [
   {
-    image: "/images/shop-hero/slide-1.jpg",
+    image: "/images/shop-hero/slide-1.svg",
     h1: "Shop IT Hardware, Security & Solar Accessories Online",
     sub: "Real products, real current prices, direct from Vel Systems. 25+ years of local sales and service, no dealer sign-up needed.",
     showCta: true
   },
   {
-    image: "/images/shop-hero/slide-2.jpg",
+    image: "/images/shop-hero/slide-2.svg",
     caption: "IT Hardware & Networking, In Stock"
   },
   {
-    image: "/images/shop-hero/slide-3.jpg",
+    image: "/images/shop-hero/slide-3.svg",
     caption: "Security Systems You Can Trust"
   },
   {
-    image: "/images/shop-hero/slide-4.jpg",
+    image: "/images/shop-hero/slide-4.svg",
     caption: "Solar Accessories & More"
   }
 ];

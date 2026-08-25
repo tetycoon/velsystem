@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0D2C6B"/>
+      <stop offset="100%" stop-color="#1D5FC2"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="800" fill="url(#bg1)"/>
+  <polygon points="1000,0 1600,0 1600,800 1250,800" fill="#2984F6" opacity="0.18"/>
+  <polygon points="1300,0 1600,0 1600,500" fill="#E8282D" opacity="0.22"/>
+  <polygon points="1550,300 1600,300 1600,800 1450,800" fill="#E8A93C" opacity="0.20"/>
+  <circle cx="1180" cy="150" r="6" fill="#E8A93C" opacity="0.6"/>
+  <circle cx="1340" cy="620" r="5" fill="#ffffff" opacity="0.35"/>
+  <circle cx="1450" cy="220" r="4" fill="#ffffff" opacity="0.3"/>
+  <line x1="1050" y1="700" x2="1600" y2="150" stroke="#ffffff" stroke-opacity="0.08" stroke-width="2"/>
+  <line x1="1150" y1="800" x2="1600" y2="350" stroke="#ffffff" stroke-opacity="0.06" stroke-width="2"/>
+</svg>
