@@ -198,7 +198,7 @@ li { list-style: none; }
    (camera types, brand list, WhatsApp CTA, related) so it reads as
    distinct sections instead of one long run-on block. */
 .detail-block { margin: 40px 0; }
-.detail-block-heading { font-size: 26px; color: var(--orange); margin: 0 0 16px; padding-top: 32px; border-top: 1px solid var(--border); }
+.detail-block-heading { font-size: 26px; color: var(--spark-dark); margin: 0 0 16px; padding-top: 32px; border-top: 1px solid var(--border); }
 .detail-block:first-child .detail-block-heading { padding-top: 0; border-top: none; }
 .detail-block-center { text-align: center; }
 .detail-intro { font-size: 16px; max-width: 760px; color: var(--grey); }
