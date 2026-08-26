@@ -58,10 +58,18 @@ export default function SecurityDetailPage({ params }) {
         } : undefined}
       >
         <div className="container detail-hero-inner">
-          <div className="detail-hero-icon-badge"><CategoryIcon slug={item.slug} size={30} /></div>
-          <div>
-            <h1>{item.name}</h1>
-            <p>{item.tagline}</p>
+          <div className="detail-hero-text">
+            <div className="detail-hero-icon-badge"><CategoryIcon slug={item.slug} size={30} /></div>
+            <div>
+              <h1>{item.name}</h1>
+              <p>{item.tagline}</p>
+            </div>
+          </div>
+          <div className="hero-stats">
+            <div><strong>25+</strong><span>Years of Experience</span></div>
+            <div><strong>40+</strong><span>In-House Engineers</span></div>
+            <div><strong>GeM &amp; ISO 9001:2015</strong><span>Registered &amp; Certified</span></div>
+            <div><strong>20,000+</strong><span>Customers Served</span></div>
           </div>
         </div>
       </section>
@@ -70,13 +78,6 @@ export default function SecurityDetailPage({ params }) {
           {item.body}{" "}
           Every <strong>{item.name.toLowerCase()}</strong> installation in <strong>Chengalpattu</strong> is backed by Vel Systems&rsquo; own in-house team and <strong>25+ years of local experience</strong>, so the same people who set it up are who you call for service.
         </p>
-
-        <div className="detail-trust-strip">
-          <div><strong>25+</strong><span>Years of Experience</span></div>
-          <div><strong>40+</strong><span>In-House Engineers</span></div>
-          <div><strong>GeM &amp; ISO 9001:2015</strong><span>Registered &amp; Certified</span></div>
-          <div><strong>20,000+</strong><span>Customers Served</span></div>
-        </div>
 
         {item.subItems && item.subItems.length > 0 && (
           <div className="detail-block">
