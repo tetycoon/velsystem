@@ -1,5 +1,5 @@
 import {
-  Camera, DoorOpen, Fingerprint, PhoneCall, ParkingSquare, ScanLine, Radio,
+  Cctv, DoorOpen, Fingerprint, PhoneCall, ParkingSquare, ScanLine, Radio,
   Video, Banknote, Flame, LockKeyhole, Navigation, Siren, Footprints,
   Speaker, UtensilsCrossed, Lightbulb,
   Monitor, Laptop, Printer, Tablet, ShieldCheck, Smartphone, Server,
@@ -12,8 +12,10 @@ import {
 // icon at all before, or wrongly reused another category's icon (guard tour
 // patrol was using the GPS tracker icon, home automation was using the video
 // door phone icon) — those are corrected here with their own icon.
+// cctv-camera was mapped to the plain "Camera" icon (looks like a DSLR),
+// swapped for lucide's dedicated "Cctv" icon (camera-on-a-pole) instead.
 const ICON_MAP = {
-  "cctv-camera": Camera,
+  "cctv-camera": Cctv,
   "door-access-control": DoorOpen,
   "biometric-system": Fingerprint,
   "intercom": PhoneCall,

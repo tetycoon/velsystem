@@ -160,6 +160,21 @@ li { list-style: none; }
 .page-hero { background: var(--light-blue); padding: 64px 0; border-bottom: 1px solid var(--border); }
 .page-hero h1 { font-size: 34px; margin-bottom: 10px; }
 .page-hero p { color: var(--grey); max-width: 700px; font-size: 16px; }
+.page-hero.has-photo {
+  background-size: cover; background-position: center; border-bottom: none;
+}
+.page-hero.has-photo .detail-hero-icon-badge {
+  background: rgba(255,255,255,.16); box-shadow: inset 0 0 0 1px rgba(255,255,255,.35); color: #fff;
+}
+.page-hero.has-photo h1 { color: #fff; }
+.page-hero.has-photo p { color: #EAF2FE; }
+
+/* Vertical rhythm between the stacked blocks on category detail pages
+   (camera types, brand list, WhatsApp CTA, related) so it reads as
+   distinct sections instead of one long run-on block. */
+.detail-block { margin: 40px 0; }
+.detail-block-heading { font-size: 20px; margin: 0 0 16px; padding-top: 32px; border-top: 1px solid var(--border); }
+.detail-block:first-child .detail-block-heading { padding-top: 0; border-top: none; }
 
 /* Solar page hero carousel: full-bleed background-image slides with a fade
    crossfade, dark gradient overlay for text contrast (same navy/red gradient
@@ -467,56 +482,36 @@ li { list-style: none; }
 }
 
 /* Category detail sub-items (CCTV types, laptop types, etc) and real client logos */
-.sub-items-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
-.sub-item-card { position: relative; border: 1px solid var(--border); border-radius: 12px; padding: 16px; background: var(--light); transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .2s var(--ease); }
-.sub-item-card:hover { border-color: var(--orange); transform: translateY(-3px); box-shadow: var(--shadow-sm); }
-.sub-item-photo { width: 100%; height: 140px; object-fit: contain; background: #fff; border-radius: 8px; margin-bottom: 10px; }
-.sub-item-card h3 { font-size: 14px; margin-bottom: 6px; color: var(--navy); }
-.sub-item-card p { font-size: 13px; color: var(--grey); margin: 0; }
+.sub-items-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 0; }
+.sub-item-card { display: flex; flex-direction: column; position: relative; border: 1px solid var(--border); border-radius: 14px; padding: 18px; background: #fff; box-shadow: var(--shadow-sm); transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .2s var(--ease); }
+.sub-item-card:hover { border-color: var(--orange); transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.sub-item-photo { width: 100%; height: 160px; object-fit: contain; background: var(--light); border-radius: 10px; margin-bottom: 12px; }
+.sub-item-card h3 { font-size: 15px; margin-bottom: 6px; color: var(--navy); }
+.sub-item-card p { font-size: 13px; color: var(--grey); margin: 0; flex: 1; }
 .client-logo-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-top: 16px; }
 .client-logo-tile { position: relative; border: 1px solid var(--border); border-radius: 12px; padding: 14px; background: #fff; box-shadow: var(--shadow-sm); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .2s var(--ease); }
 .client-logo-tile:hover { border-color: var(--orange); transform: translateY(-3px); box-shadow: var(--shadow-sm); }
 .client-logo-tile img { max-width: 100%; max-height: 70px; object-fit: contain; }
 .client-logo-tile span { font-size: 11px; color: var(--grey); }
 
-/* Animated "Brands We Deliver" logo strip on category detail pages */
-.brand-marquee-wrap { margin: 36px 0 8px; }
-.brand-marquee-heading { font-size: 19px; margin-bottom: 16px; }
-.brand-marquee {
-  overflow: hidden; position: relative; padding: 18px 0;
-  background: var(--light); border-radius: 12px; border: 1px solid var(--border);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+/* Static "List of CCTV Brands We Have" grid on category detail pages -
+   full-color logos, 4 columns on desktop, no animation. */
+.brand-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.brand-grid-item {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  border: 1px solid var(--border); border-radius: 12px; padding: 18px 12px;
+  background: #fff; box-shadow: var(--shadow-sm);
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .2s var(--ease);
 }
-.brand-marquee-track {
-  display: flex; align-items: flex-start; gap: 40px; width: max-content;
-  animation: brandMarqueeScroll 34s linear infinite;
-  padding: 0 24px;
-}
-.brand-marquee:hover .brand-marquee-track { animation-play-state: paused; }
-.brand-marquee-item {
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  flex-shrink: 0; width: 96px;
-}
-.brand-marquee-logo {
-  height: 42px; width: auto; max-width: 96px; object-fit: contain;
-  filter: grayscale(1) opacity(.75);
-  transition: filter .25s var(--ease), transform .25s var(--ease);
-}
-.brand-marquee-item:hover .brand-marquee-logo { filter: grayscale(0) opacity(1); transform: scale(1.08); }
-.brand-marquee-name { font-size: 12px; font-weight: 600; color: var(--grey); text-align: center; }
-@keyframes brandMarqueeScroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+.brand-grid-item:hover { border-color: var(--orange); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.brand-grid-logo-wrap { height: 48px; width: 100%; display: flex; align-items: center; justify-content: center; }
+.brand-grid-logo { max-height: 44px; max-width: 100%; object-fit: contain; }
+.brand-grid-name { font-size: 13px; font-weight: 600; color: var(--navy); text-align: center; }
+@media (max-width: 900px) {
+  .brand-grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 600px) {
-  .brand-marquee-track { gap: 28px; }
-  .brand-marquee-item { width: 76px; }
-  .brand-marquee-logo { height: 32px; }
-  .brand-marquee-name { font-size: 11px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .brand-marquee-track { animation: none; }
+  .brand-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 900px) {
