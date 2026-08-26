@@ -45,7 +45,7 @@ const TEAM_CONTACTS = [
   { role: "Murali", name: "", phone: "98651 80104", email: "murali@velsystems.in" },
   // From the printed company profile (VEL SYSTEMS PROFILE 23-24.pdf) — a dedicated
   // service line, separate from the sales number already in BRAND.phone.
-  { role: "Service Support", name: "", phone: "98651 80110", email: BRAND.email }
+  { role: "Service Support", name: "", phone: "98651 80110", email: "service@velsystems.in" }
 ];
 
 // Real, printed on the company's official profile brochure. Not shown elsewhere on
