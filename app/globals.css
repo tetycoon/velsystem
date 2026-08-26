@@ -71,14 +71,8 @@ li { list-style: none; }
   content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
   background: linear-gradient(90deg, var(--orange) 0%, var(--gold) 50%, var(--orange) 100%);
 }
-.header-left { display: flex; align-items: center; gap: 18px; }
 .logo { display: flex; align-items: center; background: #fff; padding: 6px 14px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
 .logo-img { height: 54px; width: auto; display: block; }
-.header-badges { display: flex; align-items: center; gap: 10px; padding-left: 16px; border-left: 1px solid rgba(255,255,255,.25); }
-.header-badges img { height: 34px; width: auto; object-fit: contain; background: #fff; border-radius: 4px; padding: 3px 6px; }
-@media (max-width: 900px) {
-  .header-badges { display: none; }
-}
 .nav-toggle { display: none; background: none; border: none; font-size: 26px; cursor: pointer; color: #fff; }
 .main-nav { display: flex; align-items: center; gap: 18px; }
 .nav-main { display: flex; gap: 16px; }
@@ -104,6 +98,25 @@ li { list-style: none; }
 .hero-inner-split { display: flex; align-items: center; gap: 40px; }
 .hero-with-image .hero-inner { max-width: 560px; flex: 1; }
 .hero-photo { width: 340px; height: 340px; object-fit: cover; border-radius: 12px; flex-shrink: 0; box-shadow: 0 20px 50px rgba(0,0,0,.35); }
+.hero-photo-wrap { position: relative; display: inline-block; flex-shrink: 0; }
+.hero-badges-float { position: absolute; left: -18px; bottom: -14px; display: flex; gap: 10px; z-index: 3; }
+.hero-badge-float {
+  height: 46px; width: auto; object-fit: contain; background: #fff; border-radius: 8px;
+  padding: 5px 8px; box-shadow: var(--shadow-md);
+  animation: heroBadgeFloat 3s ease-in-out infinite;
+  animation-delay: var(--float-delay, 0s);
+}
+@keyframes heroBadgeFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+@media (max-width: 720px) {
+  .hero-badges-float { left: 8px; bottom: 8px; gap: 6px; }
+  .hero-badge-float { height: 32px; padding: 4px 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-badge-float { animation: none; }
+}
 .eyebrow { display: inline-block; background: var(--orange); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .06em; padding: 5px 12px; border-radius: 20px; margin-bottom: 16px; }
 .hero h1 { color: #fff; font-size: 40px; line-height: 1.15; margin-bottom: 16px; }
 .hero p { font-size: 17px; color: #dde5ee; margin-bottom: 22px; }
