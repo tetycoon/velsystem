@@ -94,7 +94,25 @@ const SECURITY_ITEMS = [
       { image: "/images/subitems/subitem-cctv-camera-8.jpg", name: '4G Camera', desc: 'Runs on a SIM card and mobile network instead of Wi-Fi or LAN, built for remote sites, farms, or locations without a fixed internet line.' },
       { image: "/images/subitems/subitem-cctv-camera-9.jpg", name: 'ANPR Camera', desc: 'Automatic Number Plate Recognition camera that reads and logs vehicle number plates on its own, used at gates, parking entries, and toll points.' },
       { image: "/images/subitems/subitem-cctv-camera-10.jpg", name: 'Fisheye Camera', desc: 'A single ultra-wide-angle camera covering a full 180 to 360 degree view of a room or open area, cutting down the number of cameras needed.' }
-    ] },
+    
+    ],
+    brands: [
+      { name: "CP Plus", logo: "/images/brand/cp-plus.png" },
+      { name: "Hikvision", logo: "/images/brand/hikvision.png" },
+      { name: "Dahua", logo: "/images/brand/dahua.png" },
+      { name: "Uniview", logo: "/images/brand/uniview.png" },
+      { name: "Honeywell", logo: "/images/brand/honeywell.png" },
+      { name: "Prama", logo: "/images/brand/prama.png" },
+      { name: "Godrej", logo: "/images/brand/Godrej.png" },
+      { name: "Matrix", logo: "/images/brand/Matrix.png" },
+      { name: "Trueview", logo: "/images/brand/Trueview.png" },
+      { name: "Secureye", logo: "/images/brand/Secureye.png" },
+      { name: "TP-Link", logo: "/images/brand/tp-link.png" },
+      { name: "VIGI", logo: "/images/brand/vigi.png" },
+      { name: "Imou", logo: "/images/brand/imou.png" },
+      { name: "EZVIZ", logo: "/images/brand/ezviz.png" }
+    ],
+   },
   { slug: "door-access-control", name: "Door Access Control", icon: "/images/icons/icon-door-access-control.jpg", tagline: "Manage and monitor who enters your space.", body: "Card, PIN, and biometric access control for single doors up to full multi-entry buildings. Useful for offices, schools, and warehouses that need a record of who came in and when.", subItems: [
       { image: "/images/subitems/subitem-door-access-control-0.jpg", name: 'eSSL', desc: 'Secure and efficient entry management using biometric, RFID, or keypad technologies, with customizable monitoring and access features.' },
       { image: "/images/subitems/subitem-door-access-control-1.jpg", name: 'Hikvision', desc: 'Advanced technologies including biometric, RFID, and face recognition for secure entry management, with integration into broader security systems.' },

@@ -41,6 +41,21 @@ export default function SecurityDetailPage({ params }) {
             ))}
           </div>
         )}
+        {item.brands && item.brands.length > 0 && (
+          <div className="brand-marquee-wrap">
+            <h3 className="brand-marquee-heading">List of CCTV Brands We Have</h3>
+            <div className="brand-marquee">
+              <div className="brand-marquee-track">
+                {[...item.brands, ...item.brands].map((b, i) => (
+                  <div className="brand-marquee-item" key={`${b.name}-${i}`}>
+                    <img src={b.logo} alt={b.name} className="brand-marquee-logo" loading="lazy" />
+                    <span className="brand-marquee-name">{b.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
         <WhatsAppCta label={`Enquire About ${item.name}`} message={`Hi Vel Systems, I would like to enquire about ${item.name}.`} />
         <h3>Related</h3>
         <CategoryGrid items={related} basePath="/security-systems/" />
