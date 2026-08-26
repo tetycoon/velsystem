@@ -35,11 +35,6 @@ export default function Header() {
       <div className="topbar">
         <div className="container topbar-inner">
           <span className="topbar-contact">{BRAND.email} &nbsp;|&nbsp; {BRAND.phone}</span>
-          <div className="header-badges">
-            <img src="/images/badges/25-years-excellence.png" alt="25+ Years of Excellence" />
-            <img src="/images/badges/gem-logo.png" alt="GeM Registered Supplier" />
-            <img src="/images/badges/iso-9001-2015.png" alt="ISO 9001:2015 Certified" />
-          </div>
           <div className="social-links">
             <a href={waLink("Hi Vel Systems, I have a question.")} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><FaWhatsapp /></a>
             <a href={BRAND.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FaFacebookF /></a>
@@ -49,9 +44,16 @@ export default function Header() {
         </div>
       </div>
       <div className="container header-inner">
-        <Link href="/" className="logo">
-          <img src="/images/vel-systems-logo.png" alt="Vel Systems - Sales, Service, Accessories" className="logo-img" />
-        </Link>
+        <div className="header-left">
+          <Link href="/" className="logo">
+            <img src="/images/vel-systems-logo.png" alt="Vel Systems - Sales, Service, Accessories" className="logo-img" />
+          </Link>
+          <div className="header-badges">
+            <img src="/images/badges/25-years-excellence.png" alt="25+ Years of Excellence" />
+            <img src="/images/badges/gem-logo.png" alt="GeM Registered Supplier" />
+            <img src="/images/badges/iso-9001-2015.png" alt="ISO 9001:2015 Certified" />
+          </div>
+        </div>
         <button className="nav-toggle" aria-label="Menu" onClick={() => setOpen(!open)}>&#9776;</button>
         <nav className={`main-nav${open ? " open" : ""}`}>
           <ul className="nav-main">
