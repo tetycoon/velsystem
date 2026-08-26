@@ -39,9 +39,9 @@ export default function Header() {
             &nbsp;|&nbsp;
             <a href="tel:+919865199933">{BRAND.phone}</a>
             &nbsp;|&nbsp;
-            <a href="tel:+919865180110">(+91) 98651 80110</a>
-            &nbsp;/&nbsp;
             <a href="mailto:service@velsystems.in">service@velsystems.in</a>
+            &nbsp;/&nbsp;
+            <a href="tel:+919865180110">(+91) 98651 80110</a>
             <span className="topbar-contact-label">Service</span>
           </span>
           <div className="social-links">
