@@ -155,7 +155,7 @@ li { list-style: none; }
 .quote-figure img { width: 100%; max-width: 220px; height: 140px; object-fit: cover; border-radius: 8px; margin: 0 auto 14px; display: block; }
 .category-card-icon { color: var(--spark); }
 .icon-badge { width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg, var(--light) 0%, #fff 65%); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; box-shadow: inset 0 0 0 1px var(--border); transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
-.detail-hero-inner { display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+.detail-hero-inner { display: flex; flex-direction: column; align-items: flex-start; gap: 26px; }
 .detail-hero-text { display: flex; align-items: center; gap: 18px; }
 .detail-hero-icon-badge { width: 64px; height: 64px; border-radius: 16px; background: linear-gradient(135deg, #fff 0%, var(--light) 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--spark); box-shadow: inset 0 0 0 1px var(--border); }
 .page-hero { background: var(--light-blue); padding: 64px 0; border-bottom: 1px solid var(--border); }
@@ -170,35 +170,27 @@ li { list-style: none; }
 .page-hero.has-photo h1 { color: #fff; }
 .page-hero.has-photo p { color: #EAF2FE; }
 
-/* Trust stats, now living in the hero itself (right side of the title on
-   desktop), separated by thin vertical dividers instead of a boxed strip. */
+/* Trust stats, living inside the hero as their own white card below the
+   title (not squeezed onto the same row), navy text, dividers between each
+   figure. Same white-card look whether the hero has a photo or not. */
 .hero-stats {
-  display: flex; align-items: center; flex-wrap: wrap; gap: 0; flex-shrink: 0;
-  margin-left: auto; background: rgba(255,255,255,.1); backdrop-filter: blur(2px);
-  border: 1px solid rgba(255,255,255,.3); border-radius: 14px; padding: 16px 24px;
+  display: flex; align-items: center; flex-wrap: wrap; gap: 0; width: 100%;
+  background: #fff; border: 1px solid var(--border); border-radius: 14px;
+  padding: 18px 26px; box-shadow: var(--shadow-md);
 }
-.hero-stats > div { padding: 0 22px; text-align: center; border-left: 1px solid rgba(255,255,255,.3); }
+.hero-stats > div { padding: 0 26px; text-align: center; border-left: 1px solid var(--border); }
 .hero-stats > div:first-child { border-left: none; padding-left: 0; }
-.hero-stats strong { display: block; font-size: 21px; font-weight: 800; color: #fff; margin-bottom: 2px; white-space: nowrap; }
-.hero-stats span { font-size: 12px; color: #EAF2FE; white-space: nowrap; }
-.page-hero:not(.has-photo) .hero-stats {
-  background: #fff; border-color: var(--border); box-shadow: var(--shadow-sm);
-}
-.page-hero:not(.has-photo) .hero-stats > div { border-left-color: var(--border); }
-.page-hero:not(.has-photo) .hero-stats strong { color: var(--navy); }
-.page-hero:not(.has-photo) .hero-stats span { color: var(--grey); }
+.hero-stats strong { display: block; font-size: 21px; font-weight: 800; color: var(--navy); margin-bottom: 2px; white-space: nowrap; }
+.hero-stats span { font-size: 12px; color: var(--grey); white-space: nowrap; }
 @media (max-width: 900px) {
-  .detail-hero-inner { flex-direction: column; align-items: flex-start; }
   .hero-stats {
-    width: 100%; margin-left: 0; display: grid; grid-template-columns: repeat(2, 1fr);
-    gap: 16px 0; margin-top: 10px; padding: 18px 20px;
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 16px 0; padding: 18px 20px;
   }
   .hero-stats > div { border-left: none; padding: 0 14px; text-align: left; }
-  .hero-stats > div:nth-child(odd) { border-right: 1px solid rgba(255,255,255,.3); }
-  .page-hero:not(.has-photo) .hero-stats > div:nth-child(odd) { border-right-color: var(--border); }
+  .hero-stats > div:nth-child(odd) { border-right: 1px solid var(--border); }
 }
 @media (max-width: 480px) {
-  .hero-stats { grid-template-columns: 1fr 1fr; }
   .hero-stats strong { font-size: 18px; }
 }
 
