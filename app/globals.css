@@ -175,6 +175,19 @@ li { list-style: none; }
 .detail-block { margin: 40px 0; }
 .detail-block-heading { font-size: 20px; margin: 0 0 16px; padding-top: 32px; border-top: 1px solid var(--border); }
 .detail-block:first-child .detail-block-heading { padding-top: 0; border-top: none; }
+.detail-block-center { text-align: center; }
+.detail-intro { font-size: 16px; max-width: 760px; color: var(--grey); }
+.detail-trust-strip {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+  margin: 24px 0 8px; padding: 20px; background: var(--light-blue);
+  border: 1px solid var(--border); border-radius: 12px;
+}
+.detail-trust-strip > div { text-align: center; }
+.detail-trust-strip strong { display: block; font-size: 18px; color: var(--navy); margin-bottom: 2px; }
+.detail-trust-strip span { font-size: 12px; color: var(--grey); }
+@media (max-width: 720px) {
+  .detail-trust-strip { grid-template-columns: repeat(2, 1fr); }
+}
 
 /* Solar page hero carousel: full-bleed background-image slides with a fade
    crossfade, dark gradient overlay for text contrast (same navy/red gradient
@@ -504,8 +517,11 @@ li { list-style: none; }
   transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .2s var(--ease);
 }
 .brand-grid-item:hover { border-color: var(--orange); transform: translateY(-3px); box-shadow: var(--shadow-md); }
-.brand-grid-logo-wrap { height: 48px; width: 100%; display: flex; align-items: center; justify-content: center; }
-.brand-grid-logo { max-height: 44px; max-width: 100%; object-fit: contain; }
+.brand-grid-logo-wrap {
+  height: 64px; width: 100%; display: flex; align-items: center; justify-content: center;
+  background: #FDE8F0; border-radius: 10px; padding: 8px;
+}
+.brand-grid-logo { max-height: 46px; max-width: 100%; object-fit: contain; }
 .brand-grid-name { font-size: 13px; font-weight: 600; color: var(--navy); text-align: center; }
 @media (max-width: 900px) {
   .brand-grid { grid-template-columns: repeat(3, 1fr); }

@@ -3,6 +3,8 @@ import { SECURITY_ITEMS } from "../../../../data/content";
 import { WhatsAppCta, CategoryGrid } from "../../../../components/Sections";
 import CategoryIcon from "../../../../components/CategoryIcon";
 
+const BASE_URL = "https://velsystem.vercel.app";
+
 export function generateStaticParams() {
   return SECURITY_ITEMS.map(item => ({ slug: item.slug }));
 }
@@ -10,7 +12,32 @@ export function generateStaticParams() {
 export function generateMetadata({ params }) {
   const item = SECURITY_ITEMS.find(i => i.slug === params.slug);
   if (!item) return {};
-  return { title: `${item.name} | Security Systems | Vel Systems`, description: item.tagline, alternates: { canonical: `/security-systems/${item.slug}/` } };
+  const rawDesc = `${item.tagline} ${item.name} sales, installation, and after-sales service for homes and businesses in Chengalpattu, Tamil Nadu by Vel Systems — 25+ years of local experience.`;
+  const description = rawDesc.length > 160 ? rawDesc.slice(0, 157) + "..." : rawDesc;
+  return {
+    title: `${item.name} Sales & Installation in Chengalpattu | Vel Systems`,
+    description,
+    alternates: { canonical: `/security-systems/${item.slug}/` }
+  };
+}
+
+// Real-facts Service schema — reuses the same figures already verified and
+// published elsewhere on the site (homepage trust bar), nothing invented.
+function DetailServiceSchema({ item }) {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": item.name,
+    "name": `${item.name} — Vel Systems`,
+    "description": item.tagline,
+    "url": `${BASE_URL}/security-systems/${item.slug}/`,
+    "provider": {
+      "@type": "ElectronicsStore",
+      "name": "Vel Systems",
+      "areaServed": { "@type": "City", "name": "Chengalpattu" }
+    }
+  };
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
 }
 
 export default function SecurityDetailPage({ params }) {
@@ -23,6 +50,7 @@ export default function SecurityDetailPage({ params }) {
 
   return (
     <>
+      <DetailServiceSchema item={item} />
       <section
         className={`page-hero${heroPhoto ? " has-photo" : ""}`}
         style={heroPhoto ? {
@@ -38,7 +66,14 @@ export default function SecurityDetailPage({ params }) {
         </div>
       </section>
       <section className="container content-section detail-section">
-        <p>{item.body}</p>
+        <p className="detail-intro">{item.body} Every installation is backed by Vel Systems' own in-house team, so the same people who set it up are who you call for service.</p>
+
+        <div className="detail-trust-strip">
+          <div><strong>25+</strong><span>Years of Experience</span></div>
+          <div><strong>40+</strong><span>In-House Engineers</span></div>
+          <div><strong>GeM &amp; ISO 9001:2015</strong><span>Registered &amp; Certified</span></div>
+          <div><strong>20,000+</strong><span>Customers Served</span></div>
+        </div>
 
         {item.subItems && item.subItems.length > 0 && (
           <div className="detail-block">
@@ -70,7 +105,7 @@ export default function SecurityDetailPage({ params }) {
           </div>
         )}
 
-        <div className="detail-block">
+        <div className="detail-block detail-block-center">
           <WhatsAppCta label={`Enquire About ${item.name}`} message={`Hi Vel Systems, I would like to enquire about ${item.name}.`} />
         </div>
 
