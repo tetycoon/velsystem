@@ -66,7 +66,10 @@ export default function SecurityDetailPage({ params }) {
         </div>
       </section>
       <section className="container content-section detail-section">
-        <p className="detail-intro">{item.body} Every installation is backed by Vel Systems' own in-house team, so the same people who set it up are who you call for service.</p>
+        <p className="detail-intro reveal">
+          {item.body}{" "}
+          Every <strong>{item.name.toLowerCase()}</strong> installation in <strong>Chengalpattu</strong> is backed by Vel Systems&rsquo; own in-house team and <strong>25+ years of local experience</strong>, so the same people who set it up are who you call for service.
+        </p>
 
         <div className="detail-trust-strip">
           <div><strong>25+</strong><span>Years of Experience</span></div>
@@ -77,6 +80,7 @@ export default function SecurityDetailPage({ params }) {
 
         {item.subItems && item.subItems.length > 0 && (
           <div className="detail-block">
+            <h2 className="detail-block-heading">Types of {item.name}</h2>
             <div className="sub-items-grid">
               {item.subItems.map(sub => (
                 <div className="sub-item-card" key={sub.name}>
@@ -105,8 +109,17 @@ export default function SecurityDetailPage({ params }) {
           </div>
         )}
 
-        <div className="detail-block detail-block-center">
-          <WhatsAppCta label={`Enquire About ${item.name}`} message={`Hi Vel Systems, I would like to enquire about ${item.name}.`} />
+        <div className="detail-block">
+          <h2 className="detail-block-heading">Ready to Get Started?</h2>
+          <div className="detail-promo-band">
+            <p>
+              Every {item.name.toLowerCase()} we install is planned around your actual space,
+              not a generic layout — site survey, placement, cabling, and setup handled by our
+              own in-house team, with AMC support available afterward so it isn't a one-time
+              visit and gone.
+            </p>
+            <WhatsAppCta label={`Enquire About ${item.name}`} message={`Hi Vel Systems, I would like to enquire about ${item.name}.`} />
+          </div>
         </div>
 
         <div className="detail-block">
