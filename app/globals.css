@@ -58,6 +58,16 @@ li { list-style: none; }
 .topbar { background: rgba(0,0,0,.18); color: #fff; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,.1); }
 .topbar-inner { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; flex-wrap: wrap; gap: 10px; }
 .topbar-contact { flex-shrink: 0; }
+.topbar-contact a { color: #fff; }
+.topbar-contact a:hover { color: var(--orange-light); text-decoration: underline; }
+.topbar-contact-label {
+  display: inline-block; margin-left: 6px; font-size: 10px; font-weight: 700;
+  letter-spacing: .04em; text-transform: uppercase; color: #BBD9FF;
+  background: rgba(255,255,255,.12); border-radius: 4px; padding: 1px 6px;
+}
+@media (max-width: 720px) {
+  .topbar-contact-label { display: none; }
+}
 .social-links { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .social-links a {
   display: flex; align-items: center; justify-content: center;
@@ -375,6 +385,22 @@ li { list-style: none; }
 .location-card { border: 1px solid var(--border); border-radius: 8px; padding: 16px; background: var(--light); }
 .location-card h3 { font-size: 15px; margin-bottom: 6px; color: var(--navy); }
 .location-card p { font-size: 14px; margin-bottom: 4px; }
+.location-card p a { color: var(--navy); font-weight: 600; }
+.location-card p a:hover { color: var(--orange); text-decoration: underline; }
+
+/* Team contacts: aligned table instead of run-on inline text */
+.team-contacts-table { margin-top: 6px; border-radius: 6px; overflow: hidden; }
+.team-contact-row {
+  display: grid; grid-template-columns: 150px 130px 1fr; gap: 12px; align-items: center;
+  padding: 8px 10px; font-size: 13px; background: #fff;
+}
+.team-contact-row:nth-child(even) { background: var(--light); }
+.team-contact-role { font-weight: 700; color: var(--navy); }
+.team-contact-phone, .team-contact-email { color: var(--grey); }
+.team-contact-phone:hover, .team-contact-email:hover { color: var(--orange); text-decoration: underline; }
+@media (max-width: 600px) {
+  .team-contact-row { grid-template-columns: 1fr; gap: 2px; padding: 10px 12px; }
+}
 .blog-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
 .blog-card { position: relative; border: 1px solid var(--border); border-radius: 12px; padding: 20px; background: #fff; box-shadow: var(--shadow-sm); transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .2s var(--ease); }
 .blog-card:hover { border-color: var(--orange); transform: translateY(-3px); box-shadow: var(--shadow-sm); }

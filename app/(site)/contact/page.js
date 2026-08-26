@@ -17,18 +17,22 @@ export default function ContactPage() {
               <div className="location-card" key={loc.name}>
                 <h3>{loc.name}</h3>
                 <p>{loc.address}</p>
-                <p><strong>Phone:</strong> {loc.phone}</p>
-                <p><strong>Email:</strong> {loc.email}</p>
+                <p><strong>Phone:</strong> <a href={`tel:+${loc.phone.replace(/\D/g, "")}`}>{loc.phone}</a></p>
+                <p><strong>Email:</strong> <a href={`mailto:${loc.email}`}>{loc.email}</a></p>
               </div>
             ))}
           </div>
           <div className="team-contacts">
             <h3>Direct Team Contacts</h3>
-            <ul>
+            <div className="team-contacts-table">
               {TEAM_CONTACTS.map(t => (
-                <li key={t.role}><strong>{t.role}:</strong> {t.phone} &middot; {t.email}</li>
+                <div className="team-contact-row" key={t.role}>
+                  <span className="team-contact-role">{t.role}</span>
+                  <a className="team-contact-phone" href={`tel:+91${t.phone.replace(/\D/g, "")}`}>{t.phone}</a>
+                  <a className="team-contact-email" href={`mailto:${t.email}`}>{t.email}</a>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         </div>
         <EnquiryForm />

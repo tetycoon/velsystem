@@ -34,7 +34,16 @@ export default function Header() {
     <header className="site-header">
       <div className="topbar">
         <div className="container topbar-inner">
-          <span className="topbar-contact">{BRAND.email} &nbsp;|&nbsp; {BRAND.phone}</span>
+          <span className="topbar-contact">
+            <a href={`mailto:${BRAND.email}`}>{BRAND.email}</a>
+            &nbsp;|&nbsp;
+            <a href="tel:+919865199933">{BRAND.phone}</a>
+            &nbsp;|&nbsp;
+            <a href="tel:+919865180110">(+91) 98651 80110</a>
+            &nbsp;/&nbsp;
+            <a href="mailto:service@velsystems.in">service@velsystems.in</a>
+            <span className="topbar-contact-label">Service</span>
+          </span>
           <div className="social-links">
             <a href={waLink("Hi Vel Systems, I have a question.")} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><FaWhatsapp /></a>
             <a href={BRAND.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FaFacebookF /></a>
