@@ -3,6 +3,7 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { FaWhatsapp, FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
+import { ChevronDown } from "lucide-react";
 import { NAV, UTILITY_NAV, BRAND, waLink, SECURITY_ITEMS, IT_ITEMS } from "../data/content";
 import CategoryIcon from "./CategoryIcon";
 
@@ -68,7 +69,10 @@ export default function Header() {
               const dropdown = dropdownFor(item);
               return (
                 <li key={item.href} className={`nav-item${dropdown ? " has-dropdown" : ""}`}>
-                  <Link href={item.href} className={current === item.href ? "active" : ""}>{item.label}</Link>
+                  <Link href={item.href} className={current === item.href ? "active" : ""}>
+                    {item.label}
+                    {dropdown && <ChevronDown size={14} className="nav-caret" aria-hidden="true" />}
+                  </Link>
                   {dropdown && <div className="dropdown">{dropdown}</div>}
                 </li>
               );
