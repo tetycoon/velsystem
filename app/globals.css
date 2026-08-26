@@ -172,22 +172,27 @@ li { list-style: none; }
 
 /* Trust stats, now living in the hero itself (right side of the title on
    desktop), separated by thin vertical dividers instead of a boxed strip. */
-.hero-stats { display: flex; align-items: center; flex-wrap: wrap; gap: 0; flex-shrink: 0; }
+.hero-stats {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 0; flex-shrink: 0;
+  margin-left: auto; background: rgba(255,255,255,.1); backdrop-filter: blur(2px);
+  border: 1px solid rgba(255,255,255,.3); border-radius: 14px; padding: 16px 24px;
+}
 .hero-stats > div { padding: 0 22px; text-align: center; border-left: 1px solid rgba(255,255,255,.3); }
 .hero-stats > div:first-child { border-left: none; padding-left: 0; }
 .hero-stats strong { display: block; font-size: 21px; font-weight: 800; color: #fff; margin-bottom: 2px; white-space: nowrap; }
 .hero-stats span { font-size: 12px; color: #EAF2FE; white-space: nowrap; }
+.page-hero:not(.has-photo) .hero-stats {
+  background: #fff; border-color: var(--border); box-shadow: var(--shadow-sm);
+}
 .page-hero:not(.has-photo) .hero-stats > div { border-left-color: var(--border); }
 .page-hero:not(.has-photo) .hero-stats strong { color: var(--navy); }
 .page-hero:not(.has-photo) .hero-stats span { color: var(--grey); }
 @media (max-width: 900px) {
   .detail-hero-inner { flex-direction: column; align-items: flex-start; }
   .hero-stats {
-    width: 100%; display: grid; grid-template-columns: repeat(2, 1fr);
-    gap: 16px 0; margin-top: 10px; padding-top: 20px;
-    border-top: 1px solid rgba(255,255,255,.3);
+    width: 100%; margin-left: 0; display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 16px 0; margin-top: 10px; padding: 18px 20px;
   }
-  .page-hero:not(.has-photo) .hero-stats { border-top-color: var(--border); }
   .hero-stats > div { border-left: none; padding: 0 14px; text-align: left; }
   .hero-stats > div:nth-child(odd) { border-right: 1px solid rgba(255,255,255,.3); }
   .page-hero:not(.has-photo) .hero-stats > div:nth-child(odd) { border-right-color: var(--border); }
